@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <!-- UNDERLINED TABS -->
+    <ul class="nav nav-underline">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Students</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="#">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" aria-disabled="true">Edit</a>
+        </li>
+    </ul>
+
+    <!-- NAV BAR FOR SEARCH AND SORT BY FUNCTION-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <div class="collapse navbar-collapse" id="navbarContent">
+            <!-- Sort by Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort by
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">ID Number</a></li>
+                    <li><a class="dropdown-item" href="#">First Name</a></li>
+                    <li><a class="dropdown-item" href="#">Last Name</a></li>
+                    <li><a class="dropdown-item" href="#">Course</a></li>
+                    <li><a class="dropdown-item" href="#">Year Level</a></li>
+                    <li><a class="dropdown-item" href="#">Gender</a></li>
+                </ul>
+            </div>
+            
+            <form class="d-flex ms-auto me-3">
+                <!-- Search Bar -->
+                <input class="form-control me-2" type="search" placeholder="Search…" aria-label="Search">
+                <button class="btn btn-outline-primary" type="submit">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <!-- STUDENT DATA -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID Number</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Program</th>
+                <th scope="col">Year Level</th>
+                <th scope="col">Gender</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+                <tr>
+                    <th scope="row">{{ student.id_number }}</th>
+                    <td>{{ student.first_name }}</td>
+                    <td>{{ student.last_name }}</td>
+                    <td>{{ student.program_code }}</td>
+                    <td>{{ student.year_level }}</td>
+                    <td>{{ student.gender }}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> Edit
+                        </a>
+                        <a href="#" class="btn btn-danger">
+                            <i class="bi bi-trash"></i> Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- PAGINATION -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+{% endblock %}

@@ -15,3 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
+    registerModal.hide();
+
+    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    confirmationModal.show();
+
+    document.getElementById('registerForm').reset();
+});

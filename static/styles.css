@@ -24,6 +24,8 @@ a:active {
     background: #f9f9f9;
 }
 
+/* ---------- SIDEBAR ---------- */
+
 #sidebar {
     width: 300px;
     min-width: 60px;
@@ -38,10 +40,43 @@ a:active {
     width: 60px;
 }
 
-#sidebar.collapsed .sidebar-logo {
-    opacity: 0;
-    visibility: hidden;
+/* ---------- LOGO (behaves like items) ---------- */
+
+.sidebar-logo {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+    padding: 10px 15px;           
+    box-sizing: border-box;
 }
+
+.sidebar-logo a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: #fff;
+    text-decoration: none;
+}
+
+.sidebar-logo i {
+    font-size: 36px;
+    flex-shrink: 0;
+    margin-right: 20px; 
+}
+
+.sidebar-logo span {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 24px;
+    font-style: 'Outfit';
+}
+
+#sidebar.collapsed .sidebar-logo span {
+    display: none;
+}
+
+/* ---------- LINKS ---------- */
 
 #sidebar .sidebar-link {
     display: flex;
@@ -62,55 +97,57 @@ a:active {
     display: none;
 }
 
-.toggler-btn{
-    background-color: transparent;
-    cursor: pointer;
-    border: 0;
-}
-
-.toggler-btn i{
-    font-size: 1.5rem;
-    color: #000;
-    font-weight: bold;
-}
-
-.navbar{
-    padding: 1.15rem 1.5rem
-}
-
-.sidebar-navbar{
-    flex: 1 1 auto;
-}
-
-.sidebar-logo{
-    padding: 1.15rem 1.5rem;
-    text-align: center;
-}
-
-.sidebar-logo a{
-    color: #fff;
-    font-weight: 800;
-    font-size: 1.25rem;
-}
-
-.sidebar-header{
-    color: #fff;
-    font-size: .75rem;
-    padding: 1.5rem 1.5rem .375rem;
-}
-
-a.sidebar-link{
-    padding: .625rem 1.625rem;
-    color: #fff;
-    position: relative;
-    transition: all 0.35s;
-    display: block;
-}
-
-a.sidebar-link:hover{
+a.sidebar-link:hover {
     background-color: #f9f6f630;
 }
 
-.navbar span{
+/* ---------- NAVBAR BUTTONS ---------- */
+
+.toggler-btn {
+    margin-left: 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 50%;        
+    width: 40px;                 
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.toggler-btn i {
     font-size: 1.5rem;
+    color: #000;
+}
+
+.toggler-btn:hover {
+    background-color: rgba(0,0,0,0.05);
+}
+
+.toggler-btn:active {
+    background-color: rgba(0,0,0,0.15);
+}
+
+.toggler-btn:active i {
+    color: #222;
+}
+
+.navbar {
+    padding: 1.15rem 1.5rem;
+}
+
+.sidebar-navbar {
+    flex: 1 1 auto;
+}
+
+#page-title {
+    font-size: 1.5rem; 
+}
+
+.sidebar-header {
+    color: #fff;
+    font-size: .75rem;
+    padding: 1.5rem 1.5rem .375rem;
 }

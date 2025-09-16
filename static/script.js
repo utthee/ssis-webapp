@@ -1,29 +1,32 @@
-const toggler = document.querySelector(".toggler-btn");
-toggler.addEventListener("click",function(){
-    document.querySelector("#sidebar").classList.toggle("collapsed");
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-  const titleSpan = document.getElementById("page-title");
-  const links = document.querySelectorAll(".sidebar-link");
-
-  links.forEach(link => {
-    link.addEventListener("click", function (e) {
-
-      links.forEach(l => l.classList.remove("active"));
-      this.classList.add("active");
-    });
-  });
+// TOGGLE BUTTON FOR SIDEBAR COLLAPSE/EXPAND
+$(".toggler-btn").click(function() {
+    $("#sidebar").toggleClass("collapsed");
 });
 
-document.getElementById('registerForm').addEventListener('submit', function(e) {
+// CHANGE DASHBOARD TITLE TO THE PAGE
+$(".sidebar-link").click(function(e) {
+    $(".sidebar-link").removeClass("active");
+    $(this).addClass("active");
+});
+
+// SHOW REGISTER CONFIRMATION MESSAGE
+$("#registerForm").submit(function(e) {
     e.preventDefault();
+    $("#registerStudentModal").modal('hide');
+    $("#confirmationModal").modal('show');
+});
 
-    const registerModal = bootstrap.Modal.getInstance(document.getElementById('registerModal'));
-    registerModal.hide();
 
-    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-    confirmationModal.show();
+//SHOW EDIT CONFIRMATION MESSAGE
+$("#editForm").submit(function(e) {
+    e.preventDefault();
+    $("#editStudentModal").modal('hide');
+    $("#editConfirmationModal").modal('show');
+});
 
-    document.getElementById('registerForm').reset();
+// SHOW DELETE CONFIRMATION MESSAGE
+$("#deleteForm").submit(function(e) {
+    e.preventDefault();
+    $("#deleteConfirmationModal").modal('hide');
+    $("#deletionModal").modal('show');
 });

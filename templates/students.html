@@ -62,15 +62,14 @@
                         data-last-name="{{ student.last_name }}"
                         data-gender="{{ student.gender }}"
                         data-year-level="{{ student.year_level }}"
-                        data-program="{{ student.program_code }}">
+                        data-program-code="{{ student.program_code }}">
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
                     <a href="#" 
                     class="btn btn-danger btn-delete" 
                     data-bs-toggle="modal" 
                     data-bs-target="#deleteConfirmationModal"
-                    data-student-id="{{ student.id_number }}"
-                    data-student-name="{{ student.first_name }} {{ student.last_name }}">
+                    data-student-id="{{ student.id_number }}">
                         <i class="bi bi-trash me-1"></i> Delete
                     </a>
                 </td>
@@ -81,12 +80,12 @@
 
     <!-- PAGINATION & REGISTER -->
     <div class="d-flex align-items-center">
-        <!-- Left: Register button -->
+        <!-- Register button -->
         <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#registerStudentModal">
             <i class="bi bi-plus-lg"></i> Register
         </a>
 
-        <!-- Right: Pagination -->
+        <!-- Pagination -->
         <nav aria-label="Page navigation example" class="ms-auto">
             <ul class="pagination mb-0">
             <li class="page-item disabled">
@@ -102,17 +101,16 @@
         </nav>
     </div>
 
-    <!-- Register Student Modal -->
+    <!-- REGISTER STUDENT FORM MODAL -->
     <div class="modal fade" id="registerStudentModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- Modal header -->
+                
                 <div class="modal-header">
                     <h5 class="modal-title" id="registerModalLabel">Register Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
-                <!-- Modal body (form inputs) -->
+                
                 <div class="modal-body">
                     <form id="registerForm">
                         <div class="mb-3">
@@ -154,7 +152,6 @@
                     </form>
                 </div>
 
-                <!-- Modal footer (buttons) -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="registerForm" class="btn btn-success">
@@ -165,7 +162,7 @@
         </div>
     </div>
 
-    <!-- Student Register Confirmation Modal -->
+    <!-- REGISTER STUDENT CONFIRMATION MODAL -->
     <div class="modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -186,13 +183,12 @@
     <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <!-- Modal header -->
+
                 <div class="modal-header">
                     <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-                <!-- Modal body (form inputs) -->
                 <div class="modal-body">
                     <form id="editForm">
                         <div class="mb-3">
@@ -234,7 +230,6 @@
                     </form>
                 </div>
 
-                <!-- Modal footer (buttons) -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="editForm" class="btn btn-success">
@@ -262,7 +257,7 @@
         </div>
     </div>
 
-    <!-- Student Deletion Confirmation Modal -->
+    <!-- STUDENT DELETE PROMPT MODAL -->
     <div class="modal" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -284,7 +279,7 @@
         </div>
     </div>
 
-    <!-- STUDENT DELETED SUCCESSFULLY -->
+    <!-- STUDENT DELETE CONFIRMATION MODAL -->
     <div class="modal" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">

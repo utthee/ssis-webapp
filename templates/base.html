@@ -1,64 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static',filename='styles.css')}}">
     <title>Student Information System</title>
-    
+
     <!-- Bootstrap CSS CDN -->
-    <link 
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" 
-        rel="stylesheet" 
-        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" 
-        crossorigin="anonymous">
-     <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <!-- Data Tables -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.bootstrap5.css">
 </head>
+
 <body>
     <div class="d-flex">
         <!-- SIDEBAR -->
-        <aside id="sidebar"  class="collapsed">
+        <aside id="sidebar" class="collapsed bg-light">
             <div class="sidebar-logo">
                 <a href="">
                     <i class="bi bi-globe"></i>
                     <span>Sphere</span>
                 </a>
             </div>
-            <!-- NAVIGATION SIDEBAR -->
-             <ul class="sidebar-nav p-0">
-                <li class="sidebar-item">
-                    <a href="{{ url_for('dashboard') }}" class="sidebar-link" data-title="Dashboard">
-                        <i class="bi bi-house fs-3"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="{{ url_for('students') }}" class="sidebar-link" data-title="Students">
-                        <i class="bi bi-person fs-3"></i>
-                        <span>Students</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="{{ url_for('programs') }}" class="sidebar-link" data-title="Programs">
-                        <i class="bi bi-mortarboard fs-3"></i>
-                        <span>Programs</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a href="{{ url_for('colleges') }}" class="sidebar-link" data-title="Colleges">
-                        <i class="bi bi-building fs-3"></i>
-                        <span>Colleges</span>
-                    </a>
-                </li>
-             </ul>
+
+            <nav class="sidebar-nav">
+                <ul class="nav-list">
+                    <li class="sidebar-item">
+                        <a href="{{ url_for('dashboard') }}"
+                            class="sidebar-link {% if request.endpoint == 'dashboard' %}active{% endif %}"
+                            data-title="Dashboard">
+                            <i class="bi bi-house fs-2"></i>
+                            <span class="sidebar-label">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ url_for('students') }}"
+                            class="sidebar-link {% if request.endpoint == 'students' %}active{% endif %}"
+                            data-title="Students">
+                            <i class="bi bi-person fs-2"></i>
+                            <span class="sidebar-label">Students</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ url_for('programs') }}"
+                            class="sidebar-link {% if request.endpoint == 'programs' %}active{% endif %}"
+                            data-title="Programs">
+                            <i class="bi bi-mortarboard fs-2"></i>
+                            <span class="sidebar-label">Programs</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="{{ url_for('colleges') }}"
+                            class="sidebar-link {% if request.endpoint == 'colleges' %}active{% endif %}"
+                            data-title="Colleges">
+                            <i class="bi bi-building fs-2"></i>
+                            <span class="sidebar-label">Colleges</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </aside>
 
         <!-- NAVBAR-->
         <div class="main">
-            <nav class="navbar navbar-expand border-bottom">
+            <nav class="navbar navbar-expand border-bottom bg-light shadow-sm">
                 <button class="toggler-btn" type="button">
-                    <i class="bi bi-list fs 3"></i>
+                    <i class="bi bi-list fs-2"></i>
                 </button>
                 <span id="page-title" class="ms-2">
                     {{ page_title }}
@@ -68,29 +80,30 @@
                 <div class="container-fluid">
                     <div class="mb-3">
                         {% block body %}
-                        
+
                         {% endblock %}
                     </div>
                 </div>
             </main>
         </div>
     </div>
-    
+
     <!-- JQuery CDN -->
-     <script
-        src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-        crossorigin="anonymous">
-    </script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"
+        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous">
+        </script>
 
     <!-- Bootstrap JS CDN -->
-    <script 
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" 
-        crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
     </script>
+
+    <!-- Data Tables CDN -->
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 
     <script src="{{url_for('static', filename='script.js')}}"></script> <!--script.js-->
 
 </body>
+
 </html>

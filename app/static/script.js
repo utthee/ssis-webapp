@@ -22,8 +22,7 @@ $("#registerForm").submit(function(e) {
 });
 
 //POPULATE STUDENT EDIT FORM
-$(document).ready(function () {
-  $('#editStudentModal').on('show.bs.modal', function (event) {
+$('#editStudentModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal  = $(this);
 
@@ -40,7 +39,6 @@ $(document).ready(function () {
     modal.find('#gender').val(gender);
     modal.find('#yearLevel').val(yearLevel);
     modal.find('#programCode').val(program);
-  });
 });
 
 //SHOW EDIT CONFIRMATION MESSAGE
@@ -65,8 +63,7 @@ $("#registerForm").submit(function(e) {
 });
 
 //POPULATE PROGRAM EDIT FORM
-$(document).ready(function () {
-  $('#editProgramModal').on('show.bs.modal', function (event) {
+$('#editProgramModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal  = $(this);
 
@@ -77,7 +74,6 @@ $(document).ready(function () {
     modal.find('#programCode').val(programCode);
     modal.find('#programName').val(programName);
     modal.find('#collegeCode').val(collegeCode);
-  });
 });
 
 //SHOW EDIT CONFIRMATION MESSAGE
@@ -102,8 +98,7 @@ $("#registerForm").submit(function(e) {
 });
 
 //POPULATE COLLEGE EDIT FORM
-$(document).ready(function () {
-  $('#editCollegeModal').on('show.bs.modal', function (event) {
+$('#editCollegeModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal  = $(this);
 
@@ -112,7 +107,6 @@ $(document).ready(function () {
 
     modal.find('#collegeCode').val(code);
     modal.find('#collegeName').val(name);
-  });
 });
 
 //SHOW EDIT CONFIRMATION MESSAGE

@@ -50,10 +50,10 @@ a:active {
     width: 300px;
     min-width: 60px;
     transition: width 0.25s ease-in-out;
-    /* background-color: light; */
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    padding-bottom: 15px;
 }
 
 #sidebar.collapsed {
@@ -99,6 +99,11 @@ a:active {
 }
 
 /* SIDEBAR MENU STYLES */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
 
 .sidebar-nav .nav-list {
     list-style: none;
@@ -106,6 +111,10 @@ a:active {
     gap: 4px;
     padding: 0 5px;
     flex-direction: column;
+}
+
+.logout-list {
+  margin-top: auto;
 }
 
 .sidebar-link.active {
@@ -212,4 +221,49 @@ a.sidebar-link:hover:not(.active) .sidebar-label {
 
 .sidebar-label {
     font-size: 1.125rem;
+}
+
+
+/* ---------- LOGIN --------- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #dedede;
+}
+/*------------ Login container ------------*/
+.box-area{
+    width: 400x;
+}
+/*------------ Right box ------------*/
+.right-box{
+    padding: 40px 30px 40px 40px;
+}
+/*------------ Custom Placeholder ------------*/
+::placeholder{
+    font-size: 16px;
+}
+.rounded-4{
+    border-radius: 20px;
+}
+.rounded-5{
+    border-radius: 30px;
+}
+
+.login-card {
+    max-width: 400px;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.login-card .form-control {
+    height: 45px;
+}
+
+.singup-card {
+    max-width: 800px;
+    width: 100%;
+    border-radius: 1rem;
+}
+
+.signup-card .form-control {
+    height: 45px;
 }

@@ -1,0 +1,52 @@
+{% extends "auth.html" %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div class="col-12 col-md-8 col-lg-6">
+        <div class="signup-card p-4 bg-white shadow rounded-4">
+            <div class="header-text mb-4 text-center">
+                <h2>Sphere</h2>
+                <h5>Create your account to get started.</h5>
+                <p>It's quick and easy.</p>
+            </div>
+
+            <form action="{{ url_for('user.signup') }}" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label mb-1">Enter your username</label>
+                    <input type="text" id="username" name="username" class="form-control form-control-lg bg-light fs-6"
+                        placeholder="Username" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label mb-1">Enter your email</label>
+                    <input type="text" id="email" name="email" class="form-control form-control-lg bg-light fs-6"
+                        placeholder="Email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label mb-1">Enter your password</label>
+                    <input type="password" id="password" name="password"
+                        class="form-control form-control-lg bg-light fs-6" placeholder="Password" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="confirmpassword" class="form-label mb-1">Confirm password</label>
+                    <input type="password" id="confirmpassword" name="confirmpassword"
+                        class="form-control form-control-lg bg-light fs-6" placeholder="Re-enter your password"
+                        required>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-lg w-100 mt-3 mb-3">Sign up</button>
+            </form>
+
+            <div class="text-center">
+                <p>Already have an account?
+                    <a href="{{ url_for('user.login') }}">Log In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

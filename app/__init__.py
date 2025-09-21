@@ -1,19 +1,22 @@
-from flask import Flask, render_template, url_for
+import os
+from flask import Flask, render_template, url_for, request, redirect, session
+from app.user import user_bp
 
 def create_app():
     app = Flask(__name__)
+    app.secret_key = os.environ.get("SECRET_KEY", "test")
+
+    app.register_blueprint(user_bp)
 
     @app.route("/")
+    def home():
+        return redirect(url_for("user.login"))
+
+    @app.route("/dashboard")
     def dashboard():
+        if "user" not in session:
+            return redirect(url_for("user.login"))
         return render_template("dashboard.html", page_title="Dashboard")
-
-    @app.route("/login")
-    def login():
-        return render_template("login.html", page_title="Login")
-
-    @app.route("/register")
-    def register():
-        return render_template("register.html", page_title="Register")
 
     @app.route("/students")
     def students():
@@ -52,5 +55,5 @@ def create_app():
             for i in range(n)
         ]
         return render_template("colleges.html", page_title="Colleges", colleges=colleges_data)
-
+    
     return app

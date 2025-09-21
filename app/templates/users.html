@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}User Page{% endblock %}
+{% block body %}
+<div class="container-fluid p-4 rounded-4 bg-white shadow-sm">
+    <h3>View Users</h3>
+    <p style="font-size: 20px;">Monitor and review all registered system accounts.</p>
+
+
+    <table id="data-table" class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th scope="col">User ID</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <th scope="row">{{ user.id }}</th>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.password }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

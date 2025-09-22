@@ -23,12 +23,12 @@
                 <td>{{ program.college_code }}</td>
                 <td>
                     <a href="#" class="btn btn-primary btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#editProgramModal" data-program-code="{{ program.program_code }}"
-                        data-program-name="{{ program.program_name }}" data-college-code="{{ program.college_code }}">
+                        data-bs-target="#editProgramModal" data-program-code="{{ program.code }}"
+                        data-program-name="{{ program.name }}" data-college-code="{{ program.college_code }}">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmationModal" data-program-code="{{ program.program_code }}">
+                        data-bs-target="#deleteConfirmationModal" data-program-code="{{ program.code }}">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </td>
@@ -126,7 +126,7 @@
                     <div class="mb-3">
                         <label for="collegeCode" class="form-label">College Code:</label>
                         <select class="form-select" id="collegeCode" required>
-                            <option value=""" selected disabled>Select a college</option>
+                            <option value="" selected disabled>Select a college</option>
                                 <option value=" CCS">CCS</option>
                         </select>
                     </div>

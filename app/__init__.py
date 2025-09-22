@@ -1,10 +1,18 @@
 import os
+import psycopg2
+
+from dotenv import load_dotenv
 from flask import Flask, render_template, url_for, request, redirect, session
 from app.user import user_bp
+from app.database import get_db, close_db
+
+load_dotenv()
 
 def create_app():
     app = Flask(__name__)
+    
     app.secret_key = os.environ.get("SECRET_KEY", "test")
+    app.config["DATABASE_URL"] = os.getenv("DATABASE_URL")
 
     app.register_blueprint(user_bp)
 
@@ -55,5 +63,9 @@ def create_app():
             for i in range(n)
         ]
         return render_template("colleges.html", page_title="Colleges", colleges=colleges_data)
+    
+    @app.teardown_appcontext
+    def teardown_db(exception):
+        close_db()
     
     return app

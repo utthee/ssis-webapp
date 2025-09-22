@@ -8,9 +8,13 @@ $(".toggler-btn").click(function() {
 });
 
 // CHANGE DASHBOARD TITLE TO THE PAGE
-$(".sidebar-link").click(function(e) {
-    $(".sidebar-link").removeClass("active");
-    $(this).addClass("active");
+$("#sidebar .sidebar-link").click(function() {
+    var pageTitle = $(this).data("title");
+    $("#page-title").text(pageTitle);
+});
+
+$('.modal').on('hidden.bs.modal', function () {
+    document.activeElement.blur();
 });
 
 // ---------- STUDENTS PAGE ----------

@@ -1,25 +1,51 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, redirect, url_for, session, flash, request
+from app.user.forms import SignupForm, LoginForm
+from app.models import User
+from psycopg2.extras import RealDictCursor
+from app.database import get_db
 
 user_bp = Blueprint("user", __name__, template_folder="../templates")
 
+
 @user_bp.route("/login", methods=["GET", "POST"])
 def login():
+    form = LoginForm()
+
     if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        if form.validate():
+            username = form.username.data
+            password = form.password.data
 
-        if username == "admin" and password == "123":
-            session["user"] = username
-            return redirect(url_for("dashboard"))
-        return render_template("login.html", error="Invalid username or password")
+            user = User.get_by_username(username)
+            if user and user.check_password(password):
+                session["user_id"] = user.id
+                session["username"] = user.username
+                return redirect(url_for("dashboard"))
 
-    return render_template("login.html")
+            flash("Invalid username or password", "danger")
+        else:
+            flash("Please correct the errors in the form.", "danger")
+
+    return render_template("login.html", form=form)
 
 
 @user_bp.route("/signup", methods=["GET", "POST"])
 def signup():
-    # later: handle POST to create a new user
-    return render_template("signup.html")
+    form = SignupForm()
+
+    if request.method == "POST":
+        if form.validate():
+            User.create(
+                username=form.username.data,
+                email=form.email.data,
+                password=form.password.data,
+            )
+            flash(f"Account created for {form.username.data}", "success")
+            return redirect(url_for("user.login"))
+        else:
+            flash("Please correct the errors in the form.", "danger")
+
+    return render_template("signup.html", form=form)
 
 
 @user_bp.route("/logout", methods=["POST"])
@@ -30,11 +56,15 @@ def logout():
 
 @user_bp.route("/users")
 def users():
-    n = 10
-    users_data = [
-        {"id": i + 1, "username": f"user{i+1}",
-         "email": f"user{i+1}@example.com",
-         "password": "••••••"}
-        for i in range(n)
-    ]
+    conn = get_db()
+    cur = conn.cursor(cursor_factory=RealDictCursor)
+
+    cur.execute("SELECT id, username, email FROM users ORDER BY id ASC")
+    users_data = cur.fetchall()
+    
+    for user in users_data:
+        user["password"] = "••••••"
+
+    cur.close() 
+
     return render_template("users.html", page_title="Users", users=users_data)

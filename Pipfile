@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 flask = "*"
-psycopg2-binary = "*"
 flask-wtf = "*"
 flask-login = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 pytest = "*"

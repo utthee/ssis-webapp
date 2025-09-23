@@ -1,20 +1,23 @@
 import os
 import psycopg2
+import config
 
 from dotenv import load_dotenv
 from flask import Flask, render_template, url_for, request, redirect, session
-from app.user import user_bp
+
 from app.database import get_db, close_db
 
 load_dotenv()
 
 def create_app():
     app = Flask(__name__)
-    
-    app.secret_key = os.environ.get("SECRET_KEY", "test")
-    app.config["DATABASE_URL"] = os.getenv("DATABASE_URL")
+    app.config.from_object(config)
 
+    from app.user import user_bp
     app.register_blueprint(user_bp)
+
+    from app.college import college_bp
+    app.register_blueprint(college_bp)
 
     @app.route("/")
     def home():

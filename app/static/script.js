@@ -95,10 +95,25 @@ $("#deleteForm").submit(function(e) {
 });
 
 // ---------- COLLEGES PAGE ----------
+//SHOW REGISTER COLLEGE MODAL
 $("#registerForm").submit(function(e) {
     e.preventDefault();
-    $("#registerCollegeModal").modal('hide');
-    $("#registerConfirmationModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#registerCollegeModal").modal("hide");
+            $("#registerConfirmationModal").modal("show");
+            $("#registerForm")[0].reset();
+
+            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });
 
 //POPULATE COLLEGE EDIT FORM
@@ -111,18 +126,57 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
 
     modal.find('#collegeCode').val(code);
     modal.find('#collegeName').val(name);
+    modal.find('#originalCollegeCode').val(code);
 });
 
 //SHOW EDIT CONFIRMATION MESSAGE
-$("#editForm").submit(function(e) {
+$("#editForm").submit(function (e) {
     e.preventDefault();
-    $("#editCollegeModal").modal('hide');
-    $("#editConfirmationModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function (response) {
+        if (response.success) {
+            $("#editCollegeModal").modal("hide");
+
+            $("#registerConfirmationModal .modal-title").text("College Updated Successfully");
+            $("#registerConfirmationModal .modal-body p").text("College details have been updated.");
+            $("#registerConfirmationModal").modal("show");
+
+            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+
+        } else {
+            alert(response.message);
+        }
+    }).fail(function (xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
+});
+
+// POPULATE HIDDEN INPUT
+$('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var code = button.data('college-code');
+
+    $(this).find('#deleteCollegeCode').val(code);
 });
 
 // SHOW DELETE CONFIRMATION MESSAGE
 $("#deleteForm").submit(function(e) {
     e.preventDefault();
-    $("#deleteConfirmationModal").modal('hide');
-    $("#deletionModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#deleteConfirmationModal").modal("hide");
+            $("#deletionModal").modal("show");
+
+            setTimeout(() => {
+                location.reload();
+            }, 1200);
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });

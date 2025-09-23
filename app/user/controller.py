@@ -6,7 +6,6 @@ from app.database import get_db
 
 user_bp = Blueprint("user", __name__, template_folder="../templates")
 
-
 @user_bp.route("/login", methods=["GET", "POST"])
 def login():
     form = LoginForm()

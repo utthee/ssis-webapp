@@ -42,7 +42,7 @@ def register_college():
         cursor.close()
         return {"success": False, "message": str(e)}, 500
 
-@college_bp.route("/edit", methods=["POST"])
+@college_bp.route("/colleges/edit", methods=["POST"])
 def edit_college():
     code = request.form.get("code", "").strip().upper()
     name = request.form.get("name", "").strip().title()

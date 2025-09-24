@@ -53,33 +53,37 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                <form id="registerForm">
+            <form id="registerProgramForm" method="POST" action="{{ url_for('program.register_program') }}">
+                <div class="modal-body">
                     <div class="mb-3">
                         <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" placeholder="e.g. BSCS" required>
+                        <input type="text" class="form-control" id="programCode" name="program_code"
+                            placeholder="e.g. BSCS" required>
                     </div>
                     <div class="mb-3">
                         <label for="programName" class="form-label">Program Name:</label>
-                        <input type="text" class="form-control" id="programName"
+                        <input type="text" class="form-control" id="programName" name="program_name"
                             placeholder="e.g. Bachelor of Science in Computer Science" required>
                     </div>
                     <div class="mb-3">
                         <label for="collegeCode" class="form-label">College Code:</label>
-                        <select class="form-select" id="collegeCode" required>
+                        <select class="form-select" id="collegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
-                            <option value="CCS">CCS</option>
+                            {% for college in colleges %}
+                            <option value="{{ college.code }}">{{ college.code }} - {{ college.name }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="registerForm" class="btn btn-success">
-                    <i class="bi bi-plus-lg"></i> Register
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-lg"></i> Register
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
@@ -103,48 +107,56 @@
 </div>
 
 <!-- EDIT PROGRAM FORM MODAL -->
-<div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editProgramModal" tabindex="-1" aria-labelledby="editProgramModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Edit Program</h5>
+                <h5 class="modal-title" id="editProgramModalLabel">Edit Program</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                <form id="editForm">
+            <form id="editProgramForm" method="POST" action="{{ url_for('program.edit_program') }}">
+                <div class="modal-body">
+                    <input type="hidden" id="originalProgramCode" name="original_program_code">
+
                     <div class="mb-3">
                         <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" placeholder="e.g. BSCS" required>
+                        <input type="text" class="form-control" id="programCode" name="program_code"
+                            placeholder="e.g. BSCS" required>
                     </div>
+
                     <div class="mb-3">
                         <label for="programName" class="form-label">Program Name:</label>
-                        <input type="text" class="form-control" id="programName"
+                        <input type="text" class="form-control" id="programName" name="program_name"
                             placeholder="e.g. Bachelor of Science in Computer Science" required>
                     </div>
+
                     <div class="mb-3">
                         <label for="collegeCode" class="form-label">College Code:</label>
-                        <select class="form-select" id="collegeCode" required>
+                        <select class="form-select" id="collegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
-                                <option value=" CCS">CCS</option>
+                            {% for college in colleges %}
+                            <option value="{{ college.code }}">{{ college.code }}</option>
+                            {% endfor %}
                         </select>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="editForm" class="btn btn-success">
-                    <i class="bi bi-plus-lg me-1"></i> Save Changes
-                </button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-pencil"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
 </div>
 
 <!-- EDIT PROGRAM CONFIRMATION MODAL -->
-<div class="modal" id="editConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
+<div class="modal" id="editProgramConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -176,9 +188,10 @@
                 </p>
             </div>
             <div class="modal-footer justify-content-right">
-                <form id="deleteForm">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Cancel </button>
-                    <button type="submit" class="btn btn-success"> Confirm </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
+                <form id="deleteForm" method="POST" action="{{ url_for('program.delete_program') }}">
+                    <input type="hidden" id="deleteProgramCode" name="code">
+                    <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
             </div>
         </div>

@@ -7,6 +7,9 @@ from flask import Flask, render_template, url_for, request, redirect, session
 
 from app.database import get_db, close_db
 
+from app.college import college_bp
+from app.program import program_bp
+
 load_dotenv()
 
 def create_app():
@@ -16,8 +19,8 @@ def create_app():
     from app.user import user_bp
     app.register_blueprint(user_bp)
 
-    from app.college import college_bp
     app.register_blueprint(college_bp)
+    app.register_blueprint(program_bp)
 
     @app.route("/")
     def home():
@@ -25,7 +28,7 @@ def create_app():
 
     @app.route("/dashboard")
     def dashboard():
-        if "user" not in session:
+        if "user_id" not in session:
             return redirect(url_for("user.login"))
         return render_template("dashboard.html", page_title="Dashboard")
 
@@ -44,28 +47,6 @@ def create_app():
             for i in range(n)
         ]
         return render_template("students.html", page_title="Students", students=students_data)
-
-    @app.route("/programs")
-    def programs():
-        n = 10
-        programs_data = [
-            {
-                "code": "BSCS",
-                "name": "Bachelor of Science in Computer Science",
-                "college_code": "CCS",
-            }
-            for i in range(n)
-        ]
-        return render_template("programs.html", page_title="Programs", programs=programs_data)
-
-    @app.route("/colleges")
-    def colleges():
-        n = 10
-        colleges_data = [
-            {"code": "CCS", "name": "College of Computer Studies"}
-            for i in range(n)
-        ]
-        return render_template("colleges.html", page_title="Colleges", colleges=colleges_data)
     
     @app.teardown_appcontext
     def teardown_db(exception):

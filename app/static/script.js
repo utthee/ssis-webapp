@@ -59,43 +59,109 @@ $("#deleteForm").submit(function(e) {
     $("#deletionModal").modal('show');
 });
 
-// ---------- PROGRAMS PAGE ----------
-$("#registerForm").submit(function(e) {
+// -------------    PROGRAMS PAGE   -------------
+//
+//                     PROGRAMS
+//
+// -------------    PROGRAMS PAGE   -------------
+
+// SHOW REGISTER PROGRAM MODAL
+$("#registerProgramForm").submit(function(e) {
     e.preventDefault();
-    $("#registerProgramModal").modal('hide');
-    $("#registerConfirmationModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#registerProgramModal").modal("hide");
+            $("#registerConfirmationModal").modal("show");
+            $("#registerProgramForm")[0].reset();
+
+            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });
 
-//POPULATE PROGRAM EDIT FORM
-$('#editProgramModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget);
-    var modal  = $(this);
 
-    var programCode = button.data('program-code');
-    var programName = button.data('program-name');
-    var collegeCode = button.data('college-code');
+// SHOW/POPULATE EDIT PROGRAM MODAL
+$('.btn-edit').on('click', function() {
+    var programCode = $(this).data('program-code');
+    var programName = $(this).data('program-name');
+    var collegeCode = $(this).data('college-code');
 
+    var modal = $('#editProgramModal');
     modal.find('#programCode').val(programCode);
     modal.find('#programName').val(programName);
     modal.find('#collegeCode').val(collegeCode);
+    modal.find('#originalProgramCode').val(programCode);
+
+    console.log("Populating modal with:", programCode, programName, collegeCode);
 });
 
-//SHOW EDIT CONFIRMATION MESSAGE
-$("#editForm").submit(function(e) {
+
+// SHOW EDIT PROGRAM CONFIRMATION MESSAGE
+$('#editProgramForm').submit(function(e) {
     e.preventDefault();
-    $("#editProgramModal").modal('hide');
-    $("#editConfirmationModal").modal('show');
+    var form = $(this);
+    var actionUrl = form.attr('action');
+
+    $.post(actionUrl, form.serialize(), function(response) {
+        if (response.success) {
+            $('#editProgramModal').modal('hide');
+            $("#editProgramConfirmationModal").modal("show");
+
+            $("#editProgramConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+        } else {
+            alert("Update failed: " + response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || xhr.responseText || "Something went wrong"));
+    });
 });
 
-// SHOW DELETE CONFIRMATION MESSAGE
+
+/// POPULATE HIDDEN INPUT
+$('.btn-delete').on('click', function() {
+    var programCode = $(this).data('program-code');
+    $('#deleteProgramCode').val(programCode);
+});
+
+
+// SHOW DELETE PROGRAM CONFIRMATION MESSAGE
 $("#deleteForm").submit(function(e) {
     e.preventDefault();
-    $("#deleteConfirmationModal").modal('hide');
-    $("#deletionModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#deleteConfirmationModal").modal("hide");
+            $("#deletionModal").modal("show");
+
+            setTimeout(() => {
+                location.reload();
+            }, 1200);
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });
 
-// ---------- COLLEGES PAGE ----------
-//SHOW REGISTER COLLEGE MODAL
+
+
+// -------------    COLLEGES PAGE   -------------
+//
+//                     COLLEGE
+//
+// -------------    COLLEGES PAGE   -------------
+
+// SHOW REGISTER COLLEGE MODAL
 $("#registerForm").submit(function(e) {
     e.preventDefault();
 
@@ -116,7 +182,8 @@ $("#registerForm").submit(function(e) {
     });
 });
 
-//POPULATE COLLEGE EDIT FORM
+
+// SHOW/POPULATE COLLEGE EDIT FORM
 $('#editCollegeModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal  = $(this);
@@ -129,7 +196,8 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
     modal.find('#originalCollegeCode').val(code);
 });
 
-//SHOW EDIT CONFIRMATION MESSAGE
+
+// SHOW EDIT COLLEGE CONFIRMATION MESSAGE
 $("#editForm").submit(function (e) {
     e.preventDefault();
 
@@ -137,11 +205,9 @@ $("#editForm").submit(function (e) {
         if (response.success) {
             $("#editCollegeModal").modal("hide");
 
-            $("#registerConfirmationModal .modal-title").text("College Updated Successfully");
-            $("#registerConfirmationModal .modal-body p").text("College details have been updated.");
-            $("#registerConfirmationModal").modal("show");
+            $("#editConfirmationModal").modal("show");
 
-            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+            $("#editConfirmationModal").on("hidden.bs.modal", function () {
                 location.reload();
             });
 
@@ -153,6 +219,7 @@ $("#editForm").submit(function (e) {
     });
 });
 
+
 // POPULATE HIDDEN INPUT
 $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
@@ -161,7 +228,8 @@ $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
     $(this).find('#deleteCollegeCode').val(code);
 });
 
-// SHOW DELETE CONFIRMATION MESSAGE
+
+// SHOW DELETE COLLEGE CONFIRMATION MESSAGE
 $("#deleteForm").submit(function(e) {
     e.preventDefault();
 

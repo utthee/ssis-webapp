@@ -10,23 +10,21 @@ user_bp = Blueprint("user", __name__, template_folder="../templates")
 def login():
     form = LoginForm()
 
-    if request.method == "POST":
-        if form.validate():
-            username = form.username.data
-            password = form.password.data
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.password.data
 
-            user = User.get_by_username(username)
-            if user and user.check_password(password):
-                session["user_id"] = user.id
-                session["username"] = user.username
-                return redirect(url_for("dashboard"))
+        user = User.get_by_username(username)
+        if user and user.check_password(password):
+            session["user_id"] = user.id
+            session["username"] = user.username
+            return redirect(url_for("dashboard"))
 
-            flash("Invalid username or password", "danger")
-        else:
-            flash("Please correct the errors in the form.", "danger")
+        flash("Invalid username or password", "danger")
+    elif request.method == "POST":
+        flash("Please correct the errors in the form.", "danger")
 
     return render_template("login.html", form=form)
-
 
 @user_bp.route("/signup", methods=["GET", "POST"])
 def signup():

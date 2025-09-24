@@ -48,15 +48,15 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ url_for('programs') }}"
-                            class="sidebar-link {% if request.endpoint == 'programs' %}active{% endif %}"
+                        <a href="{{ url_for('program.programs') }}"
+                            class="sidebar-link {% if request.endpoint == 'program.programs' %}active{% endif %}"
                             data-title="Programs">
                             <i class="bi bi-mortarboard fs-2"></i>
                             <span class="sidebar-label">Programs</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ url_for('colleges') }}"
+                        <a href="{{ url_for('college.colleges') }}"
                             class="sidebar-link {% if request.endpoint == 'college.colleges' %}active{% endif %}"
                             data-title="Colleges">
                             <i class="bi bi-building fs-2"></i>

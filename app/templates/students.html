@@ -12,31 +12,31 @@
                 <th scope="col">ID Number</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
-                <th scope="col">Program</th>
-                <th scope="col">Year Level</th>
                 <th scope="col">Gender</th>
+                <th scope="col">Year Level</th>
+                <th scope="col">Program</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for student in students %}
-            <tr data-student-id="{{ student.id_number }}">
+            <tr data-id-number="{{ student.id_number }}">
                 <th scope="row">{{ student.id_number }}</th>
                 <td>{{ student.first_name }}</td>
                 <td>{{ student.last_name }}</td>
-                <td>{{ student.program_code }}</td>
-                <td>{{ student.year_level }}</td>
                 <td>{{ student.gender }}</td>
+                <td>{{ student.year_level }}</td>
+                <td>{{ student.program_code }}</td>
                 <td>
                     <a href="#" class="btn btn-primary btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#editStudentModal" data-student-id="{{ student.id_number }}"
+                        data-bs-target="#editStudentModal" data-id-number="{{ student.id_number }}"
                         data-first-name="{{ student.first_name }}" data-last-name="{{ student.last_name }}"
                         data-gender="{{ student.gender }}" data-year-level="{{ student.year_level }}"
                         data-program-code="{{ student.program_code }}">
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmationModal" data-student-id="{{ student.id_number }}">
+                        data-bs-target="#deleteConfirmationModal" data-id-number="{{ student.id_number }}">
                         <i class="bi bi-trash me-1"></i> Delete
                     </a>
                 </td>
@@ -62,32 +62,31 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                <form id="registerForm">
+            <form id="registerStudentForm" method="POST" action="{{ url_for('student.register_student') }}">
+                <div class="modal-body">
                     <div class="mb-3">
                         <label for="idNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="idNumber" placeholder="e.g. 2022-0001" required>
+                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" required>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="e.g. Juan Miguel" required>
+                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" required>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="e.g. Dela Cruz" required>
+                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" required>
                     </div>
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender:</label>
-                        <select class="form-select" id="gender" required>
+                        <select class="form-select" id="gender" name="gender" required>
                             <option value="" selected disabled>Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label for="yearLevel" class="form-label">Year Level:</label>
-                        <select class="form-select" id="yearLevel" required>
+                        <select class="form-select" id="yearLevel" name="year_level" required>
                             <option value="" selected disabled>Select year level</option>
                             <option value="1">1</option>
                             <option value="1">2</option>
@@ -95,26 +94,29 @@
                             <option value="4">4</option>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" placeholder="e.g. BSCS" required>
+                        <select class="form-select" id="programCode" name="program_code" required>
+                            <option value="" selected disabled>Select a course</option>
+                            {% for program in programs %}
+                            <option value="{{ program.code }}">{{ program.code }} - {{ program.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="registerForm" class="btn btn-success">
-                    <i class="bi bi-plus-lg"></i> Register
-                </button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-lg"></i> Register
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 <!-- REGISTER STUDENT CONFIRMATION MODAL -->
-<div class="modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+<div class="modal" id="registerConfirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -140,59 +142,63 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div class="modal-body">
-                <form id="editForm">
+            <form id="editStudentForm" method="POST" action="{{ url_for('student.edit_student') }}">
+                <div class="modal-body">
+                    <input type="hidden" id="originalIdNumber" name="original_id_number">
                     <div class="mb-3">
                         <label for="idNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="idNumber" placeholder="e.g. 2022-0001" required>
+                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" required>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" placeholder="e.g. Juan Miguel" required>
+                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" required>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" placeholder="e.g Dela Cruz" required>
+                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" required>
                     </div>
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender:</label>
-                        <select class="form-select" id="gender" required>
+                        <select class="form-select" id="gender" name="gender" required>
                             <option value="" selected disabled>Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label for="yearLevel" class="form-label">Year Level:</label>
-                        <select class="form-select" id="yearLevel" required>
+                        <select class="form-select" id="yearLevel" name="year_level" required>
                             <option value="" selected disabled>Select year level</option>
                             <option value="1">1</option>
-                            <option value="2">2</option>
+                            <option value="1">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" placeholder="e.g. BSCS" required>
+                        <select class="form-select" id="programCode" name="program_code" required>
+                            <option value="" selected disabled>Select a course</option>
+                            {% for program in programs %}
+                            <option value="{{ program.code }}">{{ program.code }} - {{ program.name }}</option>
+                            {% endfor %}
+                        </select>
                     </div>
-                </form>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" form="editForm" class="btn btn-success">
-                    <i class="bi bi-plus-lg me-1"></i> Save Changes
-                </button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-plus-lg"></i> Save Changes
+                    </button>
+                </div>
+            </form>
+            
         </div>
     </div>
 </div>
 
 <!-- EDIT STUDENT CONFIRMATION MODAL -->
-<div class="modal" id="editConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
+<div class="modal" id="editStudentConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -224,9 +230,10 @@
                 </p>
             </div>
             <div class="modal-footer justify-content-right">
-                <form id="deleteForm">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"> Cancel </button>
-                    <button type="submit" class="btn btn-success"> Confirm </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
+                <form id="deleteForm" method="POST" action="{{ url_for('student.delete_student') }}">
+                    <input type="hidden" id="deleteStudent" name="id_number">
+                    <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
             </div>
         </div>

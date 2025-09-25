@@ -9,7 +9,7 @@ from app.database import get_db, close_db
 
 from app.college import college_bp
 from app.program import program_bp
-
+from app.student import student_bp
 load_dotenv()
 
 def create_app():
@@ -21,6 +21,7 @@ def create_app():
 
     app.register_blueprint(college_bp)
     app.register_blueprint(program_bp)
+    app.register_blueprint(student_bp)
 
     @app.route("/")
     def home():
@@ -31,22 +32,6 @@ def create_app():
         if "user_id" not in session:
             return redirect(url_for("user.login"))
         return render_template("dashboard.html", page_title="Dashboard")
-
-    @app.route("/students")
-    def students():
-        n = 10
-        students_data = [
-            {
-                "id_number": f"2022-000{i+1}",
-                "first_name": "Mark",
-                "last_name": "Otto",
-                "program_code": "BSCS",
-                "year_level": "3",
-                "gender": "Male"
-            }
-            for i in range(n)
-        ]
-        return render_template("students.html", page_title="Students", students=students_data)
     
     @app.teardown_appcontext
     def teardown_db(exception):

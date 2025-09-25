@@ -40,8 +40,8 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="{{ url_for('students') }}"
-                            class="sidebar-link {% if request.endpoint == 'students' %}active{% endif %}"
+                        <a href="{{ url_for('student.students') }}"
+                            class="sidebar-link {% if request.endpoint == 'student.students' %}active{% endif %}"
                             data-title="Students">
                             <i class="bi bi-person fs-2"></i>
                             <span class="sidebar-label">Students</span>

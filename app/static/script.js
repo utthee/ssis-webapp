@@ -17,12 +17,31 @@ $('.modal').on('hidden.bs.modal', function () {
     document.activeElement.blur();
 });
 
-// ---------- STUDENTS PAGE ----------
+// -------------    STUDENT PAGE   -------------
+//
+//                     STUDENT
+//
+// -------------    STUDENT PAGE   -------------
+
 // SHOW REGISTER CONFIRMATION MESSAGE
-$("#registerForm").submit(function(e) {
+$("#registerStudentForm").submit(function(e) {
     e.preventDefault();
-    $("#registerStudentModal").modal('hide');
-    $("#confirmationModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#registerStudentModal").modal("hide");
+            $("#registerConfirmationModal").modal("show");
+            $("#registerStudentForm")[0].reset();
+
+            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });
 
 //POPULATE STUDENT EDIT FORM
@@ -30,7 +49,7 @@ $('#editStudentModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var modal  = $(this);
 
-    var idNumber   = button.data('student-id');
+    var idNumber   = button.data('id-number');
     var firstName  = button.data('first-name');
     var lastName   = button.data('last-name');
     var gender     = button.data('gender');
@@ -43,21 +62,60 @@ $('#editStudentModal').on('show.bs.modal', function (event) {
     modal.find('#gender').val(gender);
     modal.find('#yearLevel').val(yearLevel);
     modal.find('#programCode').val(program);
+    modal.find('#originalIdNumber').val(idNumber);
 });
 
-//SHOW EDIT CONFIRMATION MESSAGE
-$("#editForm").submit(function(e) {
+
+//SHOW EDIT STUDENT CONFIRMATION MESSAGE
+$('#editStudentForm').submit(function(e) {
     e.preventDefault();
-    $("#editStudentModal").modal('hide');
-    $("#editConfirmationModal").modal('show');
+    var form = $(this);
+    var actionUrl = form.attr('action');
+
+    $.post(actionUrl, form.serialize(), function(response) {
+        if (response.success) {
+            $('#editStudentModal').modal('hide');
+            $("#editStudentConfirmationModal").modal("show");
+
+            $("#editStudentConfirmationModal").on("hidden.bs.modal", function () {
+                location.reload();
+            });
+        } else {
+            alert("Update failed: " + response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || xhr.responseText || "Something went wrong"));
+    });
 });
 
-// SHOW DELETE CONFIRMATION MESSAGE
+
+/// POPULATE HIDDEN INPUT
+$('.btn-delete').on('click', function() {
+    var idNumber = $(this).data('id-number');
+    $('#deleteStudent').val(idNumber);
+});
+
+
+// SHOW DELETE PROGRAM CONFIRMATION MESSAGE
 $("#deleteForm").submit(function(e) {
     e.preventDefault();
-    $("#deleteConfirmationModal").modal('hide');
-    $("#deletionModal").modal('show');
+
+    $.post($(this).attr("action"), $(this).serialize(), function(response) {
+        if (response.success) {
+            $("#deleteConfirmationModal").modal("hide");
+            $("#deletionModal").modal("show");
+
+            setTimeout(() => {
+                location.reload();
+            }, 1200);
+        } else {
+            alert(response.message);
+        }
+    }).fail(function(xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+    });
 });
+
 
 // -------------    PROGRAMS PAGE   -------------
 //
@@ -98,8 +156,6 @@ $('.btn-edit').on('click', function() {
     modal.find('#programName').val(programName);
     modal.find('#collegeCode').val(collegeCode);
     modal.find('#originalProgramCode').val(programCode);
-
-    console.log("Populating modal with:", programCode, programName, collegeCode);
 });
 
 

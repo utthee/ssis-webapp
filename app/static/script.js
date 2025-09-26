@@ -218,8 +218,14 @@ $("#deleteForm").submit(function(e) {
 // -------------    COLLEGES PAGE   -------------
 
 // SHOW REGISTER COLLEGE MODAL
+// NO INTEGERS IN THE INPUT FIELDS
+$("#code, #name").on("input", function () {
+    $(this).val($(this).val().replace(/[0-9]/g, ''));
+});
+
 $("#registerForm").submit(function(e) {
     e.preventDefault();
+    $("#registerForm input").removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
@@ -230,11 +236,13 @@ $("#registerForm").submit(function(e) {
             $("#registerConfirmationModal").on("hidden.bs.modal", function () {
                 location.reload();
             });
-        } else {
-            alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        const res = xhr.responseJSON;
+        if (res && res.field) {
+            $("#" + res.field).addClass("is-invalid")
+                .siblings(".invalid-feedback").text(res.message);
+        }
     });
 });
 

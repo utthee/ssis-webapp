@@ -54,12 +54,12 @@
             <form id="registerForm" method="POST" action="{{ url_for('college.register_college') }}">
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="code" class="form-label">College Code</label>
-                        <input type="text" class="form-control" id="code" name="code" placeholder="e.g. CCS" required>
+                        <label for="collegeCode" class="form-label">College Code</label>
+                        <input type="text" class="form-control" id="collegeCode" name="code" placeholder="e.g. CCS" required>
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="form-label">College Name</label>
-                        <input type="text" class="form-control" id="name" name="name"
+                        <label for="collegeName" class="form-label">College Name</label>
+                        <input type="text" class="form-control" id="collegeName" name="name"
                             placeholder="e.g. College of Computer Studies" required>
                     </div>
                 </div>
@@ -120,7 +120,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" form="editForm" class="btn btn-success">
-                        <i class="bi bi-plus-lg me-1"></i> Save Changes
+                        <i class="bi bi-pencil-square me-1"></i> Save Changes
                     </button>
                 </div>
             </form>

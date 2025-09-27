@@ -17,6 +17,32 @@ $('.modal').on('hidden.bs.modal', function () {
     document.activeElement.blur();
 });
 
+// -------------    EVENT HANDLER   -------------
+//
+//                  EVENT HANDLER
+//
+// -------------    EVENT HANDLER   -------------
+
+
+$("#programCode, #collegeCode").on("keypress input", function (e) {
+    if (e.type === "keypress" && !/[a-zA-Z]/.test(e.key)) {
+        e.preventDefault();
+    }
+    if (e.type === "input") {
+        $(this).val($(this).val().replace(/[^a-zA-Z]/g, ''));
+    }
+});
+
+$("#firstName, #lastName, #programNamem #collegeName").on("keypress input", function (e) {
+    if (e.type === "keypress" && !/[a-zA-Z\s]/.test(e.key)) {
+        e.preventDefault();
+    }
+    if (e.type === "input") {
+        $(this).val($(this).val().replace(/[^a-zA-Z\s]/g, ''));
+    }
+});
+
+
 // -------------    STUDENT PAGE   -------------
 //
 //                     STUDENT
@@ -123,6 +149,7 @@ $("#deleteForm").submit(function(e) {
 //
 // -------------    PROGRAMS PAGE   -------------
 
+
 // SHOW REGISTER PROGRAM MODAL
 $("#registerProgramForm").submit(function(e) {
     e.preventDefault();
@@ -218,11 +245,6 @@ $("#deleteForm").submit(function(e) {
 // -------------    COLLEGES PAGE   -------------
 
 // SHOW REGISTER COLLEGE MODAL
-// NO INTEGERS IN THE INPUT FIELDS
-$("#code, #name").on("input", function () {
-    $(this).val($(this).val().replace(/[0-9]/g, ''));
-});
-
 $("#registerForm").submit(function(e) {
     e.preventDefault();
     $("#registerForm input").removeClass("is-invalid");

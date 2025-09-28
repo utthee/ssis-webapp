@@ -7,6 +7,7 @@ from app.database import get_db, close_db
 from app.college import college_bp
 from app.program import program_bp
 from app.student import student_bp
+from app.dashboard import dashboard_bp
 
 def create_app():
     app = Flask(__name__)
@@ -18,6 +19,7 @@ def create_app():
     app.register_blueprint(college_bp)
     app.register_blueprint(program_bp)
     app.register_blueprint(student_bp)
+    app.register_blueprint(dashboard_bp)
 
     @app.route("/")
     def home():

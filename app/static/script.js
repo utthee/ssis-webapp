@@ -1,6 +1,36 @@
+// DATA TABLE INITIALIZATION
 $(document).ready(function(){
     $('#data-table').DataTable();
 });
+
+// CHART INITIALIZATION
+document.addEventListener("DOMContentLoaded", () => {
+    const chartCanvas = document.getElementById("donutChart");
+    if (chartCanvas) {
+        const labels = JSON.parse(chartCanvas.dataset.labels);
+        const data = JSON.parse(chartCanvas.dataset.values);
+
+        new Chart(chartCanvas, {
+            type: "doughnut",
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: [
+                        "#007bff","#28a745","#ffc107","#dc3545",
+                        "#17a2b8","#6f42c1","#fd7e14","#20c997"
+                    ]
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: "bottom" }
+                }
+            }
+        });
+    }
+});
+
 
 // TOGGLE BUTTON FOR SIDEBAR COLLAPSE/EXPAND
 $(".toggler-btn").click(function() {

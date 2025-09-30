@@ -13,7 +13,6 @@
                         <div>
                             <h5 class="card-title mb-4">Total Students</h5>
                             <h1 class="card-title mb-0">{{ total_students }}</h1>
-                            <!-- <h1 class="card-title mb-0">10</h1> -->
                             <p class="card-text mb-1">registered students</p>
                         </div>
                         <i class="bi bi-people fs-1"></i>
@@ -29,7 +28,6 @@
                         <div>
                             <h5 class="card-title mb-4">Total Programs</h5>
                             <h1 class="card-title mb-0">{{ total_programs }}</h1>
-                            <!-- <h1 class="card-title mb-0">10</h1> -->
                             <p class="card-text mb-1">registered programs</p>
                         </div>
                         <i class="bi bi-mortarboard fs-1"></i>
@@ -45,13 +43,52 @@
                         <div>
                             <h5 class="card-title mb-4">Total Colleges</h5>
                             <h1 class="card-title mb-0">{{ total_colleges }}</h1>
-                            <!-- <h1 class="card-title mb-0">10</h1> -->
                             <p class="card-text mb-1">registered colleges</p>
                         </div>
                         <i class="bi bi-buildings fs-1"></i>
                     </div>
                 </div>
             </a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-8">
+            <div class="border p-3 shadow-sm">
+                <h5>Programs with the Most Students</h5>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rank</th>
+                            <th scope="col">Program Code</th>
+                            <th scope="col">Program Name</th>
+                            <th scope="col">Student Count</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i, row in top_programs %}
+                        <tr>
+                            <td>{{ i }}</td>
+                            <td>{{ row[0] }}</td>
+                            <td>{{ row[1] }}</td>
+                            <td>{{ row[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm">
+                <div class="border p-3">
+                    <h5>Programs per College</h5>
+                    <canvas id="donutChart" 
+                        data-labels='{{ labels | tojson | safe }}'
+                        data-values='{{ data | tojson | safe }}'>>
+                    </canvas>
+                </div>
+            </div>
         </div>
     </div>
 </div>

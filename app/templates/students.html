@@ -36,7 +36,7 @@
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmationModal" data-id-number="{{ student.id_number }}">
+                        data-bs-target="#deleteStudentModal" data-id-number="{{ student.id_number }}">
                         <i class="bi bi-trash me-1"></i> Delete
                     </a>
                 </td>
@@ -52,13 +52,13 @@
 
 </div>
 
-<!-- REGISTER STUDENT FORM MODAL -->
-<div class="modal fade" id="registerStudentModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+<!-- REGISTER STUDENT MODAL -->
+<div class="modal fade" id="registerStudentModal" tabindex="-1" aria-labelledby="registerStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Register Student</h5>
+                <h5 class="modal-title" id="registerStudentModalLabel">Register Student</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -115,30 +115,13 @@
     </div>
 </div>
 
-<!-- REGISTER STUDENT CONFIRMATION MODAL -->
-<div class="modal" id="registerConfirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="confirmationModalLabel">Student Registered Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">Student has been successfully registered.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- EDIT STUDENT FORM MODAL -->
-<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<!-- EDIT STUDENT MODAL -->
+<div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
+                <h5 class="modal-title" id="editStudentModalLabel">Edit Student</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -197,31 +180,13 @@
     </div>
 </div>
 
-<!-- EDIT STUDENT CONFIRMATION MODAL -->
-<div class="modal" id="editStudentConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
+<!-- DELETE STUDENT MODAL -->
+<div class="modal" id="deleteStudentModal" tabindex="-1" aria-labelledby="deleteStudentModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="editConfirmationModalLabel">Student Edited Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">Student data has been successfully updated.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- STUDENT DELETE PROMPT MODAL -->
-<div class="modal" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="deleteConfirmationModalLabel">Student Deletion Confirmation</h5>
+                <h5 class="modal-title w-100" id="deleteStudentModalLabel">Student Deletion Confirmation</h5>
             </div>
             <div class="modal-body">
                 <p class="mt-3">
@@ -231,8 +196,8 @@
             </div>
             <div class="modal-footer justify-content-right">
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
-                <form id="deleteForm" method="POST" action="{{ url_for('student.delete_student') }}">
-                    <input type="hidden" id="deleteStudent" name="id_number">
+                <form id="deleteStudentForm" method="POST" action="{{ url_for('student.delete_student') }}">
+                    <input type="hidden" id="deleteIdNumber" name="id_number">
                     <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
             </div>
@@ -240,18 +205,18 @@
     </div>
 </div>
 
-<!-- STUDENT DELETE CONFIRMATION MODAL -->
-<div class="modal" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
+<!-- CONFIRMATION MODAL -->
+<div class="modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="deletionModalLabel">Student Deleted</h5>
+                <h5 class="modal-title w-100" id="confirmationModalLabel">Action Successful</h5>
             </div>
             <div class="modal-body">
-                <p class="mt-3">Student has been successfully deleted.</p>
+                <p class="mt-3" id="confirmationModalMessage">The action has been successfully completed.</p>
             </div>
             <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>

@@ -26,7 +26,7 @@
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmationModal" data-college-code="{{ college.code }}">
+                        data-bs-target="#deleteCollegeModal" data-college-code="{{ college.code }}">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </td>
@@ -42,16 +42,16 @@
 </div>
 
 <!-- REGISTER COLLEGE MODAL -->
-<div class="modal fade" id="registerCollegeModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerCollegeModal" tabindex="-1" aria-labelledby="registerCollegeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Register College</h5>
+                <h5 class="modal-title" id="registerCollegeModalLabel">Register College</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form id="registerForm" method="POST" action="{{ url_for('college.register_college') }}">
+            <form id="registerCollegeForm" method="POST" action="{{ url_for('college.register_college') }}">
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="collegeCode" class="form-label">College Code</label>
@@ -74,35 +74,17 @@
     </div>
 </div>
 
-<!-- REGISTER COLLEGE CONFIRMATION MODAL -->
-<div class="modal" id="registerConfirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="confirmationModalLabel">College Registered Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">College has been successfully registered.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- EDIT COLLEGE FORM MODAL -->
-<div class="modal fade" id="editCollegeModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editCollegeModal" tabindex="-1" aria-labelledby="editCollegeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Edit College</h5>
+                <h5 class="modal-title" id="editCollegeModalLabel">Edit College</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <form id="editForm" method="POST" action="{{ url_for('college.edit_college') }}">
+            <form id="editCollegeForm" method="POST" action="{{ url_for('college.edit_college') }}">
                 <div class="modal-body">
                     <input type="hidden" id="originalCollegeCode" name="original_code">
                     <div class="mb-3">
@@ -119,7 +101,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" form="editForm" class="btn btn-success">
+                    <button type="submit" form="editCollegeForm" class="btn btn-success">
                         <i class="bi bi-pencil-square me-1"></i> Save Changes
                     </button>
                 </div>
@@ -129,31 +111,13 @@
     </div>
 </div>
 
-<!-- EDIT PROGRAM CONFIRMATION MODAL -->
-<div class="modal" id="editConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
+<!-- DELETE COLLEGE MODAL -->
+<div class="modal" id="deleteCollegeModal" tabindex="-1" aria-labelledby="deleteCollegeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="editConfirmationModalLabel">College Edited Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">College data has been successfully updated.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- CONFIRM DELETE PROMPT MODAL -->
-<div class="modal" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="deleteConfirmationModalLabel">College Deletion Confirmation</h5>
+                <h5 class="modal-title w-100" id="deleteCollegeModalLabel">College Deletion Confirmation</h5>
             </div>
             <div class="modal-body">
                 <p class="mt-3">
@@ -162,7 +126,7 @@
                 </p>
             </div>
             <div class="modal-footer justify-content-right">
-                <form id="deleteForm" method="POST" action="{{ url_for('college.delete_college') }}">
+                <form id="deleteCollegeForm" method="POST" action="{{ url_for('college.delete_college') }}">
                     <input type="hidden" id="deleteCollegeCode" name="code">
                     <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
                     <button type="submit" class="btn btn-danger"> Confirm </button>
@@ -172,18 +136,18 @@
     </div>
 </div>
 
-<!-- CONFIRM DELETE CONFIRMATION MODAL -->
-<div class="modal" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
+<!-- CONFIRMATION MODAL -->
+<div class="modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="deletionModalLabel">College Deleted</h5>
+                <h5 class="modal-title w-100" id="confirmationModalLabel">Action Successful</h5>
             </div>
             <div class="modal-body">
-                <p class="mt-3">College has been successfully deleted.</p>
+                <p class="mt-3" id="confirmationModalMessage">The action has been successfully completed.</p>
             </div>
             <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>

@@ -79,17 +79,24 @@ $("#firstName, #lastName, #programNamem #collegeName").on("keypress input", func
 //
 // -------------    STUDENT PAGE   -------------
 
+
 // SHOW REGISTER CONFIRMATION MESSAGE
 $("#registerStudentForm").submit(function(e) {
     e.preventDefault();
+    $("#registerStudentForm input").removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
             $("#registerStudentModal").modal("hide");
-            $("#registerConfirmationModal").modal("show");
+            
+            showConfirmationModal(
+                'Student Registered Successfully',
+                'Student has been successfully registered.'
+            );
+
             $("#registerStudentForm")[0].reset();
 
-            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+            $("#confirmationModal").on("hidden.bs.modal", function () {
                 location.reload();
             });
         } else {
@@ -99,6 +106,7 @@ $("#registerStudentForm").submit(function(e) {
         alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
     });
 });
+
 
 //POPULATE STUDENT EDIT FORM
 $('#editStudentModal').on('show.bs.modal', function (event) {
@@ -125,45 +133,54 @@ $('#editStudentModal').on('show.bs.modal', function (event) {
 //SHOW EDIT STUDENT CONFIRMATION MESSAGE
 $('#editStudentForm').submit(function(e) {
     e.preventDefault();
-    var form = $(this);
-    var actionUrl = form.attr('action');
 
-    $.post(actionUrl, form.serialize(), function(response) {
+    $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
-            $('#editStudentModal').modal('hide');
-            $("#editStudentConfirmationModal").modal("show");
+            $("#editStudentModal").modal("hide");
 
-            $("#editStudentConfirmationModal").on("hidden.bs.modal", function () {
+            showConfirmationModal(
+                'Student Edited Successfully',
+                'Student data has been successfully updated.'
+            );
+
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
             });
         } else {
-            alert("Update failed: " + response.message);
+            alert(response.message);
         }
-    }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || xhr.responseText || "Something went wrong"));
+    }).fail(function (xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
     });
 });
 
 
 /// POPULATE HIDDEN INPUT
-$('.btn-delete').on('click', function() {
-    var idNumber = $(this).data('id-number');
-    $('#deleteStudent').val(idNumber);
+$('#deleteStudentModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var idNumber = button.data('id-number');
+
+    $(this).find('#deleteIdNumber').val(idNumber);
 });
 
 
-// SHOW DELETE PROGRAM CONFIRMATION MESSAGE
-$("#deleteForm").submit(function(e) {
+// SHOW DELETE STUDENT CONFIRMATION MESSAGE
+$("#deleteStudentForm").submit(function(e) {
     e.preventDefault();
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
-            $("#deleteConfirmationModal").modal("hide");
-            $("#deletionModal").modal("show");
+            $("#deleteStudentModal").modal("hide");
 
-            setTimeout(() => {
+            showConfirmationModal(
+                'Student Deleted',
+                'Student has been successfully deleted.'
+            );
+
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
-            }, 1200);
+            });
+
         } else {
             alert(response.message);
         }
@@ -183,14 +200,20 @@ $("#deleteForm").submit(function(e) {
 // SHOW REGISTER PROGRAM MODAL
 $("#registerProgramForm").submit(function(e) {
     e.preventDefault();
+    $("#registerProgramForm input").removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
             $("#registerProgramModal").modal("hide");
-            $("#registerConfirmationModal").modal("show");
+            
+            showConfirmationModal(
+                'Program Registered Successfully',
+                'Program has been successfully registered.'
+            );
+
             $("#registerProgramForm")[0].reset();
 
-            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+            $("#confirmationModal").on("hidden.bs.modal", function () {
                 location.reload();
             });
         } else {
@@ -203,12 +226,14 @@ $("#registerProgramForm").submit(function(e) {
 
 
 // SHOW/POPULATE EDIT PROGRAM MODAL
-$('.btn-edit').on('click', function() {
-    var programCode = $(this).data('program-code');
-    var programName = $(this).data('program-name');
-    var collegeCode = $(this).data('college-code');
+$('#editProgramModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var modal  = $(this);
 
-    var modal = $('#editProgramModal');
+    var programCode = button.data('program-code');
+    var programName = button.data('program-name');
+    var collegeCode = button.data('college-code');
+
     modal.find('#programCode').val(programCode);
     modal.find('#programName').val(programName);
     modal.find('#collegeCode').val(collegeCode);
@@ -219,45 +244,54 @@ $('.btn-edit').on('click', function() {
 // SHOW EDIT PROGRAM CONFIRMATION MESSAGE
 $('#editProgramForm').submit(function(e) {
     e.preventDefault();
-    var form = $(this);
-    var actionUrl = form.attr('action');
 
-    $.post(actionUrl, form.serialize(), function(response) {
+    $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
-            $('#editProgramModal').modal('hide');
-            $("#editProgramConfirmationModal").modal("show");
+            $("#editProgramModal").modal("hide");
 
-            $("#editProgramConfirmationModal").on("hidden.bs.modal", function () {
+            showConfirmationModal(
+                'Program Edited Successfully',
+                'Program data has been successfully updated.'
+            );
+
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
             });
         } else {
-            alert("Update failed: " + response.message);
+            alert(response.message);
         }
-    }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || xhr.responseText || "Something went wrong"));
+    }).fail(function (xhr) {
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
     });
 });
 
 
 /// POPULATE HIDDEN INPUT
-$('.btn-delete').on('click', function() {
-    var programCode = $(this).data('program-code');
-    $('#deleteProgramCode').val(programCode);
+$('#deleteProgramModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget);
+    var code = button.data('program-code');
+
+    $(this).find('#deleteProgramCode').val(code);
 });
 
 
 // SHOW DELETE PROGRAM CONFIRMATION MESSAGE
-$("#deleteForm").submit(function(e) {
+$("#deleteProgramForm").submit(function(e) {
     e.preventDefault();
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
-            $("#deleteConfirmationModal").modal("hide");
-            $("#deletionModal").modal("show");
+            $("#deleteProgramModal").modal("hide");
 
-            setTimeout(() => {
+            showConfirmationModal(
+                'Program Deleted',
+                'Program has been successfully deleted.'
+            );
+
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
-            }, 1200);
+            });
+
         } else {
             alert(response.message);
         }
@@ -274,27 +308,31 @@ $("#deleteForm").submit(function(e) {
 //
 // -------------    COLLEGES PAGE   -------------
 
+
 // SHOW REGISTER COLLEGE MODAL
-$("#registerForm").submit(function(e) {
+$("#registerCollegeForm").submit(function(e) {
     e.preventDefault();
-    $("#registerForm input").removeClass("is-invalid");
+    $("#registerCollegeForm input").removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
             $("#registerCollegeModal").modal("hide");
-            $("#registerConfirmationModal").modal("show");
-            $("#registerForm")[0].reset();
 
-            $("#registerConfirmationModal").on("hidden.bs.modal", function () {
+            showConfirmationModal(
+                'College Registered Successfully',
+                'College has been successfully registered.'
+            );
+
+            $("#registerCollegeForm")[0].reset();
+
+            $("#confirmationModal").on("hidden.bs.modal", function () {
                 location.reload();
             });
+        } else {
+            alert(response.message);
         }
     }).fail(function(xhr) {
-        const res = xhr.responseJSON;
-        if (res && res.field) {
-            $("#" + res.field).addClass("is-invalid")
-                .siblings(".invalid-feedback").text(res.message);
-        }
+        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
     });
 });
 
@@ -314,16 +352,19 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
 
 
 // SHOW EDIT COLLEGE CONFIRMATION MESSAGE
-$("#editForm").submit(function (e) {
+$("#editCollegeForm").submit(function (e) {
     e.preventDefault();
 
     $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
             $("#editCollegeModal").modal("hide");
 
-            $("#editConfirmationModal").modal("show");
+            showConfirmationModal(
+                'College Edited Successfully',
+                'College data has been successfully updated.'
+            );
 
-            $("#editConfirmationModal").on("hidden.bs.modal", function () {
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
             });
 
@@ -337,7 +378,7 @@ $("#editForm").submit(function (e) {
 
 
 // POPULATE HIDDEN INPUT
-$('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+$('#deleteCollegeModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget);
     var code = button.data('college-code');
 
@@ -346,17 +387,22 @@ $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
 
 
 // SHOW DELETE COLLEGE CONFIRMATION MESSAGE
-$("#deleteForm").submit(function(e) {
+$("#deleteCollegeForm").submit(function(e) {
     e.preventDefault();
 
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
-            $("#deleteConfirmationModal").modal("hide");
-            $("#deletionModal").modal("show");
+            $("#deleteCollegeModal").modal("hide");
 
-            setTimeout(() => {
+            showConfirmationModal(
+                'College Deleted',
+                'College has been successfully deleted.'
+            );
+
+            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
                 location.reload();
-            }, 1200);
+            });
+
         } else {
             alert(response.message);
         }
@@ -364,3 +410,12 @@ $("#deleteForm").submit(function(e) {
         alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
     });
 });
+
+
+function showConfirmationModal(title, message) {
+    document.getElementById('confirmationModalLabel').textContent = title;
+    document.getElementById('confirmationModalMessage').textContent = message;
+
+    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+    confirmationModal.show();
+}

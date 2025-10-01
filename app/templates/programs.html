@@ -28,7 +28,7 @@
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteConfirmationModal" data-program-code="{{ program.code }}">
+                        data-bs-target="#deleteProgramModal" data-program-code="{{ program.code }}">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </td>
@@ -44,12 +44,12 @@
 </div>
 
 <!-- REGISTER PROGRAM MODAL -->
-<div class="modal fade" id="registerProgramModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+<div class="modal fade" id="registerProgramModal" tabindex="-1" aria-labelledby="registerProgramModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="registerModalLabel">Register Program</h5>
+                <h5 class="modal-title" id="registerProgramModalLabel">Register Program</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -84,24 +84,6 @@
                 </div>
             </form>
 
-        </div>
-    </div>
-</div>
-
-<!-- REGISTER PROGRAM CONFIRMATION MODAL -->
-<div class="modal" id="registerConfirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="confirmationModalLabel">Program Registered Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">Program has been successfully registered.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
         </div>
     </div>
 </div>
@@ -155,31 +137,13 @@
     </div>
 </div>
 
-<!-- EDIT PROGRAM CONFIRMATION MODAL -->
-<div class="modal" id="editProgramConfirmationModal" tabindex="-1" aria-labelledby="editConfirmationModalLabel"
+<!-- DELETE PROGRAM MODAL -->
+<div class="modal" id="deleteProgramModal" tabindex="-1" aria-labelledby="deleteProgramModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="editConfirmationModalLabel">Program Edited Successfully</h5>
-            </div>
-            <div class="modal-body">
-                <p class="mt-3">Program data has been successfully updated.</p>
-            </div>
-            <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- PROGRAM DELETE PROMPT MODAL -->
-<div class="modal" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title w-100" id="deleteConfirmationModalLabel">Program Deletion Confirmation</h5>
+                <h5 class="modal-title w-100" id="deleteProgramModalLabel">Program Deletion Confirmation</h5>
             </div>
             <div class="modal-body">
                 <p class="mt-3">
@@ -189,7 +153,7 @@
             </div>
             <div class="modal-footer justify-content-right">
                 <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
-                <form id="deleteForm" method="POST" action="{{ url_for('program.delete_program') }}">
+                <form id="deleteProgramForm" method="POST" action="{{ url_for('program.delete_program') }}">
                     <input type="hidden" id="deleteProgramCode" name="code">
                     <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
@@ -198,18 +162,18 @@
     </div>
 </div>
 
-<!-- PROGRAM DELETE CONFIRMATION MODAL -->
-<div class="modal" id="deletionModal" tabindex="-1" aria-labelledby="deletionModalLabel" aria-hidden="true">
+<!-- CONFIRMATION MODAL -->
+<div class="modal" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title w-100" id="deletionModalLabel">Program Deleted</h5>
+                <h5 class="modal-title w-100" id="confirmationModalLabel">Action Successful</h5>
             </div>
             <div class="modal-body">
-                <p class="mt-3">Program has been successfully deleted.</p>
+                <p class="mt-3" id="confirmationModalMessage">The action has been successfully completed.</p>
             </div>
             <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Confirm </button>
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Confirm</button>
             </div>
         </div>
     </div>

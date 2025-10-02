@@ -18,7 +18,7 @@ def login():
         if user and user.check_password(password):
             session["user_id"] = user.id
             session["username"] = user.username
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("dashboard.dashboard"))
 
         flash("Invalid username or password", "danger")
     elif request.method == "POST":

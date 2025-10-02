@@ -1,11 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.college import models
+from app.college.models import College
 
 college_bp = Blueprint("college", __name__, template_folder="templates")
 
 @college_bp.route("/colleges")
 def colleges():
-    colleges_list = models.get_all_colleges()
+    colleges_list = College.get_all_colleges()
     return render_template(
         "colleges.html",
         page_title="Colleges",
@@ -22,7 +22,7 @@ def register_college():
     if not name:
         return jsonify(success=False, field="name", message="College name is required."), 400
 
-    success, message = models.register_college(code, name)
+    success, message = College.register_college(code, name)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -42,7 +42,7 @@ def edit_college():
     if not original_code:
         return jsonify(success=False, message="Original code is missing."), 400
 
-    success, message = models.edit_college(original_code, code, name)
+    success, message = College.edit_college(original_code, code, name)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -56,7 +56,7 @@ def delete_college():
     if not code:
         return jsonify(success=False, message="College code is required to delete."), 400
 
-    success, message = models.delete_college(code)
+    success, message = College.delete_college(code)
 
     if not success:
         return jsonify(success=False, message=message), 400

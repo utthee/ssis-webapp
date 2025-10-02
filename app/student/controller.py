@@ -1,12 +1,12 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.student import models
+from app.student.models import Student
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
 
 @student_bp.route("/students")
 def students():
-    programs_list = models.get_all_programs()
-    students_list = models.get_all_students()
+    programs_list = Student.get_all_programs()
+    students_list = Student.get_all_students()
 
     return render_template(
         "students.html",
@@ -38,7 +38,7 @@ def register_student():
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
     
-    success,message = models.register_student(id_number, first_name, last_name, gender, year_level, program_code)
+    success,message = Student.register_student(id_number, first_name, last_name, gender, year_level, program_code)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -69,7 +69,7 @@ def edit_student():
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
     
-    success,message = models.edit_student(id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
+    success,message = Student.edit_student(id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -84,7 +84,7 @@ def delete_student():
     if not id_number:
         return jsonify(success=True, field="id_number", message="ID number is required."), 400
 
-    success,message = models.delete_student(id_number)
+    success,message = Student.delete_student(id_number)
 
     if not success:
         return jsonify(success=False, message=message), 400

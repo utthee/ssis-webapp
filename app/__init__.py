@@ -20,16 +20,6 @@ def create_app():
     app.register_blueprint(program_bp)
     app.register_blueprint(student_bp)
     app.register_blueprint(dashboard_bp)
-
-    @app.route("/")
-    def home():
-        return redirect(url_for("user.login"))
-
-    @app.route("/dashboard")
-    def dashboard():
-        if "user_id" not in session:
-            return redirect(url_for("user.login"))
-        return render_template("dashboard.html", page_title="Dashboard")
     
     @app.teardown_appcontext
     def teardown_db(exception):

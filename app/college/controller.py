@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.college.models import College
+from app.models.college_models import College
 
 college_bp = Blueprint("college", __name__, template_folder="templates")
 
@@ -14,15 +14,15 @@ def colleges():
 
 @college_bp.route("/colleges/register", methods=["POST"])
 def register_college():
-    code = request.form.get("code", "").strip().upper()
-    name = request.form.get("name", "").strip().title()
+    college_code = request.form.get("code", "").strip().upper()
+    college_name = request.form.get("name", "").strip().title()
 
-    if not code:
+    if not college_code:
         return jsonify(success=False, field="code", message="College code is required."), 400
-    if not name:
+    if not college_name:
         return jsonify(success=False, field="name", message="College name is required."), 400
 
-    success, message = College.register_college(code, name)
+    success, message = College.register_college(college_code, college_name)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -31,18 +31,18 @@ def register_college():
 
 @college_bp.route("/colleges/edit", methods=["POST"])
 def edit_college():
-    code = request.form.get("code", "").strip().upper()
-    name = request.form.get("name", "").strip().title()
-    original_code = request.form.get("original_code", "").strip().upper()
+    college_code = request.form.get("code", "").strip().upper()
+    college_name = request.form.get("name", "").strip().title()
+    original_college_code = request.form.get("original_code", "").strip().upper()
 
-    if not code:
+    if not college_code:
         return jsonify(success=False, field="code", message="College code is required."), 400
-    if not name:
+    if not college_name:
         return jsonify(success=False, field="name", message="College name is required."), 400
-    if not original_code:
+    if not original_college_code:
         return jsonify(success=False, message="Original code is missing."), 400
 
-    success, message = College.edit_college(original_code, code, name)
+    success, message = College.edit_college(college_code, college_name, original_college_code)
 
     if not success:
         return jsonify(success=False, field="code", message=message), 400
@@ -51,12 +51,12 @@ def edit_college():
 
 @college_bp.route("/colleges/delete", methods=["POST"])
 def delete_college():
-    code = request.form.get("code", "").strip().upper()
+    college_code = request.form.get("code", "").strip().upper()
 
-    if not code:
+    if not college_code:
         return jsonify(success=False, message="College code is required to delete."), 400
 
-    success, message = College.delete_college(code)
+    success, message = College.delete_college(college_code)
 
     if not success:
         return jsonify(success=False, message=message), 400

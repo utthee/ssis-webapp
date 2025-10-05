@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for
-from app.dashboard.models import Dashboard
+from app.models.dashboard_models import Dashboard
 
 dashboard_bp = Blueprint("dashboard", __name__)
 

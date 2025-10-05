@@ -34,12 +34,12 @@ class Dashboard:
         cursor = db.cursor()
         cursor.execute("""
             SELECT 
-                program.code,
-                program.name,
+                program.program_code,
+                program.program_name,
                 COUNT(student.id_number) AS student_count
             FROM programs program
-            LEFT JOIN students student ON student.program_code = program.code
-            GROUP BY program.code, program.name
+            LEFT JOIN students student ON student.program_code = program.program_code
+            GROUP BY program.program_code, program.program_name
             ORDER BY student_count DESC
             LIMIT 10;
         """)
@@ -53,10 +53,10 @@ class Dashboard:
         db = get_db()
         cursor = db.cursor()
         cursor.execute("""
-            SELECT college.code, COUNT(program.code) AS program_count
+            SELECT college.college_code, COUNT(program.college_code) AS program_count
             FROM colleges college
-            LEFT JOIN programs program ON college.code = program.college_code
-            GROUP BY college.code
+            LEFT JOIN programs program ON college.college_code = program.college_code
+            GROUP BY college.college_code
             ORDER BY program_count DESC;
         """)
         program_data = cursor.fetchall()

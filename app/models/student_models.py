@@ -5,7 +5,7 @@ class Student:
     def get_all_programs():
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM programs ORDER BY code ASC")
+        cursor.execute("SELECT * FROM programs ORDER BY program_code ASC")
         programs = cursor.fetchall()
         cursor.close()
         return [{"code": column[0], "name": column[1], "college_code": column[2]} for column in programs]
@@ -36,7 +36,7 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code)
             )
             db.commit()
-            return {"success": True, "message": f"Program {id_number} registered successfully!"}
+            return {"success": True, "message": f"Program {id_number} registered successfully."}
         except Exception as e:
             db.rollback()
             return {"success": False, "message": str(e)}, 500
@@ -53,7 +53,7 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
             )
             db.commit()
-            return {"success": True, "message": "Student updated successfully"}
+            return {"success": True, "message": "Student updated successfully."}
         except Exception as e:
             db.rollback()
             return {"success": False, "message": str(e)}, 500
@@ -68,7 +68,7 @@ class Student:
             cursor.execute("DELETE FROM students WHERE id_number = %s", (id_number,))
             db.commit()
             cursor.close()
-            return {"success": True, "message": "Student deleted successfully!"}
+            return {"success": True, "message": "Student deleted successfully."}
         except Exception as e:
             db.rollback()
             cursor.close()

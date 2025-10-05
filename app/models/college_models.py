@@ -5,18 +5,18 @@ class College:
     def get_all_colleges():
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM colleges ORDER BY code ASC")
+        cursor.execute("SELECT * FROM colleges ORDER BY college_code ASC")
         colleges = cursor.fetchall()
         cursor.close()
         return [{"code": column[0], "name": column[1]} for column in colleges]
 
     @staticmethod
-    def register_college(code, name):
+    def register_college(college_code, college_name):
         db = get_db()
         cursor = db.cursor()
         try:
             cursor.execute(
-                "INSERT INTO colleges (code, name) VALUES (%s, %s)", (code, name)
+                "INSERT INTO colleges (college_code, college_name) VALUES (%s, %s)", (college_code, college_name)
             )
             db.commit()
             return True, "College registered successfully."
@@ -27,30 +27,29 @@ class College:
             cursor.close()
 
     @staticmethod
-    def edit_college(original_code, code, name):
+    def edit_college(college_code, college_name, original_college_code):
         db = get_db()
         cursor = db.cursor()
         try:
             cursor.execute(
-                "UPDATE colleges SET code = %s, name = %s WHERE code = %s",
-                (code, name, original_code),
+                "UPDATE colleges SET college_code = %s, college_name = %s WHERE college_code = %s",
+                (college_code, college_name, original_college_code),
             )
             db.commit()
-            return True, "College updated successfully!"
+            return True, "College updated successfully."
         except Exception as e:
             db.rollback()
             return False, str(e)
         finally:
             cursor.close()
-
     
-    def delete_college(code):
+    def delete_college(college_code):
         db = get_db()
         cursor = db.cursor()
         try:
-            cursor.execute("DELETE FROM colleges WHERE code = %s", (code,))
+            cursor.execute("DELETE FROM colleges WHERE college_code = %s", (college_code,))
             db.commit()
-            return True, "College deleted successfully!"
+            return True, "College deleted successfully."
         except Exception as e:
             db.rollback()
             return False, str(e)

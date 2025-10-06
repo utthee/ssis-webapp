@@ -103,7 +103,13 @@ $("#registerStudentForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -150,7 +156,13 @@ $('#editStudentForm').submit(function(e) {
             alert(response.message);
         }
     }).fail(function (xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -185,7 +197,13 @@ $("#deleteStudentForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -220,7 +238,13 @@ $("#registerProgramForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -261,7 +285,13 @@ $('#editProgramForm').submit(function(e) {
             alert(response.message);
         }
     }).fail(function (xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -296,7 +326,13 @@ $("#deleteProgramForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -332,7 +368,13 @@ $("#registerCollegeForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -372,7 +414,13 @@ $("#editCollegeForm").submit(function (e) {
             alert(response.message);
         }
     }).fail(function (xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 
@@ -407,7 +455,13 @@ $("#deleteCollegeForm").submit(function(e) {
             alert(response.message);
         }
     }).fail(function(xhr) {
-        alert("Error: " + (xhr.responseJSON?.message || "Something went wrong"));
+        if (xhr.status === 400 && xhr.responseJSON) {
+            alert("Error: " + xhr.responseJSON.message);
+        } else if (xhr.status === 403) {
+            alert("CSRF token validation failed. Please refresh the page and try again.");
+        } else {
+            alert("Error: Something went wrong");
+        }
     });
 });
 

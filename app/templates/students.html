@@ -63,6 +63,7 @@
             </div>
 
             <form id="registerStudentForm" method="POST" action="{{ url_for('student.register_student') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="idNumber" class="form-label">ID Number:</label>
@@ -126,6 +127,7 @@
             </div>
 
             <form id="editStudentForm" method="POST" action="{{ url_for('student.edit_student') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <input type="hidden" id="originalIdNumber" name="original_id_number">
                     <div class="mb-3">
@@ -187,6 +189,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title w-100" id="deleteStudentModalLabel">Student Deletion Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p class="mt-3">
@@ -195,9 +198,10 @@
                 </p>
             </div>
             <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
                 <form id="deleteStudentForm" method="POST" action="{{ url_for('student.delete_student') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="deleteIdNumber" name="id_number">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
                     <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
             </div>

@@ -54,6 +54,7 @@
             </div>
 
             <form id="registerProgramForm" method="POST" action="{{ url_for('program.register_program') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="programCode" class="form-label">Program Code:</label>
@@ -99,6 +100,7 @@
             </div>
 
             <form id="editProgramForm" method="POST" action="{{ url_for('program.edit_program') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <input type="hidden" id="originalProgramCode" name="original_program_code">
 
@@ -144,6 +146,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title w-100" id="deleteProgramModalLabel">Program Deletion Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p class="mt-3">
@@ -152,9 +155,10 @@
                 </p>
             </div>
             <div class="modal-footer justify-content-right">
-                <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Cancel </button>
                 <form id="deleteProgramForm" method="POST" action="{{ url_for('program.delete_program') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="deleteProgramCode" name="code">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
                     <button type="submit" class="btn btn-danger"> Confirm </button>
                 </form>
             </div>

@@ -1,3 +1,10 @@
+// TOAST GREETINGS
+$(document).ready(function() {
+    $('.toast').each(function() {
+        $(this).toast('show');
+    });
+});
+
 // DATA TABLE INITIALIZATION
 $(document).ready(function(){
     $('#data-table').DataTable();

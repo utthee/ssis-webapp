@@ -14,14 +14,14 @@
             </div>
 
             <div class="mb-3">
-                {{ form.username(class="form-control form-control-lg bg-light fs-6", placeholder="Username") }}
+                {{ form.username(class="form-control form-control-lg bg-light fs-6" + (" is-invalid" if form.username.errors else ""), placeholder="Username") }}
                 {% for error in form.username.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
             </div>
 
             <div class="mb-3">
-                {{ form.password(class="form-control form-control-lg bg-light fs-6", placeholder="Password") }}
+                {{ form.password(class="form-control form-control-lg bg-light fs-6" + (" is-invalid" if form.password.errors else ""), placeholder="Password") }}
                 {% for error in form.password.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}

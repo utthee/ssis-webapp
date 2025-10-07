@@ -18,8 +18,10 @@ def login():
         if user and user.check_password(password):
             session["user_id"] = user.id
             session["username"] = user.username
+            flash(f"Welcome, {user.username}.", "success")
             return redirect(url_for("dashboard.dashboard"))
 
+        form.password.errors.append("Invalid username or password")
         flash("Invalid username or password", "danger")
     elif request.method == "POST":
         flash("Please correct the errors in the form.", "danger")
@@ -49,19 +51,3 @@ def signup():
 def logout():
     session.clear()
     return redirect(url_for("user.login"))
-
-
-@user_bp.route("/users")
-def users():
-    conn = get_db()
-    cur = conn.cursor(cursor_factory=RealDictCursor)
-
-    cur.execute("SELECT id, username, email FROM users ORDER BY id ASC")
-    users_data = cur.fetchall()
-    
-    for user in users_data:
-        user["password"] = "••••••"
-
-    cur.close() 
-
-    return render_template("users.html", page_title="Users", users=users_data)

@@ -15,10 +15,11 @@ from app.dashboard import dashboard_bp
 def create_app():
     app = Flask(__name__)
     app.config.from_object(config)
+
+    # INITIALIZE APP CROSS SITE REQUEST FORGERY (CSRF) PROTECTION
     CSRFProtect(app)
 
     app.register_blueprint(user_bp)
-
     app.register_blueprint(college_bp)
     app.register_blueprint(program_bp)
     app.register_blueprint(student_bp)

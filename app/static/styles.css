@@ -30,7 +30,6 @@ a:active {
 
 /* -----------  DASHBORAD   ----------- */
 .card-link {
-  /* transition: background-color 0.3s ease, color 0.3s ease; */
   cursor: pointer;
 }
 
@@ -49,7 +48,6 @@ a:active {
 #sidebar {
     width: 300px;
     min-width: 60px;
-    transition: width 0.25s ease-in-out;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -58,6 +56,10 @@ a:active {
 
 #sidebar.collapsed {
     width: 75px;
+}
+
+#sidebar.animate {
+    transition: width 0.25s ease-in-out;
 }
 
 /* ---------- LOGO ---------- */

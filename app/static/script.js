@@ -41,7 +41,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // TOGGLE BUTTON FOR SIDEBAR COLLAPSE/EXPAND
 $(".toggler-btn").click(function() {
+    $("#sidebar").addClass("animate");
+    
     $("#sidebar").toggleClass("collapsed");
+    
+    if ($("#sidebar").hasClass("collapsed")) {
+        sessionStorage.setItem('sidebarCollapsed', 'true');
+    } else {
+        sessionStorage.setItem('sidebarCollapsed', 'false');
+    }
+    
+    setTimeout(function() {
+        $("#sidebar").removeClass("animate");
+    }, 250);
+});
+
+// RETAIN SIDEBAR STATE WHEN GOING TO A DIFFERENT PAGE
+$(document).ready(function() {
+    if (sessionStorage.getItem('sidebarCollapsed') === 'true') {
+        $("#sidebar").addClass("collapsed");
+    } else if (sessionStorage.getItem('sidebarCollapsed') === 'false') {
+        $("#sidebar").removeClass("collapsed");
+    }
 });
 
 // CHANGE DASHBOARD TITLE TO THE PAGE
@@ -61,6 +82,15 @@ $('.modal').on('hidden.bs.modal', function () {
 // -------------    EVENT HANDLER   -------------
 
 
+$("#idNumber").on("keypress input", function (e) {
+    if (e.type === "keypress" && !/[0-9\-]/.test(e.key)){
+        e.preventDefault();
+    }
+    if (e.type === "input") {
+        $(this).val($(this).val().replace(/[^0-9\-]/g, ''));
+    }
+});
+
 $("#programCode, #collegeCode").on("keypress input", function (e) {
     if (e.type === "keypress" && !/[a-zA-Z]/.test(e.key)) {
         e.preventDefault();
@@ -70,7 +100,7 @@ $("#programCode, #collegeCode").on("keypress input", function (e) {
     }
 });
 
-$("#firstName, #lastName, #programNamem #collegeName").on("keypress input", function (e) {
+$("#firstName, #lastName, #programName, #collegeName").on("keypress input", function (e) {
     if (e.type === "keypress" && !/[a-zA-Z\s]/.test(e.key)) {
         e.preventDefault();
     }
@@ -96,16 +126,10 @@ $("#registerStudentForm").submit(function(e) {
         if (response.success) {
             $("#registerStudentModal").modal("hide");
             
-            showConfirmationModal(
-                'Student Registered Successfully',
-                'Student has been successfully registered.'
-            );
+            sessionStorage.setItem('showRegisterStudentSuccess', 'true');
 
-            $("#registerStudentForm")[0].reset();
+            location.reload();
 
-            $("#confirmationModal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
         } else {
             alert(response.message);
         }
@@ -151,14 +175,10 @@ $('#editStudentForm').submit(function(e) {
         if (response.success) {
             $("#editStudentModal").modal("hide");
 
-            showConfirmationModal(
-                'Student Edited Successfully',
-                'Student data has been successfully updated.'
-            );
+            sessionStorage.setItem('showEditStudentSuccess', 'true');
 
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
+            location.reload();
+
         } else {
             alert(response.message);
         }
@@ -191,14 +211,9 @@ $("#deleteStudentForm").submit(function(e) {
         if (response.success) {
             $("#deleteStudentModal").modal("hide");
 
-            showConfirmationModal(
-                'Student Deleted',
-                'Student has been successfully deleted.'
-            );
+            sessionStorage.setItem('showDeleteStudentSuccess', 'true');
 
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
+            location.reload();
 
         } else {
             alert(response.message);
@@ -212,6 +227,36 @@ $("#deleteStudentForm").submit(function(e) {
             alert("Error: Something went wrong");
         }
     });
+});
+
+
+$(document).ready(function() {
+    if (sessionStorage.getItem('showRegisterStudentSuccess') === 'true') {
+        sessionStorage.removeItem('showRegisterStudentSuccess');
+
+        showConfirmationModal(
+            'Student Registered Successfully',
+            'Student record has been successfully registered.'
+        );
+    }
+
+    if (sessionStorage.getItem('showEditStudentSuccess') === 'true') {
+        sessionStorage.removeItem('showEditStudentSuccess');
+
+        showConfirmationModal(
+            'Student Edited Successfully',
+            'Student record has been successfully updated.'
+        );
+    }
+    
+    if (sessionStorage.getItem('showDeleteStudentSuccess') === 'true') {
+        sessionStorage.removeItem('showDeleteStudentSuccess');
+        
+        showConfirmationModal(
+            'Student Deleted',
+            'Student record has been permanently deleted.'
+        );
+    }
 });
 
 
@@ -230,17 +275,11 @@ $("#registerProgramForm").submit(function(e) {
     $.post($(this).attr("action"), $(this).serialize(), function(response) {
         if (response.success) {
             $("#registerProgramModal").modal("hide");
+
+            sessionStorage.setItem('showRegisterProgramSuccess', 'true');
             
-            showConfirmationModal(
-                'Program Registered Successfully',
-                'Program has been successfully registered.'
-            );
+            location.reload();
 
-            $("#registerProgramForm")[0].reset();
-
-            $("#confirmationModal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
         } else {
             alert(response.message);
         }
@@ -280,14 +319,10 @@ $('#editProgramForm').submit(function(e) {
         if (response.success) {
             $("#editProgramModal").modal("hide");
 
-            showConfirmationModal(
-                'Program Edited Successfully',
-                'Program data has been successfully updated.'
-            );
+            sessionStorage.setItem('showEditProgramSuccess', 'true');
+            
+            location.reload();
 
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
         } else {
             alert(response.message);
         }
@@ -320,14 +355,9 @@ $("#deleteProgramForm").submit(function(e) {
         if (response.success) {
             $("#deleteProgramModal").modal("hide");
 
-            showConfirmationModal(
-                'Program Deleted',
-                'Program has been successfully deleted.'
-            );
-
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
+            sessionStorage.setItem('showDeleteProgramSuccess', 'true');
+            
+            location.reload();
 
         } else {
             alert(response.message);
@@ -343,6 +373,35 @@ $("#deleteProgramForm").submit(function(e) {
     });
 });
 
+
+$(document).ready(function() {
+    if (sessionStorage.getItem('showRegisterProgramSuccess') === 'true') {
+        sessionStorage.removeItem('showRegisterProgramSuccess');
+
+        showConfirmationModal(
+            'Program Registered Successfully',
+            'Program record has been successfully registered.'
+        );
+    }
+
+    if (sessionStorage.getItem('showEditProgramSuccess') === 'true') {
+        sessionStorage.removeItem('showEditProgramSuccess');
+
+        showConfirmationModal(
+            'Program Edited Successfully',
+            'Program record has been successfully updated.'
+        );
+    }
+    
+    if (sessionStorage.getItem('showDeleteProgramSuccess') === 'true') {
+        sessionStorage.removeItem('showDeleteProgramSuccess');
+        
+        showConfirmationModal(
+            'Program Deleted',
+            'Program record has been permanently deleted.'
+        );
+    }
+});
 
 
 // -------------    COLLEGES PAGE   -------------
@@ -361,16 +420,10 @@ $("#registerCollegeForm").submit(function(e) {
         if (response.success) {
             $("#registerCollegeModal").modal("hide");
 
-            showConfirmationModal(
-                'College Registered Successfully',
-                'College has been successfully registered.'
-            );
+            sessionStorage.setItem('showRegisterCollegeSuccess', 'true');
+            
+            location.reload();
 
-            $("#registerCollegeForm")[0].reset();
-
-            $("#confirmationModal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
         } else {
             alert(response.message);
         }
@@ -408,14 +461,10 @@ $("#editCollegeForm").submit(function (e) {
         if (response.success) {
             $("#editCollegeModal").modal("hide");
 
-            showConfirmationModal(
-                'College Edited Successfully',
-                'College data has been successfully updated.'
-            );
+            sessionStorage.setItem('showEditCollegeSuccess', 'true');
+            
+            location.reload();
 
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
 
         } else {
             alert(response.message);
@@ -449,14 +498,9 @@ $("#deleteCollegeForm").submit(function(e) {
         if (response.success) {
             $("#deleteCollegeModal").modal("hide");
 
-            showConfirmationModal(
-                'College Deleted',
-                'College has been successfully deleted.'
-            );
-
-            $("#confirmationModal").off("hidden.bs.modal").on("hidden.bs.modal", function () {
-                location.reload();
-            });
+            sessionStorage.setItem('showDeleteCollegeSuccess', 'true');
+            
+            location.reload();
 
         } else {
             alert(response.message);
@@ -472,11 +516,39 @@ $("#deleteCollegeForm").submit(function(e) {
     });
 });
 
+$(document).ready(function() {
+    if (sessionStorage.getItem('showRegisterCollegeSuccess') === 'true') {
+        sessionStorage.removeItem('showRegisterCollegeSuccess');
+
+        showConfirmationModal(
+            'College Registered Successfully',
+            'College record has been successfully registered.'
+        );
+    }
+
+    if (sessionStorage.getItem('showEditCollegeSuccess') === 'true') {
+        sessionStorage.removeItem('showEditCollegeSuccess');
+
+        showConfirmationModal(
+            'College Edited Successfully',
+            'College record has been successfully updated.'
+        );
+    }
+    
+    if (sessionStorage.getItem('showDeleteCollegeSuccess') === 'true') {
+        sessionStorage.removeItem('showDeleteCollegeSuccess');
+        
+        showConfirmationModal(
+            'College Deleted',
+            'College record has been permanently deleted.'
+        );
+    }
+});
+
 
 function showConfirmationModal(title, message) {
-    document.getElementById('confirmationModalLabel').textContent = title;
-    document.getElementById('confirmationModalMessage').textContent = message;
+    $('#confirmationModalLabel').text(title);
+    $('#confirmationModalMessage').text(message);
 
-    const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
-    confirmationModal.show();
+    $('#confirmationModal').modal('show');
 }

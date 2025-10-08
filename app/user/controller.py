@@ -1,8 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, flash, request
 from app.user.forms import SignupForm, LoginForm
 from app.models.user_models import User
-from psycopg2.extras import RealDictCursor
-from app.database import get_db
 
 user_bp = Blueprint("user", __name__, template_folder="../templates")
 
@@ -22,9 +20,6 @@ def login():
             return redirect(url_for("dashboard.dashboard"))
 
         form.password.errors.append("Invalid username or password")
-        flash("Invalid username or password", "danger")
-    elif request.method == "POST":
-        flash("Please correct the errors in the form.", "danger")
 
     return render_template("login.html", form=form)
 

@@ -106,7 +106,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Close
+                    </button>
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-plus-lg"></i> Register
                     </button>
@@ -171,7 +173,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Close
+                    </button>
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-pencil-square me-1"></i> Save Changes
                     </button>
@@ -201,8 +205,12 @@
                 <form id="deleteStudentForm" method="POST" action="{{ url_for('student.delete_student') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="deleteIdNumber" name="id_number">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
-                    <button type="submit" class="btn btn-danger"> Confirm </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Confirm
+                    </button>
                 </form>
             </div>
         </div>

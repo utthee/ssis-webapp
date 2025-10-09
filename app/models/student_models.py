@@ -36,10 +36,10 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code)
             )
             db.commit()
-            return {"success": True, "message": f"Program {id_number} registered successfully."}
+            return True, "Student registered successfully."
         except Exception as e:
             db.rollback()
-            return {"success": False, "message": str(e)}, 500
+            return False, str(e)
         finally:
             cursor.close()
 
@@ -53,10 +53,10 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
             )
             db.commit()
-            return {"success": True, "message": "Student updated successfully."}
+            return True, "Student updated successfully."
         except Exception as e:
             db.rollback()
-            return {"success": False, "message": str(e)}, 500
+            return False, str(e)
         finally:
             cursor.close()
 
@@ -68,8 +68,8 @@ class Student:
             cursor.execute("DELETE FROM students WHERE id_number = %s", (id_number,))
             db.commit()
             cursor.close()
-            return {"success": True, "message": "Student deleted successfully."}
+            return True, "Student deleted successfully."
         except Exception as e:
             db.rollback()
             cursor.close()
-            return {"success": False, "message": str(e)}, 500
+            return False, str(e)

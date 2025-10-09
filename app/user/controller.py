@@ -16,7 +16,7 @@ def login():
         if user and user.check_password(password):
             session["user_id"] = user.id
             session["username"] = user.username
-            flash(f"Welcome, {user.username}.", "success")
+            flash(f"Welcome, {user.username}!", "login")
             return redirect(url_for("dashboard.dashboard"))
 
         form.password.errors.append("Invalid username or password")
@@ -28,7 +28,7 @@ def signup():
     form = SignupForm()
 
     if request.method == "POST":
-        if form.validate():
+        if form.validate_on_submit():
             User.create(
                 username=form.username.data,
                 email=form.email.data,

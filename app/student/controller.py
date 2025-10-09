@@ -41,7 +41,7 @@ def register_student():
     success,message = Student.register_student(id_number, first_name, last_name, gender, year_level, program_code)
 
     if not success:
-        return jsonify(success=False, field="code", message=message), 400
+        return jsonify(success=False, field="id_number", message=message), 400
 
     return jsonify(success=True, message=message), 200
 
@@ -72,7 +72,7 @@ def edit_student():
     success,message = Student.edit_student(id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
 
     if not success:
-        return jsonify(success=False, field="code", message=message), 400
+        return jsonify(success=False, field="id_number", message=message), 400
 
     return jsonify(success=True, message=message), 200
 

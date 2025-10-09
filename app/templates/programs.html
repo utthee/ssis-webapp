@@ -78,7 +78,9 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Close
+                    </button>
                     <button type="submit" class="btn btn-success">
                         <i class="bi bi-plus-lg"></i> Register
                     </button>
@@ -128,9 +130,11 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Close
+                    </button>
                     <button type="submit" class="btn btn-success">
-                        <i class="bi bi-pencil"></i> Save Changes
+                        <i class="bi bi-pencil-square me-1"></i> Save Changes
                     </button>
                 </div>
             </form>
@@ -158,8 +162,12 @@
                 <form id="deleteProgramForm" method="POST" action="{{ url_for('program.delete_program') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="deleteProgramCode" name="code">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> Cancel </button>
-                    <button type="submit" class="btn btn-danger"> Confirm </button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-lg"></i> Cancel
+                    </button>
+                    <button type="submit" class="btn btn-danger"> 
+                        <i class="bi bi-trash"></i> Confirm 
+                    </button>
                 </form>
             </div>
         </div>

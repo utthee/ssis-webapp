@@ -429,7 +429,15 @@ $("#registerCollegeForm").submit(function(e) {
         }
     }).fail(function(xhr) {
         if (xhr.status === 400 && xhr.responseJSON) {
-            alert("Error: " + xhr.responseJSON.message);
+            const response = xhr.responseJSON;
+            
+            if (response.field === "code") {
+                $("#registerCollegeCode").addClass("is-invalid");
+                $("#registerCollegeCodeError").text(response.message).show();
+                $("#registerCollegeCode").focus();
+            } else {
+                alert("Error: " + response.message);
+            }
         } else if (xhr.status === 403) {
             alert("CSRF token validation failed. Please refresh the page and try again.");
         } else {
@@ -438,6 +446,11 @@ $("#registerCollegeForm").submit(function(e) {
     });
 });
 
+$("#registerCollegeModal").on("hidden.bs.modal", function() {
+    $("#registerCollegeForm")[0].reset();
+    $("#registerCollegeForm input").removeClass("is-invalid");
+    $("#registerCollegeForm .invalid-feedback").hide().text("");
+});
 
 // SHOW/POPULATE COLLEGE EDIT FORM
 $('#editCollegeModal').on('show.bs.modal', function (event) {
@@ -447,8 +460,8 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
     var code = button.data('college-code');
     var name = button.data('college-name');
 
-    modal.find('#collegeCode').val(code);
-    modal.find('#collegeName').val(name);
+    modal.find('#editCollegeCode').val(code);
+    modal.find('#editCollegeName').val(name);
     modal.find('#originalCollegeCode').val(code);
 });
 
@@ -471,13 +484,27 @@ $("#editCollegeForm").submit(function (e) {
         }
     }).fail(function (xhr) {
         if (xhr.status === 400 && xhr.responseJSON) {
-            alert("Error: " + xhr.responseJSON.message);
+            const response = xhr.responseJSON;
+            
+            if (response.field === "code") {
+                $("#editCollegeCode").addClass("is-invalid");
+                $("#editCollegeCodeError").text(response.message).show();
+                $("#editCollegeCode").focus();
+            } else {
+                alert("Error: " + response.message);
+            }
         } else if (xhr.status === 403) {
             alert("CSRF token validation failed. Please refresh the page and try again.");
         } else {
             alert("Error: Something went wrong");
         }
     });
+});
+
+$("#editCollegeModal").on("hidden.bs.modal", function() {
+    $("#editCollegeForm")[0].reset();
+    $("#editCollegeForm input").removeClass("is-invalid");
+    $("#editCollegeForm .invalid-feedback").hide().text("");
 });
 
 
@@ -549,6 +576,5 @@ $(document).ready(function() {
 function showConfirmationModal(title, message) {
     $('#confirmationModalLabel').text(title);
     $('#confirmationModalMessage').text(message);
-
     $('#confirmationModal').modal('show');
 }

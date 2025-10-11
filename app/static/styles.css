@@ -269,3 +269,16 @@ body {
 .signup-card .form-control {
     height: 45px;
 }
+
+/* ------------------- INVALID FEEDBACKS HIGHLIGHTS --------------------- */
+
+.invalid-feedback {
+    display: none;
+    color: red;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.is-invalid {
+    border-color: red !important;
+}

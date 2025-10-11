@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS students
 );
 
 -- Create indexes for better query performance
-CREATE INDEX IF NOT EXISTS idx_colleges_college_code ON college(college_code);
+CREATE INDEX IF NOT EXISTS idx_colleges_college_code ON colleges(college_code);
 CREATE INDEX IF NOT EXISTS idx_programs_program_code ON programs(program_code);
 CREATE INDEX IF NOT EXISTS idx_students_id_number ON students(id_number);
 

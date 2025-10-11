@@ -56,13 +56,14 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="collegeCode" class="form-label">College Code</label>
-                        <input type="text" class="form-control" id="collegeCode" name="code" placeholder="e.g. CCS"
+                        <label for="registerCollegeCode" class="form-label">College Code</label>
+                        <input type="text" class="form-control" id="registerCollegeCode" name="code" placeholder="e.g. CCS"
                             required>
+                        <div class="invalid-feedback" id="registerCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="collegeName" class="form-label">College Name</label>
-                        <input type="text" class="form-control" id="collegeName" name="name"
+                        <label for="registerCollegeName" class="form-label">College Name</label>
+                        <input type="text" class="form-control" id="registerCollegeName" name="name"
                             placeholder="e.g. College of Computer Studies" required>
                     </div>
                 </div>
@@ -96,13 +97,14 @@
                 <div class="modal-body">
                     <input type="hidden" id="originalCollegeCode" name="original_code">
                     <div class="mb-3">
-                        <label for="collegeCode" class="form-label">College Code:</label>
-                        <input type="text" class="form-control" id="collegeCode" name="code" placeholder="e.g. CCS"
+                        <label for="editCollegeCode" class="form-label">College Code:</label>
+                        <input type="text" class="form-control" id="editCollegeCode" name="code" placeholder="e.g. CCS"
                             required>
+                        <div class="invalid-feedback" id="editCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="collegeName" class="form-label">College Name:</label>
-                        <input type="text" class="form-control" id="collegeName" name="name"
+                        <label for="editCollegeName" class="form-label">College Name:</label>
+                        <input type="text" class="form-control" id="editCollegeName" name="name"
                             placeholder="e.g. College of Computer Studies" required>
                     </div>
                 </div>

@@ -18,9 +18,31 @@ class Program:
         programs = cursor.fetchall()
         cursor.close()
         return [{"code": column[0], "name": column[1], "college_code": column[2]} for column in programs]
+    
+    @staticmethod
+    def check_existing_program_code(program_code, exclude_original_program_code=None):
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            if exclude_original_program_code:
+                cursor.execute(
+                    "SELECT program_code FROM programs WHERE program_code = %s AND program_code != %s",
+                    (program_code, exclude_original_program_code)
+                )
+            else:
+                cursor.execute(
+                    "SELECT program_code FROM programs WHERE program_code = %s",
+                    (program_code,)
+                )
+            return cursor.fetchone() is not None
+        finally:
+            cursor.close()
 
     @staticmethod
     def register_program(program_code, program_name, college_code):
+        if Program.check_existing_program_code(program_code):
+            return False, "Program Code already exists. Please use a different code."
+
         db = get_db()
         cursor = db.cursor()
         try:
@@ -38,6 +60,9 @@ class Program:
 
     @staticmethod
     def edit_program(program_code, program_name, college_code, original_program_code):
+        if Program.check_existing_program_code(program_code, original_program_code):
+            return False, "Program Code already exists. Please use a different code."
+
         db = get_db()
         cursor = db.cursor()
         try:

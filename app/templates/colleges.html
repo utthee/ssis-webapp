@@ -57,13 +57,13 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="registerCollegeCode" class="form-label">College Code</label>
-                        <input type="text" class="form-control" id="registerCollegeCode" name="code" placeholder="e.g. CCS"
+                        <input type="text" class="form-control" id="registerCollegeCode" name="college_code" placeholder="e.g. CCS"
                             required>
                         <div class="invalid-feedback" id="registerCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerCollegeName" class="form-label">College Name</label>
-                        <input type="text" class="form-control" id="registerCollegeName" name="name"
+                        <input type="text" class="form-control" id="registerCollegeName" name="college_name"
                             placeholder="e.g. College of Computer Studies" required>
                     </div>
                 </div>
@@ -98,13 +98,13 @@
                     <input type="hidden" id="originalCollegeCode" name="original_code">
                     <div class="mb-3">
                         <label for="editCollegeCode" class="form-label">College Code:</label>
-                        <input type="text" class="form-control" id="editCollegeCode" name="code" placeholder="e.g. CCS"
+                        <input type="text" class="form-control" id="editCollegeCode" name="college_code" placeholder="e.g. CCS"
                             required>
                         <div class="invalid-feedback" id="editCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="editCollegeName" class="form-label">College Name:</label>
-                        <input type="text" class="form-control" id="editCollegeName" name="name"
+                        <input type="text" class="form-control" id="editCollegeName" name="college_name"
                             placeholder="e.g. College of Computer Studies" required>
                     </div>
                 </div>
@@ -140,7 +140,7 @@
             <div class="modal-footer justify-content-right">
                 <form id="deleteCollegeForm" method="POST" action="{{ url_for('college.delete_college') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-                    <input type="hidden" id="deleteCollegeCode" name="code">
+                    <input type="hidden" id="deleteCollegeCode" name="college_code">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> 
                         <i class="bi bi-x-lg"></i> Cancel
                     </button>

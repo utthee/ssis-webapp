@@ -57,18 +57,19 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" name="program_code"
+                        <label for="registerProgramCode" class="form-label">Program Code:</label>
+                        <input type="text" class="form-control" id="registerProgramCode" name="program_code"
                             placeholder="e.g. BSCS" required>
+                        <div class="invalid-feedback" id="registerProgramCodeError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="programName" class="form-label">Program Name:</label>
-                        <input type="text" class="form-control" id="programName" name="program_name"
+                        <label for="registerProgramName" class="form-label">Program Name:</label>
+                        <input type="text" class="form-control" id="registerProgramName" name="program_name"
                             placeholder="e.g. Bachelor of Science in Computer Science" required>
                     </div>
                     <div class="mb-3">
-                        <label for="collegeCode" class="form-label">College Code:</label>
-                        <select class="form-select" id="collegeCode" name="college_code" required>
+                        <label for="registerCollegeCode" class="form-label">College Code:</label>
+                        <select class="form-select" id="registerCollegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
                             {% for college in colleges %}
                             <option value="{{ college.code }}">{{ college.code }} - {{ college.name }}</option>
@@ -107,20 +108,21 @@
                     <input type="hidden" id="originalProgramCode" name="original_program_code">
 
                     <div class="mb-3">
-                        <label for="programCode" class="form-label">Program Code:</label>
-                        <input type="text" class="form-control" id="programCode" name="program_code"
+                        <label for="editProgramCode" class="form-label">Program Code:</label>
+                        <input type="text" class="form-control" id="editProgramCode" name="program_code"
                             placeholder="e.g. BSCS" required>
+                        <div class="invalid-feedback" id="editProgramCodeError"></div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="programName" class="form-label">Program Name:</label>
-                        <input type="text" class="form-control" id="programName" name="program_name"
+                        <label for="editProgramName" class="form-label">Program Name:</label>
+                        <input type="text" class="form-control" id="editProgramName" name="program_name"
                             placeholder="e.g. Bachelor of Science in Computer Science" required>
                     </div>
 
                     <div class="mb-3">
-                        <label for="collegeCode" class="form-label">College Code:</label>
-                        <select class="form-select" id="collegeCode" name="college_code" required>
+                        <label for="editCollegeCode" class="form-label">College Code:</label>
+                        <select class="form-select" id="editCollegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
                             {% for college in colleges %}
                             <option value="{{ college.code }}">{{ college.code }}</option>
@@ -161,7 +163,7 @@
             <div class="modal-footer justify-content-right">
                 <form id="deleteProgramForm" method="POST" action="{{ url_for('program.delete_program') }}">
                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-                    <input type="hidden" id="deleteProgramCode" name="code">
+                    <input type="hidden" id="deleteProgramCode" name="program_code">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-lg"></i> Cancel
                     </button>

@@ -14,44 +14,48 @@ def colleges():
 
 @college_bp.route("/colleges/register", methods=["POST"])
 def register_college():
-    college_code = request.form.get("code", "").strip().upper()
-    college_name = request.form.get("name", "").strip().title()
+    college_code = request.form.get("college_code", "").strip().upper()
+    college_name = request.form.get("college_name", "").strip().title()
 
     if not college_code:
-        return jsonify(success=False, field="code", message="College code is required."), 400
+        return jsonify(success=False, field="college_code", message="College code is required."), 400
     if not college_name:
-        return jsonify(success=False, field="name", message="College name is required."), 400
+        return jsonify(success=False, field="college_name", message="College name is required."), 400
 
     success, message = College.register_college(college_code, college_name)
 
     if not success:
-        return jsonify(success=False, field="code", message=message), 400
+        if "already exists" in message.lower():
+            return jsonify(success=False, field="college_code", message=message), 409
+        return jsonify(success=False, field="college_code", message=message), 400
 
-    return jsonify(success=True, message=message), 200
+    return jsonify(success=True, message=message), 201
 
 @college_bp.route("/colleges/edit", methods=["POST"])
 def edit_college():
-    college_code = request.form.get("code", "").strip().upper()
-    college_name = request.form.get("name", "").strip().title()
+    college_code = request.form.get("college_code", "").strip().upper()
+    college_name = request.form.get("college_name", "").strip().title()
     original_college_code = request.form.get("original_code", "").strip().upper()
 
     if not college_code:
-        return jsonify(success=False, field="code", message="College code is required."), 400
+        return jsonify(success=False, field="college_code", message="College code is required."), 400
     if not college_name:
-        return jsonify(success=False, field="name", message="College name is required."), 400
+        return jsonify(success=False, field="college_name", message="College name is required."), 400
     if not original_college_code:
         return jsonify(success=False, message="Original code is missing."), 400
 
     success, message = College.edit_college(college_code, college_name, original_college_code)
 
     if not success:
-        return jsonify(success=False, field="code", message=message), 400
+        if "already exists" in message.lower():
+            return jsonify(success=False, field="college_code", message=message), 409
+        return jsonify(success=False, field="college_code", message=message), 400
 
     return jsonify(success=True, message=message), 200
 
 @college_bp.route("/colleges/delete", methods=["POST"])
 def delete_college():
-    college_code = request.form.get("code", "").strip().upper()
+    college_code = request.form.get("college_code", "").strip().upper()
 
     if not college_code:
         return jsonify(success=False, message="College code is required to delete."), 400

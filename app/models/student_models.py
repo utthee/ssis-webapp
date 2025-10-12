@@ -25,9 +25,26 @@ class Student:
                 "year_level": column[4], 
                 "program_code": column[5]} 
                 for column in students_data]
+    
+    @staticmethod
+    def check_existing_id_number(id_number):
+        db = get_db()
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT id_number FROM students WHERE id_number=%s",
+                (id_number,)
+            )
+            return cursor.fetchone() is not None
+        finally:
+            cursor.close()
 
     @staticmethod
     def register_student(id_number, first_name, last_name, gender, year_level, program_code):
+        if Student.check_existing_id_number(id_number):
+            return False, "The ID Number you just entered already exists. Please enter a different ID Number."
+
         db = get_db()
         cursor = db.cursor()
         try:

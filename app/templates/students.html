@@ -66,8 +66,9 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="idNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" pattern="^\d{4}-\d{4}$" required>
+                        <label for="registerIdNumber" class="form-label">ID Number:</label>
+                        <input type="text" class="form-control" id="registerIdNumber" name="id_number" placeholder="e.g. 2022-0001" pattern="^\d{4}-\d{4}$" required>
+                        <div class="invalid-feedback" id="registerIdNumberError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>
@@ -134,7 +135,7 @@
                     <input type="hidden" id="originalIdNumber" name="original_id_number">
                     <div class="mb-3">
                         <label for="idNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" readonly required>
+                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>

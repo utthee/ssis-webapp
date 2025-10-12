@@ -26,24 +26,26 @@ def register_student():
     program_code = request.form.get("program_code", "").strip().upper()
 
     if not id_number:
-        return jsonify(success=True, field="id_number", message="ID number is required."), 400
+        return jsonify(success=False, field="id_number", message="ID number is required."), 400
     if not first_name:
-        return jsonify(success=True, field="first_name", message="First name is required."), 400
+        return jsonify(success=False, field="first_name", message="First name is required."), 400
     if not last_name:
-        return jsonify(success=True, field="last_name", message="Last name is required."), 400
+        return jsonify(success=False, field="last_name", message="Last name is required."), 400
     if not gender:
-        return jsonify(success=True, field="gender", message="Gender is required."), 400
+        return jsonify(success=False, field="gender", message="Gender is required."), 400
     if not year_level:
-        return jsonify(success=True, field="year_level", message="Year level is required."), 400
+        return jsonify(success=False, field="year_level", message="Year level is required."), 400
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
     
     success,message = Student.register_student(id_number, first_name, last_name, gender, year_level, program_code)
 
     if not success:
+        if "already exists" in message.lower():
+            return jsonify(success=False, field="id_number", message=message), 409
         return jsonify(success=False, field="id_number", message=message), 400
 
-    return jsonify(success=True, message=message), 200
+    return jsonify(success=True, message=message), 201
 
 
 @student_bp.route("/students/edit", methods=["POST"])
@@ -57,15 +59,15 @@ def edit_student():
     original_id_number = request.form.get("original_id_number", "")
 
     if not id_number:
-        return jsonify(success=True, field="id_number", message="ID number is required."), 400
+        return jsonify(success=False, field="id_number", message="ID number is required."), 400
     if not first_name:
-        return jsonify(success=True, field="first_name", message="First name is required."), 400
+        return jsonify(success=False, field="first_name", message="First name is required."), 400
     if not last_name:
-        return jsonify(success=True, field="last_name", message="Last name is required."), 400
+        return jsonify(success=False, field="last_name", message="Last name is required."), 400
     if not gender:
-        return jsonify(success=True, field="gender", message="Gender is required."), 400
+        return jsonify(success=False, field="gender", message="Gender is required."), 400
     if not year_level:
-        return jsonify(success=True, field="year_level", message="Year level is required."), 400
+        return jsonify(success=False, field="year_level", message="Year level is required."), 400
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
     
@@ -82,7 +84,7 @@ def delete_student():
     id_number = request.form.get("id_number", "").strip()
 
     if not id_number:
-        return jsonify(success=True, field="id_number", message="ID number is required."), 400
+        return jsonify(success=False, field="id_number", message="ID number is required."), 400
 
     success,message = Student.delete_student(id_number)
 

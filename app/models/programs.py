@@ -59,7 +59,33 @@ class Program:
             cursor.close()
 
     @staticmethod
+    def check_has_changes(program_code, program_name, college_code, original_program_code):
+        db = get_db()
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT * FROM programs WHERE program_code=%s",
+                (original_program_code,)
+            )
+            current_data = cursor.fetchone()
+
+            current_program_code, current_program_name, current_college_code = current_data
+
+            if (program_code == current_program_code and program_name == current_program_name and college_code == current_college_code):
+                return False, "No changes detected.", None
+            
+            return True, None, None
+        finally:
+            cursor.close()
+
+    @staticmethod
     def edit_program(program_code, program_name, college_code, original_program_code):
+        has_changes, message, field = Program.check_has_changes(program_code, program_name, college_code, original_program_code)
+
+        if not has_changes:
+            return False, message, field
+
         if Program.check_existing_program_code(program_code, original_program_code):
             return False, "Program Code already exists. Please use a different code.", "program_code"
 

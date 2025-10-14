@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.models.program_models import Program
+from app.models.programs import Program
 
 program_bp = Blueprint("program", __name__, template_folder="templates")
 

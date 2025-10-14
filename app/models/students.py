@@ -27,15 +27,21 @@ class Student:
                 for column in students_data]
     
     @staticmethod
-    def check_existing_id_number(id_number):
+    def check_existing_id_number(id_number, exclude_original_id_number=None):
         db = get_db()
         cursor = db.cursor()
 
         try:
-            cursor.execute(
-                "SELECT id_number FROM students WHERE id_number=%s",
-                (id_number,)
-            )
+            if exclude_original_id_number:
+                cursor.execute(
+                    "SELECT id_number FROM students WHERE id_number=%s AND id_number !=%s",
+                    (id_number, exclude_original_id_number)
+                )
+            else:
+                cursor.execute(
+                    "SELECT id_number FROM students WHERE id_number=%s",
+                    (id_number,)
+                )
             return cursor.fetchone() is not None
         finally:
             cursor.close()
@@ -61,7 +67,40 @@ class Student:
             cursor.close()
 
     @staticmethod
+    def check_has_changes(id_number, first_name, last_name, gender, year_level, program_code, original_id_number):
+        db = get_db()
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT * FROM students WHERE id_number=%s", (original_id_number,)
+            )
+            current_data = cursor.fetchone()
+
+            if not current_data:
+                return False, "Original student not found.", None
+
+            current_id_number, current_first_name, current_last_name, current_gender, current_year_level, current_program_code = current_data
+
+            if (id_number == current_id_number and first_name == current_first_name and 
+                last_name == current_last_name and gender == current_gender and
+                str(year_level) == str(current_year_level) and program_code == current_program_code):
+                return False, "No changes detected.", None
+            
+            return True, None, None
+        finally:
+            cursor.close()
+
+    @staticmethod
     def edit_student(id_number, first_name, last_name, gender, year_level, program_code, original_id_number):
+        has_changes, message, field = Student.check_has_changes(id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
+
+        if not has_changes:
+            return False, message, field
+        
+        if Student.check_existing_id_number(id_number, original_id_number):
+            return False, "The ID Number you just entered already exists. Please enter a different ID Number.", "id_number"
+
         db = get_db()
         cursor = db.cursor()
         try:
@@ -70,10 +109,10 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
             )
             db.commit()
-            return True, "Student updated successfully."
+            return True, "Student updated successfully.", None
         except Exception as e:
             db.rollback()
-            return False, str(e)
+            return False, str(e), None
         finally:
             cursor.close()
 

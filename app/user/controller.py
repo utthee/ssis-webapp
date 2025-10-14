@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, session, flash, request
 from app.user.forms import SignupForm, LoginForm
-from app.models.user_models import User
+from app.models.users import User
 
 user_bp = Blueprint("user", __name__, template_folder="../templates")
 

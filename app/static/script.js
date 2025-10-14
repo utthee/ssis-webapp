@@ -165,12 +165,12 @@ $('#editStudentModal').on('show.bs.modal', function (event) {
     var yearLevel  = button.data('year-level');
     var program    = button.data('program-code');
 
-    modal.find('#idNumber').val(idNumber);
-    modal.find('#firstName').val(firstName);
-    modal.find('#lastName').val(lastName);
-    modal.find('#gender').val(gender);
-    modal.find('#yearLevel').val(yearLevel);
-    modal.find('#programCode').val(program);
+    modal.find('#editIdNumber').val(idNumber);
+    modal.find('#editFirstName').val(firstName);
+    modal.find('#editLastName').val(lastName);
+    modal.find('#editGender').val(gender);
+    modal.find('#editYearLevel').val(yearLevel);
+    modal.find('#editProgramCode').val(program);
     modal.find('#originalIdNumber').val(idNumber);
 });
 
@@ -178,6 +178,7 @@ $('#editStudentModal').on('show.bs.modal', function (event) {
 //SHOW EDIT STUDENT CONFIRMATION MESSAGE
 $('#editStudentForm').submit(function(e) {
     e.preventDefault();
+    $('#editStudentForm input').removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
@@ -191,14 +192,33 @@ $('#editStudentForm').submit(function(e) {
             alert(response.message);
         }
     }).fail(function (xhr) {
-        if (xhr.status === 400 && xhr.responseJSON) {
-            alert("Error: " + xhr.responseJSON.message);
+        if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
+            const response = xhr.responseJSON;
+
+            if (response.message === "No changes detected.") {
+                $("#editStudentModal").modal("hide");
+                return;
+            }
+
+            if (response.field == "id_number") {
+                $("#editIdNumber").addClass("is-invalid");
+                $("#editIdNumberError").text(response.message).show();
+                $("#editIdNumber").focus()
+            } else{
+                alert("Error: " + response.message);
+            }
         } else if (xhr.status === 403) {
             alert("CSRF token validation failed. Please refresh the page and try again.");
         } else {
             alert("Error: Something went wrong");
         }
     });
+});
+
+$("#editStudentModal").on("hidden.bs.modal", function() {
+    $("#editStudentForm")[0].reset();
+    $("#editStudentForm input").removeClass("is-invalid");
+    $("#editStudentForm .invalid-feedback").hide().text("");
 });
 
 
@@ -355,7 +375,12 @@ $('#editProgramForm').submit(function(e) {
         }
     }).fail(function (xhr) {
         if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
-            const response = xhr.responseJSON
+            const response = xhr.responseJSON;
+
+            if (response.message === "No changes detected.") {
+                $("#editProgramModal").modal("hide");
+                return;
+            }
 
             if (response.field == "program_code") {
                 $("#editProgramCode").addClass("is-invalid");
@@ -376,7 +401,7 @@ $('#editProgramForm').submit(function(e) {
     });
 });
 
-$("editProgramModal").on("hidden.bs.modal", function() {
+$("#editProgramModal").on("hidden.bs.modal", function() {
     $("#editProgramForm")[0].reset();
     $("#editProgramForm input").removeClass("is-invalid");
     $("#editProgramForm .invalid-feedback").hide().text("");
@@ -536,6 +561,11 @@ $("#editCollegeForm").submit(function (e) {
         if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
             const response = xhr.responseJSON;
             
+            if (response.message === "No changes detected.") {
+                $("#editCollegeModal").modal("hide");
+                return;
+            }
+
             if (response.field === "college_code") {
                 $("#editCollegeCode").addClass("is-invalid");
                 $("#editCollegeCodeError").text(response.message).show();

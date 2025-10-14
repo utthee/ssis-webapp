@@ -134,28 +134,29 @@
                 <div class="modal-body">
                     <input type="hidden" id="originalIdNumber" name="original_id_number">
                     <div class="mb-3">
-                        <label for="idNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="idNumber" name="id_number" placeholder="e.g. 2022-0001" readonly>
+                        <label for="editIdNumber" class="form-label">ID Number:</label>
+                        <input type="text" class="form-control" id="editIdNumber" name="id_number" placeholder="e.g. 2022-0001" maxlength="9" required>
+                        <div class="invalid-feedback" id="editIdNumberError"></div>
                     </div>
                     <div class="mb-3">
-                        <label for="firstName" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" maxlength="50" required>
+                        <label for="editFirstName" class="form-label">First Name:</label>
+                        <input type="text" class="form-control" id="editFirstName" name="first_name" placeholder="e.g. Juan Miguel" maxlength="50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="lastName" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" maxlength="50" required>
+                        <label for="editLastName" class="form-label">Last Name:</label>
+                        <input type="text" class="form-control" id="editLastName" name="last_name" placeholder="e.g. Dela Cruz" maxlength="50" required>
                     </div>
                     <div class="mb-3">
-                        <label for="gender" class="form-label">Gender:</label>
-                        <select class="form-select" id="gender" name="gender" required>
+                        <label for="editGender" class="form-label">Gender:</label>
+                        <select class="form-select" id="editGender" name="gender" required>
                             <option value="" selected disabled>Select gender</option>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="yearLevel" class="form-label">Year Level:</label>
-                        <select class="form-select" id="yearLevel" name="year_level" required>
+                        <label for="editYearLevel" class="form-label">Year Level:</label>
+                        <select class="form-select" id="editYearLevel" name="year_level" required>
                             <option value="" selected disabled>Select year level</option>
                             <option value="1">1</option>
                             <option value="1">2</option>
@@ -164,8 +165,8 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="programCode" class="form-label">Program Code:</label>
-                        <select class="form-select" id="programCode" name="program_code" required>
+                        <label for="editProgramCode" class="form-label">Program Code:</label>
+                        <select class="form-select" id="editProgramCode" name="program_code" required>
                             <option value="" selected disabled>Select a course</option>
                             {% for program in programs %}
                             <option value="{{ program.program_code }}">{{ program.program_code }} - {{ program.program_name }}</option>

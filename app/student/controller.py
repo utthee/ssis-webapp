@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.models.student_models import Student
+from app.models.students import Student
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
 
@@ -74,6 +74,8 @@ def edit_student():
     success, message, field = Student.edit_student(id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
 
     if not success:
+        if "already exists" in message.lower():
+            return jsonify(success=False, field=field, message=message), 409
         return jsonify(success=False, field=field, message=message), 400
 
     return jsonify(success=True, message=message), 200

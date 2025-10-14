@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, jsonify
-from app.models.college_models import College
+from app.models.colleges import College
 
 college_bp = Blueprint("college", __name__, template_folder="templates")
 

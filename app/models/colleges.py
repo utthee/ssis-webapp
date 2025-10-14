@@ -49,12 +49,39 @@ class College:
             cursor.close()
 
     @staticmethod
+    def check_has_changes(college_code, college_name, original_college_code):
+        db = get_db()
+        cursor = db.cursor()
+        
+        try:
+            cursor.execute(
+                "SELECT * FROM colleges WHERE college_code = %s",
+                (original_college_code,)
+            )
+            current_data = cursor.fetchone()
+            
+            current_college_code, current_college_name = current_data
+            
+            if college_code == current_college_code and college_name == current_college_name:
+                return False, "No changes detected.", None
+            
+            return True, None, None
+        finally:
+            cursor.close()
+
+    @staticmethod
     def edit_college(college_code, college_name, original_college_code):
+        has_changes, message, field = College.check_has_changes(college_code, college_name, original_college_code)
+    
+        if not has_changes:
+            return False, message, field
+
         if College.check_existing_college_code(college_code, exclude_original_college_code=original_college_code):
             return False, "College Code already exists. Please use a different code.", "college_code"
         
         db = get_db()
         cursor = db.cursor()
+
         try:
             cursor.execute(
                 "UPDATE colleges SET college_code = %s, college_name = %s WHERE college_code = %s",
@@ -62,6 +89,7 @@ class College:
             )
             db.commit()
             return True, "College updated successfully.", None
+            
         except Exception as e:
             db.rollback()
             return False, str(e), None

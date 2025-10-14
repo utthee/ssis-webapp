@@ -18,17 +18,17 @@
         <tbody>
             {% for program in programs %}
             <tr>
-                <th scope="row">{{ program.code }}</th>
-                <td>{{ program.name }}</td>
+                <th scope="row">{{ program.program_code }}</th>
+                <td>{{ program.program_name }}</td>
                 <td>{{ program.college_code }}</td>
                 <td>
                     <a href="#" class="btn btn-primary btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#editProgramModal" data-program-code="{{ program.code }}"
-                        data-program-name="{{ program.name }}" data-college-code="{{ program.college_code }}">
+                        data-bs-target="#editProgramModal" data-program-code="{{ program.program_code }}"
+                        data-program-name="{{ program.program_name }}" data-college-code="{{ program.college_code }}">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteProgramModal" data-program-code="{{ program.code }}">
+                        data-bs-target="#deleteProgramModal" data-program-code="{{ program.program_code }}">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </td>
@@ -59,20 +59,21 @@
                     <div class="mb-3">
                         <label for="registerProgramCode" class="form-label">Program Code:</label>
                         <input type="text" class="form-control" id="registerProgramCode" name="program_code"
-                            placeholder="e.g. BSCS" required>
+                            placeholder="e.g. BSCS" maxlength="20" required>
                         <div class="invalid-feedback" id="registerProgramCodeError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerProgramName" class="form-label">Program Name:</label>
                         <input type="text" class="form-control" id="registerProgramName" name="program_name"
-                            placeholder="e.g. Bachelor of Science in Computer Science" required>
+                            placeholder="e.g. Bachelor of Science in Computer Science" maxlength="255" required>
+                        <div class="invalid-feedback" id="registerProgramNameError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerCollegeCode" class="form-label">College Code:</label>
                         <select class="form-select" id="registerCollegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
                             {% for college in colleges %}
-                            <option value="{{ college.code }}">{{ college.code }} - {{ college.name }}</option>
+                            <option value="{{ college.college_code }}">{{ college.college_code }} - {{ college.college_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -110,14 +111,15 @@
                     <div class="mb-3">
                         <label for="editProgramCode" class="form-label">Program Code:</label>
                         <input type="text" class="form-control" id="editProgramCode" name="program_code"
-                            placeholder="e.g. BSCS" required>
+                            placeholder="e.g. BSCS" maxlength="20" required>
                         <div class="invalid-feedback" id="editProgramCodeError"></div>
                     </div>
 
                     <div class="mb-3">
                         <label for="editProgramName" class="form-label">Program Name:</label>
                         <input type="text" class="form-control" id="editProgramName" name="program_name"
-                            placeholder="e.g. Bachelor of Science in Computer Science" required>
+                            placeholder="e.g. Bachelor of Science in Computer Science" maxlength="255" required>
+                        <div class="invalid-feedback" id="editProgramNameError"></div>
                     </div>
 
                     <div class="mb-3">
@@ -125,7 +127,7 @@
                         <select class="form-select" id="editCollegeCode" name="college_code" required>
                             <option value="" selected disabled>Select a college</option>
                             {% for college in colleges %}
-                            <option value="{{ college.code }}">{{ college.code }}</option>
+                            <option value="{{ college.college_code }}">{{ college.college_code }}</option>
                             {% endfor %}
                         </select>
                     </div>

@@ -17,16 +17,16 @@
         <tbody>
             {% for college in colleges %}
             <tr>
-                <th scope="row">{{ college.code }}</th>
-                <td>{{ college.name }}</td>
+                <th scope="row">{{ college.college_code }}</th>
+                <td>{{ college.college_name }}</td>
                 <td>
                     <a href="#" class="btn btn-primary btn-edit" data-bs-toggle="modal"
-                        data-bs-target="#editCollegeModal" data-college-code="{{ college.code }}"
-                        data-college-name="{{ college.name }}">
+                        data-bs-target="#editCollegeModal" data-college-code="{{ college.college_code }}"
+                        data-college-name="{{ college.college_name }}">
                         <i class="bi bi-pencil-square"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
-                        data-bs-target="#deleteCollegeModal" data-college-code="{{ college.code }}">
+                        data-bs-target="#deleteCollegeModal" data-college-code="{{ college.college_code }}">
                         <i class="bi bi-trash"></i> Delete
                     </a>
                 </td>
@@ -58,13 +58,14 @@
                     <div class="mb-3">
                         <label for="registerCollegeCode" class="form-label">College Code</label>
                         <input type="text" class="form-control" id="registerCollegeCode" name="college_code" placeholder="e.g. CCS"
-                            required>
+                             maxlength="20" required>
                         <div class="invalid-feedback" id="registerCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registerCollegeName" class="form-label">College Name</label>
                         <input type="text" class="form-control" id="registerCollegeName" name="college_name"
-                            placeholder="e.g. College of Computer Studies" required>
+                            placeholder="e.g. College of Computer Studies" maxlength="255" required>
+                        <div class="invalid-feedback" id="registerCollegeNameError"></div>
                     </div>
                 </div>
 
@@ -99,13 +100,14 @@
                     <div class="mb-3">
                         <label for="editCollegeCode" class="form-label">College Code:</label>
                         <input type="text" class="form-control" id="editCollegeCode" name="college_code" placeholder="e.g. CCS"
-                            required>
+                            maxlength="20" required>
                         <div class="invalid-feedback" id="editCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="editCollegeName" class="form-label">College Name:</label>
                         <input type="text" class="form-control" id="editCollegeName" name="college_name"
-                            placeholder="e.g. College of Computer Studies" required>
+                            placeholder="e.g. College of Computer Studies" maxlength="255" required>
+                        <div class="invalid-feedback" id="editCollegeNameError"></div>
                     </div>
                 </div>
 

@@ -299,7 +299,11 @@ $("#registerProgramForm").submit(function(e) {
                 $("#registerProgramCode").addClass("is-invalid");
                 $("#registerProgramCodeError").text(response.message).show();
                 $("#registerProgramCode").focus()
-            } else {
+            } else if (response.field == "program_name") {
+                $("#registerProgramName").addClass("is-invalid");
+                $("#registerProgramNameError").text(response.message).show();
+                $("#registerProgramName").focus()
+            } else{
                 alert("Error: " + response.message);
             }
         } else if (xhr.status === 403) {
@@ -336,6 +340,7 @@ $('#editProgramModal').on('show.bs.modal', function (event) {
 // SHOW EDIT PROGRAM CONFIRMATION MESSAGE
 $('#editProgramForm').submit(function(e) {
     e.preventDefault();
+    $('#editProgramForm input').removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
@@ -356,7 +361,11 @@ $('#editProgramForm').submit(function(e) {
                 $("#editProgramCode").addClass("is-invalid");
                 $("#editProgramCodeError").text(response.message).show();
                 $("#editProgramCode").focus()
-            } else {
+            } else if (response.field == "program_name") {
+                $("#editProgramName").addClass("is-invalid");
+                $("#editProgramNameError").text(response.message).show();
+                $("#editProgramName").focus()
+            } else{
                 alert("Error: " + response.message);
             }
         } else if (xhr.status === 403) {
@@ -471,6 +480,10 @@ $("#registerCollegeForm").submit(function(e) {
                 $("#registerCollegeCode").addClass("is-invalid");
                 $("#registerCollegeCodeError").text(response.message).show();
                 $("#registerCollegeCode").focus();
+            } else if (response.field === "college_name") {
+                $("#registerCollegeName").addClass("is-invalid");
+                $("#registerCollegeNameError").text(response.message).show();
+                $("#registerCollegeName").focus();
             } else {
                 alert("Error: " + response.message);
             }
@@ -505,6 +518,7 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
 // SHOW EDIT COLLEGE CONFIRMATION MESSAGE
 $("#editCollegeForm").submit(function (e) {
     e.preventDefault();
+    $("#editCollegeForm input").removeClass("is-invalid");
 
     $.post($(this).attr("action"), $(this).serialize(), function (response) {
         if (response.success) {
@@ -526,6 +540,10 @@ $("#editCollegeForm").submit(function (e) {
                 $("#editCollegeCode").addClass("is-invalid");
                 $("#editCollegeCodeError").text(response.message).show();
                 $("#editCollegeCode").focus();
+            } else if (response.field === "college_name") {
+                $("#editCollegeName").addClass("is-invalid");
+                $("#editCollegeNameError").text(response.message).show();
+                $("#editCollegeName").focus();
             } else {
                 alert("Error: " + response.message);
             }

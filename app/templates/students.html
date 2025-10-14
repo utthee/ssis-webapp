@@ -67,16 +67,16 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="registerIdNumber" class="form-label">ID Number:</label>
-                        <input type="text" class="form-control" id="registerIdNumber" name="id_number" placeholder="e.g. 2022-0001" pattern="^\d{4}-\d{4}$" required>
+                        <input type="text" class="form-control" id="registerIdNumber" name="id_number" placeholder="e.g. 2022-0001" pattern="^\d{4}-\d{4}$" maxlength="9" required>
                         <div class="invalid-feedback" id="registerIdNumberError"></div>
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" required>
+                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" maxlength="50" required>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" required>
+                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" maxlength="50" required>
                     </div>
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender:</label>
@@ -101,7 +101,7 @@
                         <select class="form-select" id="programCode" name="program_code" required>
                             <option value="" selected disabled>Select a course</option>
                             {% for program in programs %}
-                            <option value="{{ program.code }}">{{ program.code }} - {{ program.name }}</option>
+                            <option value="{{ program.program_code }}">{{ program.program_code }} - {{ program.program_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -139,11 +139,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="firstName" class="form-label">First Name:</label>
-                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" required>
+                        <input type="text" class="form-control" id="firstName" name="first_name" placeholder="e.g. Juan Miguel" maxlength="50" required>
                     </div>
                     <div class="mb-3">
                         <label for="lastName" class="form-label">Last Name:</label>
-                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" required>
+                        <input type="text" class="form-control" id="lastName" name="last_name" placeholder="e.g. Dela Cruz" maxlength="50" required>
                     </div>
                     <div class="mb-3">
                         <label for="gender" class="form-label">Gender:</label>
@@ -168,7 +168,7 @@
                         <select class="form-select" id="programCode" name="program_code" required>
                             <option value="" selected disabled>Select a course</option>
                             {% for program in programs %}
-                            <option value="{{ program.code }}">{{ program.code }} - {{ program.name }}</option>
+                            <option value="{{ program.program_code }}">{{ program.program_code }} - {{ program.program_name }}</option>
                             {% endfor %}
                         </select>
                     </div>

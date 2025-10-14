@@ -8,7 +8,7 @@ class Student:
         cursor.execute("SELECT * FROM programs ORDER BY program_code ASC")
         programs = cursor.fetchall()
         cursor.close()
-        return [{"code": column[0], "name": column[1], "college_code": column[2]} for column in programs]
+        return [{"program_code": column[0], "program_name": column[1], "college_code": column[2]} for column in programs]
 
     @staticmethod
     def get_all_students():
@@ -43,7 +43,7 @@ class Student:
     @staticmethod
     def register_student(id_number, first_name, last_name, gender, year_level, program_code):
         if Student.check_existing_id_number(id_number):
-            return False, "The ID Number you just entered already exists. Please enter a different ID Number."
+            return False, "The ID Number you just entered already exists. Please enter a different ID Number.", "id_number"
 
         db = get_db()
         cursor = db.cursor()
@@ -53,10 +53,10 @@ class Student:
                 (id_number, first_name, last_name, gender, year_level, program_code)
             )
             db.commit()
-            return True, "Student registered successfully."
+            return True, "Student registered successfully.", None
         except Exception as e:
             db.rollback()
-            return False, str(e)
+            return False, str(e), None
         finally:
             cursor.close()
 

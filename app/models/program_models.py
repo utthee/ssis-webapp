@@ -8,7 +8,7 @@ class Program:
         cursor.execute("SELECT * FROM colleges ORDER BY college_code ASC")
         colleges = cursor.fetchall()
         cursor.close()
-        return [{"code": column[0], "name": column[1]} for column in colleges]
+        return [{"college_code": column[0], "college_name": column[1]} for column in colleges]
 
     @staticmethod
     def get_all_programs():
@@ -17,7 +17,7 @@ class Program:
         cursor.execute("SELECT * FROM programs ORDER BY program_code ASC")
         programs = cursor.fetchall()
         cursor.close()
-        return [{"code": column[0], "name": column[1], "college_code": column[2]} for column in programs]
+        return [{"program_code": column[0], "program_name": column[1], "college_code": column[2]} for column in programs]
     
     @staticmethod
     def check_existing_program_code(program_code, exclude_original_program_code=None):
@@ -41,7 +41,7 @@ class Program:
     @staticmethod
     def register_program(program_code, program_name, college_code):
         if Program.check_existing_program_code(program_code):
-            return False, "Program Code already exists. Please use a different code."
+            return False, "Program Code already exists. Please use a different code.", "program_code"
 
         db = get_db()
         cursor = db.cursor()
@@ -51,17 +51,17 @@ class Program:
                 (program_code, program_name, college_code)
             )
             db.commit()
-            return True, "Program registered successfully."
+            return True, "Program registered successfully.", None
         except Exception as e:
             db.rollback()
-            return False, str(e)
+            return False, str(e), None
         finally:
             cursor.close()
 
     @staticmethod
     def edit_program(program_code, program_name, college_code, original_program_code):
         if Program.check_existing_program_code(program_code, original_program_code):
-            return False, "Program Code already exists. Please use a different code."
+            return False, "Program Code already exists. Please use a different code.", "program_code"
 
         db = get_db()
         cursor = db.cursor()
@@ -71,10 +71,10 @@ class Program:
                 (program_code, program_name, college_code, original_program_code)
             )
             db.commit()
-            return True, "Program updated successfully."
+            return True, "Program updated successfully.", None
         except Exception as e:
             db.rollback()
-            return False, str(e)
+            return False, str(e), None
         finally:
             cursor.close()
 

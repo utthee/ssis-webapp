@@ -28,12 +28,12 @@ def register_program():
     if not college_code:
         return jsonify(success=False, field="college_code", message="College code is required."), 400
     
-    success, message = Program.register_program(program_code, program_name, college_code)
+    success, message, field = Program.register_program(program_code, program_name, college_code)
 
     if not success:
         if "already exists" in message.lower():
-            return jsonify(success=False, field="program_code", message=message), 409
-        return jsonify(success=False, field="program_code", message=message), 400
+            return jsonify(success=False, field=field, message=message), 409
+        return jsonify(success=False, field=field, message=message), 400
 
     return jsonify(success=True, message=message), 201
 
@@ -53,12 +53,12 @@ def edit_program():
     if not original_program_code:
         return jsonify(success=False, message="Original code is missing."), 400
     
-    success, message = Program.edit_program(program_code, program_name, college_code, original_program_code)
+    success, message, field = Program.edit_program(program_code, program_name, college_code, original_program_code)
 
     if not success:
         if "already exists" in message.lower():
-            return jsonify(success=False, field="program_code", message=message), 409
-        return jsonify(success=False, field="program_code", message=message), 400
+            return jsonify(success=False, field=field, message=message), 409
+        return jsonify(success=False, field=field, message=message), 400
 
     return jsonify(success=True, message=message), 200
 

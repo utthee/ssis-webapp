@@ -22,12 +22,12 @@ def register_college():
     if not college_name:
         return jsonify(success=False, field="college_name", message="College name is required."), 400
 
-    success, message = College.register_college(college_code, college_name)
+    success, message, field = College.register_college(college_code, college_name)
 
     if not success:
         if "already exists" in message.lower():
-            return jsonify(success=False, field="college_code", message=message), 409
-        return jsonify(success=False, field="college_code", message=message), 400
+            return jsonify(success=False, field=field, message=message), 409
+        return jsonify(success=False, field=field, message=message), 400
 
     return jsonify(success=True, message=message), 201
 
@@ -44,12 +44,12 @@ def edit_college():
     if not original_college_code:
         return jsonify(success=False, message="Original code is missing."), 400
 
-    success, message = College.edit_college(college_code, college_name, original_college_code)
+    success, message, field = College.edit_college(college_code, college_name, original_college_code)
 
     if not success:
         if "already exists" in message.lower():
-            return jsonify(success=False, field="college_code", message=message), 409
-        return jsonify(success=False, field="college_code", message=message), 400
+            return jsonify(success=False, field=field, message=message), 409
+        return jsonify(success=False, field=field, message=message), 400
 
     return jsonify(success=True, message=message), 200
 

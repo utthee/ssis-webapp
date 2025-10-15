@@ -96,7 +96,8 @@
             <form id="editCollegeForm" method="POST" action="{{ url_for('college.edit_college') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
                 <div class="modal-body">
-                    <input type="hidden" id="originalCollegeCode" name="original_code">
+                    <input type="hidden" id="originalCollegeCode" name="original_college_code">
+                    <input type="hidden" id="originalCollegeName" name="original_college_name">
                     <div class="mb-3">
                         <label for="editCollegeCode" class="form-label">College Code:</label>
                         <input type="text" class="form-control" id="editCollegeCode" name="college_code" placeholder="e.g. CCS"

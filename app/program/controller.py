@@ -43,6 +43,7 @@ def edit_program():
     program_name = request.form.get("program_name", "").strip().title()
     college_code = request.form.get("college_code", "").strip().upper()
     original_program_code = request.form.get("original_program_code", "").strip().upper()
+    original_program_name = request.form.get("original_program_name", "").strip().title()
 
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
@@ -51,9 +52,11 @@ def edit_program():
     if not college_code:
         return jsonify(success=False, field="college_code", message="College code is required."), 400
     if not original_program_code:
-        return jsonify(success=False, message="Original code is missing."), 400
+        return jsonify(success=False, message="Original program code is missing."), 400
+    if not original_program_name:
+        return jsonify(success=False, message="Original program name is missing."), 400
     
-    success, message, field = Program.edit_program(program_code, program_name, college_code, original_program_code)
+    success, message, field = Program.edit_program(program_code, program_name, college_code, original_program_code, original_program_name)
 
     if not success:
         if "already exists" in message.lower():

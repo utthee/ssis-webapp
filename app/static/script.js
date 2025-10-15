@@ -354,6 +354,7 @@ $('#editProgramModal').on('show.bs.modal', function (event) {
     modal.find('#editProgramName').val(programName);
     modal.find('#editCollegeCode').val(collegeCode);
     modal.find('#originalProgramCode').val(programCode);
+    modal.find('#originalProgramName').val(programName);
 });
 
 
@@ -537,6 +538,7 @@ $('#editCollegeModal').on('show.bs.modal', function (event) {
     modal.find('#editCollegeCode').val(collegeCode);
     modal.find('#editCollegeName').val(collegeName);
     modal.find('#originalCollegeCode').val(collegeCode);
+    modal.find('#originalCollegeName').val(collegeName);
 });
 
 

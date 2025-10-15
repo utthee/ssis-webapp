@@ -30,9 +30,30 @@ class College:
             cursor.close()
 
     @staticmethod
+    def check_existing_college_name(college_name, exclude_original_college_name=None):
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            if exclude_original_college_name:
+                cursor.execute(
+                    "SELECT college_name FROM colleges WHERE college_name =%s AND college_name != %s",
+                    (college_name, exclude_original_college_name,)
+                )
+            else:
+                cursor.execute(
+                    "SELECT college_name FROM colleges WHERE college_name =%s",
+                    (college_name,)
+                )
+            return cursor.fetchone()
+        finally:
+            cursor.close()
+
+    @staticmethod
     def register_college(college_code, college_name):
         if College.check_existing_college_code(college_code):
-            return False, "College Code already exists. Please use a different code.", "college_code"
+            return False, "The college code you entered already exists. Please use a different code.", "college_code"
+        if College.check_existing_college_name(college_name):
+            return False, "The college name you entered already exists. Please use a different name.", "college_name"
 
         db = get_db()
         cursor = db.cursor()
@@ -70,14 +91,16 @@ class College:
             cursor.close()
 
     @staticmethod
-    def edit_college(college_code, college_name, original_college_code):
+    def edit_college(college_code, college_name, original_college_code, original_college_name):
         has_changes, message, field = College.check_has_changes(college_code, college_name, original_college_code)
     
         if not has_changes:
             return False, message, field
 
         if College.check_existing_college_code(college_code, exclude_original_college_code=original_college_code):
-            return False, "College Code already exists. Please use a different code.", "college_code"
+            return False, "The college code you entered already exists. Please use a different code.", "college_code"
+        if College.check_existing_college_name(college_name, exclude_original_college_name=original_college_name):
+            return False, "The college name you entered already exists. Please use a different name.", "college_name"
         
         db = get_db()
         cursor = db.cursor()

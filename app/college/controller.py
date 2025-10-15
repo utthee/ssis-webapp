@@ -35,16 +35,19 @@ def register_college():
 def edit_college():
     college_code = request.form.get("college_code", "").strip().upper()
     college_name = request.form.get("college_name", "").strip().title()
-    original_college_code = request.form.get("original_code", "").strip().upper()
+    original_college_code = request.form.get("original_college_code", "").strip().upper()
+    original_college_name = request.form.get("original_college_name", "").strip().title()
 
     if not college_code:
         return jsonify(success=False, field="college_code", message="College code is required."), 400
     if not college_name:
         return jsonify(success=False, field="college_name", message="College name is required."), 400
     if not original_college_code:
-        return jsonify(success=False, message="Original code is missing."), 400
+        return jsonify(success=False, message="Original college name is missing."), 400
+    if not original_college_name:
+        return jsonify(success=False, message="Original college name is missing."), 400
 
-    success, message, field = College.edit_college(college_code, college_name, original_college_code)
+    success, message, field = College.edit_college(college_code, college_name, original_college_code, original_college_name)
 
     if not success:
         if "already exists" in message.lower():

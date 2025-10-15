@@ -39,9 +39,30 @@ class Program:
             cursor.close()
 
     @staticmethod
+    def check_existing_program_name(program_name, exclude_original_program_name=None):
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            if exclude_original_program_name:
+                cursor.execute(
+                    "SELECT program_name FROM programs WHERE program_name = %s AND program_name != %s",
+                    (program_name, exclude_original_program_name,)
+                )
+            else:
+                cursor.execute(
+                    "SELECT program_name FROM programs WHERE program_name = %s",
+                    (program_name,)
+                )
+            return cursor.fetchone() is not None
+        finally:
+            cursor.close()
+
+    @staticmethod
     def register_program(program_code, program_name, college_code):
         if Program.check_existing_program_code(program_code):
-            return False, "Program Code already exists. Please use a different code.", "program_code"
+            return False, "The program code you entered already exists. Please use a different code.", "program_code"
+        if Program.check_existing_program_name(program_name):
+            return False, "The program name you entered already exists. Please try a different one.", "program_name"
 
         db = get_db()
         cursor = db.cursor()
@@ -80,14 +101,16 @@ class Program:
             cursor.close()
 
     @staticmethod
-    def edit_program(program_code, program_name, college_code, original_program_code):
+    def edit_program(program_code, program_name, college_code, original_program_code, original_program_name):
         has_changes, message, field = Program.check_has_changes(program_code, program_name, college_code, original_program_code)
 
         if not has_changes:
             return False, message, field
 
-        if Program.check_existing_program_code(program_code, original_program_code):
-            return False, "Program Code already exists. Please use a different code.", "program_code"
+        if Program.check_existing_program_code(program_code, exclude_original_program_code=original_program_code):
+            return False, "The program code you entered already exists. Please use a different code.", "program_code"
+        if Program.check_existing_program_name(program_name, exclude_original_program_name=original_program_name):
+            return False, "The program name you entered already exists. Please try a different one.", "program_name"
 
         db = get_db()
         cursor = db.cursor()

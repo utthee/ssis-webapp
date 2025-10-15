@@ -77,9 +77,6 @@ class Student:
             )
             current_data = cursor.fetchone()
 
-            if not current_data:
-                return False, "Original student not found.", None
-
             current_id_number, current_first_name, current_last_name, current_gender, current_year_level, current_program_code = current_data
 
             if (id_number == current_id_number and first_name == current_first_name and 

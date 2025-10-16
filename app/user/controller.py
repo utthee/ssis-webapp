@@ -45,4 +45,5 @@ def signup():
 @user_bp.route("/logout", methods=["POST"])
 def logout():
     session.clear()
+    flash("You have logged out.", "logout")
     return redirect(url_for("user.login"))

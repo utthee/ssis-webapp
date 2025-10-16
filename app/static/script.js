@@ -1,15 +1,3 @@
-// TOAST GREETINGS
-$(document).ready(function() {
-    $('.toast').each(function() {
-        $(this).toast('show');
-    });
-});
-
-// DATA TABLE INITIALIZATION
-$(document).ready(function(){
-    $('#data-table').DataTable();
-});
-
 // CHART INITIALIZATION
 document.addEventListener("DOMContentLoaded", () => {
     const chartCanvas = document.getElementById("donutChart");
@@ -75,6 +63,18 @@ $('.modal').on('hidden.bs.modal', function () {
     document.activeElement.blur();
 });
 
+// TOAST GREETINGS
+$(document).ready(function() {
+    $('.toast').each(function() {
+        $(this).toast('show');
+    });
+});
+
+// DATA TABLE INITIALIZATION
+$(document).ready(function(){
+    $('#data-table').DataTable();
+});
+
 // -------------    EVENT HANDLER   -------------
 //
 //                  EVENT HANDLER
@@ -91,6 +91,15 @@ $("#registerIdNumber").on("keypress input", function (e) {
     }
 });
 
+$("#firstName, #lastName").on("keypress input", function (e) {
+    if (e.type === "keypress" && !/[a-zA-Z\s]/.test(e.key)) {
+        e.preventDefault();
+    }
+    if (e.type === "input") {
+        $(this).val($(this).val().replace(/[^a-zA-Z\s]/g, ''));
+    }
+});
+
 $("#registerProgramCode, #editProgramCode, #registerCollegeCode, #editCollegeCode").on("keypress input", function (e) {
     if (e.type === "keypress" && !/[a-zA-Z]/.test(e.key)) {
         e.preventDefault();
@@ -100,12 +109,12 @@ $("#registerProgramCode, #editProgramCode, #registerCollegeCode, #editCollegeCod
     }
 });
 
-$("#firstName, #lastName, #registerProgramName, #editProgramName, #registerCollegeName, #editCollegeName").on("keypress input", function (e) {
-    if (e.type === "keypress" && !/[a-zA-Z\s]/.test(e.key)) {
+$("#registerProgramName, #editProgramName, #registerCollegeName, #editCollegeName").on("keypress input", function (e) {
+    if (e.type === "keypress" && !/[a-zA-Z\s,]/.test(e.key)) {
         e.preventDefault();
     }
     if (e.type === "input") {
-        $(this).val($(this).val().replace(/[^a-zA-Z\s]/g, ''));
+        $(this).val($(this).val().replace(/[^a-zA-Z\s,]/g, ''));
     }
 });
 

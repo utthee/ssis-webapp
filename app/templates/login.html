@@ -2,7 +2,7 @@
 {% block title %}Login{% endblock %}
 
 {% block body %}
-<form method="post">
+<form method="POST">
     {{ form.hidden_tag() }}
 
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
@@ -20,20 +20,11 @@
                 {% endfor %}
             </div>
 
-            <div class="mb-3">
+            <div class="mb-4">
                 {{ form.password(class="form-control form-control-lg bg-light fs-6" + (" is-invalid" if form.password.errors else ""), placeholder="Password") }}
                 {% for error in form.password.errors %}
                     <small class="text-danger">{{ error }}</small>
                 {% endfor %}
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="form-check">
-                    {{ form.remember(class="form-check-input", id="formCheck") }}
-                    <label for="formCheck" class="form-check-label text-secondary">
-                        <small>Remember Me</small>
-                    </label>
-                </div>
             </div>
 
             {{ form.submit(class="btn btn-success btn-lg w-100 mb-3") }}

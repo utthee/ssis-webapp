@@ -5,8 +5,27 @@
     <h3>Manage Colleges</h3>
     <p style="font-size: 20px;">Create, organize, and maintain information about all colleges.</p>
 
+    <!-- COLLEGE DATA -->
+    <div class="row mb-3">
+        <div class="col-md-12 d-flex justify-content-left align-items-left gap-2">
+            <div>
+                <label for="searchByFilterCollege" class="form-label mb-0">&nbsp;Search Filter</label>
+                <select id="searchByFilterCollege" class="form-select" style="width: 180px;">
+                    <option value="-1">Global</option>
+                    <option value="0">College Code</option>
+                    <option value="1">College Name</option>
+                </select>
+            </div>
 
-    <table id="data-table" class="table table-striped table-hover">
+            <div>
+                <label for="searchFieldCollege" class="form-label mb-0">&nbsp;Search</label>
+                <input type="text" id="searchFieldCollege" class="form-control" placeholder="Type here..."
+                    style="width: 200px;">
+            </div>
+        </div>
+    </div>
+
+    <table id="college-table" class="table table-striped table-hover">
         <thead>
             <tr>
                 <th scope="col">College Code</th>
@@ -57,8 +76,8 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="registerCollegeCode" class="form-label">College Code</label>
-                        <input type="text" class="form-control" id="registerCollegeCode" name="college_code" placeholder="e.g. CCS"
-                             maxlength="20" required>
+                        <input type="text" class="form-control" id="registerCollegeCode" name="college_code"
+                            placeholder="e.g. CCS" maxlength="20" required>
                         <div class="invalid-feedback" id="registerCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
@@ -94,14 +113,14 @@
             </div>
 
             <form id="editCollegeForm" method="POST" action="{{ url_for('college.edit_college') }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <input type="hidden" id="originalCollegeCode" name="original_college_code">
                     <input type="hidden" id="originalCollegeName" name="original_college_name">
                     <div class="mb-3">
                         <label for="editCollegeCode" class="form-label">College Code:</label>
-                        <input type="text" class="form-control" id="editCollegeCode" name="college_code" placeholder="e.g. CCS"
-                            maxlength="20" required>
+                        <input type="text" class="form-control" id="editCollegeCode" name="college_code"
+                            placeholder="e.g. CCS" maxlength="20" required>
                         <div class="invalid-feedback" id="editCollegeCodeError"></div>
                     </div>
                     <div class="mb-3">
@@ -127,7 +146,8 @@
 </div>
 
 <!-- DELETE COLLEGE MODAL -->
-<div class="modal" id="deleteCollegeModal" tabindex="-1" aria-labelledby="deleteCollegeModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteCollegeModal" tabindex="-1" aria-labelledby="deleteCollegeModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -142,13 +162,13 @@
             </div>
             <div class="modal-footer justify-content-right">
                 <form id="deleteCollegeForm" method="POST" action="{{ url_for('college.delete_college') }}">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                     <input type="hidden" id="deleteCollegeCode" name="college_code">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"> 
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                         <i class="bi bi-x-lg"></i> Cancel
                     </button>
-                    <button type="submit" class="btn btn-danger"> 
-                        <i class="bi bi-trash"></i> Confirm 
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash"></i> Confirm
                     </button>
                 </form>
             </div>

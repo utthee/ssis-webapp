@@ -71,8 +71,47 @@ $(document).ready(function() {
 });
 
 // DATA TABLE INITIALIZATION
-$(document).ready(function(){
-    $('#data-table').DataTable();
+$(document).ready(function () {
+    function initializeTableSearch(tableId, filterId, searchId, pageLength = 10) {
+        if ($(tableId).length === 0) {
+            return;
+        }
+
+        const dataTable = $(tableId).DataTable({
+            pageLength: pageLength,
+            lengthChange: false,
+            searching: true,
+            dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7 d-flex justify-content-end"p>>',
+        });
+
+        const filterSelect = $(filterId);
+        const searchInput = $(searchId);
+
+        if (filterSelect.length && searchInput.length) {
+            searchInput.on("keyup", function () {
+                const searchValue = $(this).val();
+                const columnIndex = parseInt(filterSelect.val());
+
+                dataTable.search("").columns().search("");
+
+                if (columnIndex === -1) {
+                    dataTable.search(searchValue);
+                } else {
+                    dataTable.column(columnIndex).search(searchValue);
+                }
+                
+                dataTable.draw();
+            });
+
+            filterSelect.on("change", function () {
+                searchInput.val("");
+                dataTable.search("").columns().search("").draw();
+            });
+        }
+    }
+    initializeTableSearch("#college-table", "#searchByFilterCollege", "#searchFieldCollege");
+    initializeTableSearch("#program-table", "#searchByFilterProgram", "#searchFieldProgram");
+    initializeTableSearch("#student-table", "#searchByFilterStudent", "#searchFieldStudent");
 });
 
 // -------------    EVENT HANDLER   -------------

@@ -32,5 +32,4 @@ class SignupForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField("Username", [validators.DataRequired(), validators.Length(min=3, max=25)])
     password = PasswordField("Password", [validators.DataRequired()])
-    remember = BooleanField("Remember Me")
     submit = SubmitField("Login")

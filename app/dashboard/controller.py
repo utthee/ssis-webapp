@@ -14,9 +14,8 @@ def dashboard():
     # ENUMERATE TOP RANKING PROGRAMS
     top_programs = list(enumerate(top_programs, start=1))
 
-    # LABELS AND DATA USED FOR THE DONUT CHART
-    labels = [row[0] for row in programs_per_college]
-    data = [row[1] for row in programs_per_college]
+    # ENUMERATE COLLEGES WITH THE MOST NUMBER OF PROGRAMS
+    programs_per_college = list(enumerate(programs_per_college, start=1))
 
     return render_template(
         "dashboard.html",
@@ -25,8 +24,7 @@ def dashboard():
         total_programs=total_programs,
         total_colleges=total_colleges,
         top_programs=top_programs,
-        labels=labels,
-        data=data
+        programs_per_college=programs_per_college
     )
 
 @dashboard_bp.route("/")

@@ -145,6 +145,7 @@ body {
 
 .logout-list {
   margin-top: auto;
+  margin-bottom: 0;
 }
 
 .sidebar-link.active {

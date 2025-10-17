@@ -21,14 +21,37 @@ a:active {
     text-decoration: none;
 }
 
-.main {
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    background: #efefef;
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #dedede;
 }
 
-/* -----------  DASHBORAD   ----------- */
+.d-flex {
+    display: flex;
+}
+
+.main {
+    width: 100%;
+    background: #efefef;
+    margin-left: 300px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.main.animate-sidebar {
+    transition: margin-left 0.25s ease-in-out;
+}
+
+#sidebar.collapsed ~ .main {
+    margin-left: 75px;
+}
+
+#sidebar.collapsed {
+    width: 75px;
+}
+
+/* -----------  DASHBOARD   ----------- */
 .card-link {
   cursor: pointer;
 }
@@ -46,12 +69,17 @@ a:active {
 /* ---------- SIDEBAR ---------- */
 
 #sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 300px;
-    min-width: 60px;
+    height: 100vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding-bottom: 15px;
+    z-index: 1000;
 }
 
 #sidebar.collapsed {
@@ -170,7 +198,24 @@ a.sidebar-link:hover:not(.active) .sidebar-label {
     font-weight: 500;
 }
 
-/* ---------- NAVBAR BUTTONS ---------- */
+/* ---------- NAVBAR ---------- */
+
+.navbar {
+    position: sticky;
+    top: 0;
+    padding: 1.15rem 1.5rem;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-shrink: 0;
+}
+
+main {
+    flex: 1;
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* ---------- NAVBAR BUTTON ---------- */
 
 .toggler-btn {
     margin-left: 1rem;
@@ -203,10 +248,6 @@ a.sidebar-link:hover:not(.active) .sidebar-label {
     color: #222;
 }
 
-.navbar {
-    padding: 1.15rem 1.5rem;
-}
-
 .sidebar-navbar {
     flex: 1 1 auto;
 }
@@ -225,27 +266,15 @@ a.sidebar-link:hover:not(.active) .sidebar-label {
     font-size: 1.125rem;
 }
 
-
-/* ---------- LOGIN --------- */
-body {
-    font-family: 'Poppins', sans-serif;
-    background: #dedede;
-}
-/*------------ Login container ------------*/
-.box-area{
-    width: 400x;
-}
-/*------------ Right box ------------*/
-.right-box{
-    padding: 40px 30px 40px 40px;
-}
-/*------------ Custom Placeholder ------------*/
+/*------------ LOGIN AND SIGNUP CARD ------------*/
 ::placeholder{
     font-size: 16px;
 }
+
 .rounded-4{
     border-radius: 20px;
 }
+
 .rounded-5{
     border-radius: 30px;
 }

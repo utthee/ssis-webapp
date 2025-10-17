@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // TOGGLE BUTTON FOR SIDEBAR COLLAPSE/EXPAND
 $(".toggler-btn").click(function() {
     $("#sidebar").addClass("animate");
-    
+    $(".main").addClass("animate-sidebar");
     $("#sidebar").toggleClass("collapsed");
     
     if ($("#sidebar").hasClass("collapsed")) {
@@ -41,6 +41,7 @@ $(".toggler-btn").click(function() {
     
     setTimeout(function() {
         $("#sidebar").removeClass("animate");
+        $(".main").removeClass("animate-sidebar");
     }, 250);
 });
 

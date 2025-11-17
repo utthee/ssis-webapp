@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, redirect, url_for
 from app.models.dashboard import Dashboard
+from app.auth import login_required
 
 dashboard_bp = Blueprint("dashboard", __name__)
 
 @dashboard_bp.route("/dashboard")
+@login_required
 def dashboard():
     total_students = Dashboard.get_total_students()
     total_programs = Dashboard.get_total_programs()
@@ -26,7 +28,3 @@ def dashboard():
         top_programs=top_programs,
         programs_per_college=programs_per_college
     )
-
-@dashboard_bp.route("/")
-def login():
-    return redirect(url_for("user.login"))

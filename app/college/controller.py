@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.models.colleges import College
+from app.auth import login_required
 
 college_bp = Blueprint("college", __name__, template_folder="templates")
 
 @college_bp.route("/colleges")
+@login_required
 def colleges():
     colleges_list = College.get_all_colleges()
     return render_template(
@@ -13,6 +15,7 @@ def colleges():
     )
 
 @college_bp.route("/colleges/register", methods=["POST"])
+@login_required
 def register_college():
     college_code = request.form.get("college_code", "").strip().upper()
     college_name = request.form.get("college_name", "").strip().title()
@@ -32,6 +35,7 @@ def register_college():
     return jsonify(success=True, message=message), 201
 
 @college_bp.route("/colleges/edit", methods=["POST"])
+@login_required
 def edit_college():
     college_code = request.form.get("college_code", "").strip().upper()
     college_name = request.form.get("college_name", "").strip().title()
@@ -57,6 +61,7 @@ def edit_college():
     return jsonify(success=True, message=message), 200
 
 @college_bp.route("/colleges/delete", methods=["POST"])
+@login_required
 def delete_college():
     college_code = request.form.get("college_code", "").strip().upper()
 

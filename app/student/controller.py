@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.models.students import Student
+from app.auth import login_required
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
 
 @student_bp.route("/students")
+@login_required
 def students():
     programs_list = Student.get_all_programs()
     students_list = Student.get_all_students()
@@ -17,6 +19,7 @@ def students():
 
 
 @student_bp.route("/students/register", methods=["POST"])
+@login_required
 def register_student():
     id_number = request.form.get("id_number", "").strip()
     first_name = request.form.get("first_name", "").strip().title()
@@ -49,6 +52,7 @@ def register_student():
 
 
 @student_bp.route("/students/edit", methods=["POST"])
+@login_required
 def edit_student():
     id_number = request.form.get("id_number", "").strip()
     first_name = request.form.get("first_name", "").strip().title()
@@ -82,6 +86,7 @@ def edit_student():
 
 
 @student_bp.route("/students/delete", methods=["POST"])
+@login_required
 def delete_student():
     id_number = request.form.get("id_number", "").strip()
 

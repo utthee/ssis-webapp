@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.models.programs import Program
+from app.auth import login_required
 
 program_bp = Blueprint("program", __name__, template_folder="templates")
 
 @program_bp.route("/programs")
+@login_required
 def programs():
     colleges_list = Program.get_all_colleges()
     programs_list = Program.get_all_programs()
@@ -16,6 +18,7 @@ def programs():
     )
 
 @program_bp.route("/programs/register", methods=["POST"])
+@login_required
 def register_program():
     program_code = request.form.get("program_code", "").strip().upper()
     program_name = request.form.get("program_name", "").strip().title()
@@ -38,6 +41,7 @@ def register_program():
     return jsonify(success=True, message=message), 201
 
 @program_bp.route("/programs/edit", methods=["POST"])
+@login_required
 def edit_program():
     program_code = request.form.get("program_code", "").strip().upper()
     program_name = request.form.get("program_name", "").strip().title()
@@ -66,6 +70,7 @@ def edit_program():
     return jsonify(success=True, message=message), 200
 
 @program_bp.route("/programs/delete", methods=["POST"])
+@login_required
 def delete_program():
     code = request.form.get("program_code", "").strip().upper()
 

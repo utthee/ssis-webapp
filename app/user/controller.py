@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, redirect, url_for, session, flash, request
 from app.user.forms import SignupForm, LoginForm
 from app.models.users import User
+from app.auth import login_required, already_logged_in
 
 user_bp = Blueprint("user", __name__, template_folder="../templates")
 
 @user_bp.route("/login", methods=["GET", "POST"])
+@already_logged_in
 def login():
     form = LoginForm()
 
@@ -24,6 +26,7 @@ def login():
     return render_template("login.html", form=form)
 
 @user_bp.route("/signup", methods=["GET", "POST"])
+@already_logged_in
 def signup():
     form = SignupForm()
 
@@ -43,6 +46,7 @@ def signup():
 
 
 @user_bp.route("/logout", methods=["POST"])
+@login_required
 def logout():
     session.clear()
     flash("You have logged out.", "logout")

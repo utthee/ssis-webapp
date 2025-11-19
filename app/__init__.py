@@ -4,6 +4,7 @@ from flask import Flask, redirect, url_for, session
 from flask_wtf.csrf import CSRFProtect
 
 from app.database import close_db
+from app.auth import login_required
 
 # IMPORT ALL BLUEPRINTS
 from app.user import user_bp
@@ -26,6 +27,7 @@ def create_app():
     app.register_blueprint(dashboard_bp)
 
     @app.route("/")
+    @login_required
     def index():
         if "user_id" in session:
             return redirect(url_for("dashboard.dashboard"))

@@ -23,7 +23,8 @@ class Student:
                 "last_name": column[2],
                 "gender": column[3], 
                 "year_level": column[4], 
-                "program_code": column[5]} 
+                "program_code": column[5],
+                "photo_url": column[6]} 
                 for column in students_data]
     
     @staticmethod
@@ -47,7 +48,7 @@ class Student:
             cursor.close()
 
     @staticmethod
-    def register_student(id_number, first_name, last_name, gender, year_level, program_code):
+    def register_student(id_number, first_name, last_name, gender, year_level, program_code, photo_url):
         if Student.check_existing_id_number(id_number):
             return False, "The ID Number you just entered already exists. Please enter a different ID Number.", "id_number"
 
@@ -55,8 +56,8 @@ class Student:
         cursor = db.cursor()
         try:
             cursor.execute(
-                "INSERT INTO students (id_number, first_name, last_name, gender, year_level, program_code) VALUES (%s, %s, %s, %s, %s, %s)",
-                (id_number, first_name, last_name, gender, year_level, program_code)
+                "INSERT INTO students (id_number, first_name, last_name, gender, year_level, program_code, photo_url) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                (id_number, first_name, last_name, gender, year_level, program_code, photo_url)
             )
             db.commit()
             return True, "Student registered successfully.", None
@@ -81,7 +82,7 @@ class Student:
 
             if (id_number == current_id_number and first_name == current_first_name and 
                 last_name == current_last_name and gender == current_gender and
-                str(year_level) == str(current_year_level) and program_code == current_program_code):
+                year_level == current_year_level and program_code == current_program_code):
                 return False, "No changes detected.", None
             
             return True, None, None

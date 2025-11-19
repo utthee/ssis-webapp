@@ -32,6 +32,7 @@
     <table id="student-table" class="table table-striped table-hover">
         <thead>
             <tr>
+                <th scope="col">Photo</th>
                 <th scope="col">ID Number</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
@@ -44,6 +45,11 @@
         <tbody>
             {% for student in students %}
             <tr data-id-number="{{ student.id_number }}">
+                <td>
+                    <img src="{{ student.photo_url }}" 
+                         alt="{{ student.first_name }} {{ student.last_name }}" 
+                         class="rounded-circle">
+                </td>
                 <th scope="row">{{ student.id_number }}</th>
                 <td>{{ student.first_name }}</td>
                 <td>{{ student.last_name }}</td>
@@ -89,6 +95,31 @@
             <form id="registerStudentForm" method="POST" action="{{ url_for('student.register_student') }}">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="studentPhoto" class="form-label d-block text-center">Student Photo:</label>
+                        
+                        <!-- Image Preview Container -->
+                        <div class="d-flex justify-content-center mb-3">
+                            <img id="registerImagePreview" 
+                                 src="https://via.placeholder.com/200x200?text=No+Image" 
+                                 alt="Photo Preview" 
+                                 class="img-thumbnail"
+                                 style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                        </div>
+                        
+                        <input type="file" 
+                               class="form-control" 
+                               id="studentPhoto" 
+                               name="student_photo" 
+                               accept="image/*">
+                        
+                        <button type="button" 
+                                id="clearRegisterImage" 
+                                class="btn btn-sm btn-outline-danger mt-2" 
+                                style="display: none;">
+                            <i class="bi bi-x-circle"></i> Clear Image
+                        </button>
+                    </div>
                     <div class="mb-3">
                         <label for="registerIdNumber" class="form-label">ID Number:</label>
                         <input type="text" class="form-control" id="registerIdNumber" name="id_number"

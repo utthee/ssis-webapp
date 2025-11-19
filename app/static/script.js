@@ -157,32 +157,41 @@ $(document).ready(function () {
         e.preventDefault();
         $("#registerStudentForm input").removeClass("is-invalid");
 
-        $.post($(this).attr("action"), $(this).serialize(), function (response) {
-            if (response.success) {
-                $("#registerStudentModal").modal("hide");
+        var formData = new FormData(this);
 
-                sessionStorage.setItem('showRegisterStudentSuccess', 'true');
-
-                location.reload();
-
-            } else {
-                alert(response.message);
-            }
-        }).fail(function (xhr) {
-            if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
-                const response = xhr.responseJSON;
-
-                if (response.field == "id_number") {
-                    $("#registerIdNumber").addClass("is-invalid");
-                    $("#registerIdNumberError").text(response.message).show();
-                    $("#registerIdNumber").focus()
+        $.ajax({
+            url: $(this).attr("action"),
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
+                    $("#registerStudentModal").modal("hide");
+                    sessionStorage.setItem('showRegisterStudentSuccess', 'true');
+                    location.reload();
                 } else {
-                    alert("Error: " + response.message);
+                    alert(response.message);
                 }
-            } else if (xhr.status === 403) {
-                alert("CSRF token validation failed. Please refresh the page and try again.");
-            } else {
-                alert("Error: Something went wrong");
+            },
+            error: function (xhr) {
+                if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
+                    const response = xhr.responseJSON;
+
+                    if (response.field == "id_number") {
+                        $("#registerIdNumber").addClass("is-invalid");
+                        $("#registerIdNumberError").text(response.message).show();
+                        $("#registerIdNumber").focus();
+                    } else if (response.field == "student_photo") {
+                        alert("Photo Error: " + response.message);
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                } else if (xhr.status === 403) {
+                    alert("CSRF token validation failed. Please refresh the page and try again.");
+                } else {
+                    alert("Error: Something went wrong");
+                }
             }
         });
     });
@@ -191,6 +200,9 @@ $(document).ready(function () {
         $("#registerStudentForm")[0].reset();
         $("#registerStudentForm input").removeClass("is-invalid");
         $("#registerStudentForm .invalid-feedback").hide().text("");
+        
+        $('#registerImagePreview').attr('src', 'https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/student-photos/default-profile.png');
+        $('#clearRegisterImage').hide();
     });
 });
 
@@ -259,6 +271,7 @@ $(document).ready(function () {
         var gender = button.data('gender');
         var yearLevel = button.data('year-level');
         var program = button.data('program-code');
+        var photoUrl = button.data('photo-url');
 
         modal.find('#editIdNumber').val(idNumber);
         modal.find('#editFirstName').val(firstName);
@@ -267,6 +280,12 @@ $(document).ready(function () {
         modal.find('#editYearLevel').val(yearLevel);
         modal.find('#editProgramCode').val(program);
         modal.find('#originalIdNumber').val(idNumber);
+        modal.find('#currentPhotoUrl').val(photoUrl);
+        
+        $('#editImagePreview').attr('src', photoUrl || 'https://via.placeholder.com/200x200?text=No+Image');
+        $('#clearEditImage').hide();
+        
+        modal.data('originalPhotoUrl', photoUrl);
     });
 });
 
@@ -277,37 +296,46 @@ $(document).ready(function () {
         e.preventDefault();
         $('#editStudentForm input').removeClass("is-invalid");
 
-        $.post($(this).attr("action"), $(this).serialize(), function (response) {
-            if (response.success) {
-                $("#editStudentModal").modal("hide");
+        var formData = new FormData(this);
 
-                sessionStorage.setItem('showEditStudentSuccess', 'true');
-
-                location.reload();
-
-            } else {
-                alert(response.message);
-            }
-        }).fail(function (xhr) {
-            if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
-                const response = xhr.responseJSON;
-
-                if (response.message === "No changes detected.") {
+        $.ajax({
+            url: $(this).attr("action"),
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.success) {
                     $("#editStudentModal").modal("hide");
-                    return;
-                }
-
-                if (response.field == "id_number") {
-                    $("#editIdNumber").addClass("is-invalid");
-                    $("#editIdNumberError").text(response.message).show();
-                    $("#editIdNumber").focus()
+                    sessionStorage.setItem('showEditStudentSuccess', 'true');
+                    location.reload();
                 } else {
-                    alert("Error: " + response.message);
+                    alert(response.message);
                 }
-            } else if (xhr.status === 403) {
-                alert("CSRF token validation failed. Please refresh the page and try again.");
-            } else {
-                alert("Error: Something went wrong");
+            },
+            error: function (xhr) {
+                if ((xhr.status === 400 || xhr.status === 409) && xhr.responseJSON) {
+                    const response = xhr.responseJSON;
+
+                    if (response.message === "No changes detected.") {
+                        $("#editStudentModal").modal("hide");
+                        return;
+                    }
+
+                    if (response.field == "id_number") {
+                        $("#editIdNumber").addClass("is-invalid");
+                        $("#editIdNumberError").text(response.message).show();
+                        $("#editIdNumber").focus();
+                    } else if (response.field == "student_photo") {
+                        alert("Photo Error: " + response.message);
+                    } else {
+                        alert("Error: " + response.message);
+                    }
+                } else if (xhr.status === 403) {
+                    alert("CSRF token validation failed. Please refresh the page and try again.");
+                } else {
+                    alert("Error: Something went wrong");
+                }
             }
         });
     });
@@ -316,6 +344,47 @@ $(document).ready(function () {
         $("#editStudentForm")[0].reset();
         $("#editStudentForm input").removeClass("is-invalid");
         $("#editStudentForm .invalid-feedback").hide().text("");
+        
+        $('#editImagePreview').attr('src', 'https://via.placeholder.com/200x200?text=No+Image');
+        $('#clearEditImage').hide();
+        $('#editStudentPhoto').val('');
+    });
+});
+
+// IMAGE PREVIEW FOR EDIT STUDENT MODAL
+$(document).ready(function() {
+    $('#editStudentPhoto').on('change', function(e) {
+        const file = e.target.files[0];
+        
+        if (file) {
+            const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
+            if (!validTypes.includes(file.type)) {
+                alert('Please select a valid image file (JPG, PNG, or GIF)');
+                $(this).val('');
+                return;
+            }
+            
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('File size must be less than 5MB');
+                $(this).val('');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#editImagePreview').attr('src', e.target.result);
+                $('#clearEditImage').show();
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+    
+    $('#clearEditImage').on('click', function() {
+        $('#editStudentPhoto').val('');
+        const originalPhotoUrl = $('#editStudentModal').data('originalPhotoUrl');
+        $('#editImagePreview').attr('src', originalPhotoUrl || 'https://via.placeholder.com/200x200?text=No+Image');
+        $(this).hide();
     });
 });
 

@@ -61,7 +61,7 @@
                         data-bs-target="#editStudentModal" data-id-number="{{ student.id_number }}"
                         data-first-name="{{ student.first_name }}" data-last-name="{{ student.last_name }}"
                         data-gender="{{ student.gender }}" data-year-level="{{ student.year_level }}"
-                        data-program-code="{{ student.program_code }}">
+                        data-program-code="{{ student.program_code }}" data-photo-url="{{ student.photo_url or '' }}">
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
@@ -98,10 +98,8 @@
                     <div class="mb-3">
                         <label for="studentPhoto" class="form-label d-block text-center">Student Photo:</label>
                         
-                        <!-- Image Preview Container -->
                         <div class="d-flex justify-content-center mb-3">
-                            <img id="registerImagePreview" 
-                                 src="https://via.placeholder.com/200x200?text=No+Image" 
+                            <img id="registerImagePreview"
                                  alt="Photo Preview" 
                                  class="img-thumbnail"
                                  style="max-width: 200px; max-height: 200px; object-fit: cover;">
@@ -192,6 +190,28 @@
                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
                 <div class="modal-body">
                     <input type="hidden" id="originalIdNumber" name="original_id_number">
+                    <input type="hidden" id="currentPhotoUrl" name="current_photo_url">
+                    
+                    <div class="mb-3">
+                        <label for="editStudentPhoto" class="form-label d-block text-center">Student Photo:</label>
+                        <div class="d-flex justify-content-center mb-3">
+                            <img id="editImagePreview" 
+                                 alt="Photo Preview" 
+                                 class="img-thumbnail"
+                                 style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                        </div>
+                        <input type="file" 
+                               class="form-control" 
+                               id="editStudentPhoto" 
+                               name="student_photo" 
+                               accept="image/*">
+                        <button type="button" 
+                                id="clearEditImage" 
+                                class="btn btn-sm btn-outline-danger mt-2" 
+                                style="display: none;">
+                            <i class="bi bi-x-circle"></i> Clear New Image
+                        </button>
+                    </div>
                     <div class="mb-3">
                         <label for="editIdNumber" class="form-label">ID Number:</label>
                         <input type="text" class="form-control" id="editIdNumber" name="id_number"
@@ -221,7 +241,7 @@
                         <select class="form-select" id="editYearLevel" name="year_level" required>
                             <option value="" selected disabled>Select year level</option>
                             <option value="1">1</option>
-                            <option value="1">2</option>
+                            <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
                         </select>

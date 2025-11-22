@@ -2,12 +2,9 @@ from flask import Blueprint, render_template, request, jsonify
 from app.models.students import Student
 from app.auth import login_required
 from werkzeug.utils import secure_filename
-import os
+from config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_PROFILE_URL
 from supabase import create_client
 
-SUPABASE_URL = os.getenv("SUPABASE_DB_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
-DEFAULT_PROFILE_URL = "https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/ssis-student-photos/default-profile.png"
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
@@ -22,7 +19,8 @@ def students():
         "students.html",
         page_title="Students",
         students=students_list,
-        programs=programs_list
+        programs=programs_list,
+        default_profile_url=DEFAULT_PROFILE_URL
     )
 
 

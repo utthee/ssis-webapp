@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Students{% endblock %}
 {% block body %}
+<script>
+    window.APP_CONFIG = window.APP_CONFIG || {};
+    window.APP_CONFIG.DEFAULT_PROFILE_IMAGE = "{{ default_profile_url }}";
+</script>
+
 <div class="container-fluid p-4 rounded-4 bg-white shadow-sm">
     <h3>Manage Students</h3>
     <p style="font-size: 20px;">Add, edit, or track student information.</p>

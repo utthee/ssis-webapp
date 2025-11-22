@@ -261,7 +261,7 @@ $(document).ready(function() {
 
 //POPULATE STUDENT EDIT FORM
 $(document).ready(function () {
-    const DEFAULT_PROFILE_IMAGE = "https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/ssis-student-photos/default-profile.png";
+    const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $('#editStudentModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
@@ -373,8 +373,9 @@ $(document).ready(function () {
     });
 });
 
+// IMAGE PREVIEW FOR EDIT STUDENT MODAL
 $(document).ready(function() {
-    const DEFAULT_PROFILE_IMAGE = "{{ DEFAULT_PROFILE_URL }}";
+    const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $('#editStudentPhoto').on('change', function(e) {
         const file = e.target.files[0];

@@ -64,6 +64,10 @@ $(document).ready(function () {
             dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7 d-flex justify-content-end"p>>',
             columnDefs: [
                 {
+                    targets: 0,
+                    orderable: false,
+                },
+                {
                     targets: -1,
                     orderable: false,
                 },

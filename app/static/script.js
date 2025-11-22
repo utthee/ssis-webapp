@@ -206,55 +206,51 @@ $(document).ready(function () {
     });
 });
 
-// IMAGE PREVIEW FOR STUDENT PHOTO
-document.addEventListener('DOMContentLoaded', function() {
-    const studentPhotoInput = document.getElementById('studentPhoto');
-    const registerImagePreview = document.getElementById('registerImagePreview');
-    const clearRegisterImageBtn = document.getElementById('clearRegisterImage');
-    const registerStudentModal = document.getElementById('registerStudentModal');
-    const defaultImageUrl = 'https://via.placeholder.com/200x200?text=No+Image';
-    
-    studentPhotoInput.addEventListener('change', function(e) {
+// IMAGE PREVIEW FOR REGISTER STUDENT MODAL
+$(document).ready(function() {
+    $('#studentPhoto').on('change', function(e) {
         const file = e.target.files[0];
         
         if (file) {
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
             if (!validTypes.includes(file.type)) {
                 alert('Please select a valid image file (JPG, PNG, or GIF)');
-                studentPhotoInput.value = '';
+                $(this).val('');
                 return;
             }
             
             const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
                 alert('File size must be less than 5MB');
-                studentPhotoInput.value = '';
+                $(this).val('');
                 return;
             }
             
             const reader = new FileReader();
-            
             reader.onload = function(e) {
-                registerImagePreview.src = e.target.result;
-                clearRegisterImageBtn.style.display = 'inline-block';
+                $('#registerImagePreview').attr('src', e.target.result).show();
+                $('#registerPhotoPlaceholder').hide();
+                $('#clearRegisterImage').show();
             }
-            
             reader.readAsDataURL(file);
         }
     });
     
-    clearRegisterImageBtn.addEventListener('click', function() {
-        studentPhotoInput.value = '';
-        registerImagePreview.src = defaultImageUrl;
-        this.style.display = 'none';
+    $('#clearRegisterImage').on('click', function() {
+        $('#studentPhoto').val('');
+        $('#registerImagePreview').hide();
+        $('#registerPhotoPlaceholder').show();
+        $(this).hide();
     });
     
-    registerStudentModal.addEventListener('hidden.bs.modal', function() {
-        studentPhotoInput.value = '';
-        registerImagePreview.src = defaultImageUrl;
-        clearRegisterImageBtn.style.display = 'none';
-        
-        document.getElementById('registerStudentForm').reset();
+    $('#registerStudentModal').on('hidden.bs.modal', function () {
+        $('#registerStudentForm')[0].reset();
+        $('#registerImagePreview').hide();
+        $('#registerPhotoPlaceholder').show();
+        $('#clearRegisterImage').hide();
+        $('#studentPhoto').val('');
+        $('#registerStudentForm input').removeClass('is-invalid');
+        $('#registerStudentForm .invalid-feedback').hide().text('');
     });
 });
 

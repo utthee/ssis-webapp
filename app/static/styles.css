@@ -320,3 +320,17 @@ main {
     object-fit: cover;
     border: 2px solid;
 }
+
+#editStudentPhoto {
+    color: transparent;
+}
+
+#editStudentPhoto::-webkit-file-upload-button {
+    visibility: visible;
+    color: initial;
+}
+
+#editStudentPhoto::file-selector-button {
+    visibility: visible;
+    color: initial;
+}

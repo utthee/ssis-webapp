@@ -7,6 +7,7 @@ from supabase import create_client
 
 SUPABASE_URL = os.getenv("SUPABASE_DB_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
+DEFAULT_PROFILE_URL = "https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/ssis-student-photos/default-profile.png"
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
@@ -38,7 +39,7 @@ def register_student():
 
         photo = request.files.get("student_photo")
         
-        photo_url = "https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/ssis-student-photos/default-profile.png"
+        photo_url = DEFAULT_PROFILE_URL
 
         if not id_number:
             return jsonify(success=False, field="id_number", message="ID number is required."), 400
@@ -117,9 +118,10 @@ def edit_student():
     year_level = request.form.get("year_level", "").strip()
     program_code = request.form.get("program_code", "").strip().upper()
     original_id_number = request.form.get("original_id_number", "")
+    remove_photo = request.form.get("remove_photo", "false") == "true"
     
     photo = request.files.get("student_photo")
-    photo_url = None
+    photo_url = "KEEP_EXISTING"
 
     if not id_number:
         return jsonify(success=False, field="id_number", message="ID number is required."), 400
@@ -134,13 +136,25 @@ def edit_student():
     if not program_code:
         return jsonify(success=False, field="program_code", message="Program code is required."), 400
     
-    if photo and photo.filename:
+    if remove_photo:
+        try:
+            old_files = supabase.storage.from_("ssis-student-photos").list("students")
+            for file in old_files:
+                if file['name'].startswith(original_id_number + "."):
+                    supabase.storage.from_("ssis-student-photos").remove([f"students/{file['name']}"])
+            
+            photo_url = DEFAULT_PROFILE_URL
+            
+        except Exception as e:
+            return jsonify(success=False, field="student_photo", message=f"Failed to remove photo: {str(e)}"), 500
+    
+    elif photo and photo.filename:
         allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
         filename = secure_filename(photo.filename)
         file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
         
         if file_ext not in allowed_extensions:
-            return jsonify(success=False, field="student_photo", message="Invalid file type."), 400
+            return jsonify(success=False, field="student_photo", message="Invalid file type. Only PNG, JPG, JPEG, and GIF are allowed."), 400
         
         try:
             storage_filename = f"{id_number}.{file_ext}"

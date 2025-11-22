@@ -261,6 +261,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //POPULATE STUDENT EDIT FORM
 $(document).ready(function () {
+    const DEFAULT_PROFILE_IMAGE = "https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/ssis-student-photos/default-profile.png";
+    
     $('#editStudentModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         var modal = $(this);
@@ -282,10 +284,27 @@ $(document).ready(function () {
         modal.find('#originalIdNumber').val(idNumber);
         modal.find('#currentPhotoUrl').val(photoUrl);
         
-        $('#editImagePreview').attr('src', photoUrl || 'https://via.placeholder.com/200x200?text=No+Image');
+        const isDefaultOrNoPhoto = !photoUrl || 
+                                   photoUrl === '' || 
+                                   photoUrl === 'None' || 
+                                   photoUrl === 'null' || 
+                                   photoUrl === DEFAULT_PROFILE_IMAGE;
+        
+        if (!isDefaultOrNoPhoto) {
+            $('#editImagePreview').attr('src', photoUrl).show();
+            $('#editPhotoPlaceholder').hide();
+            $('#removePhotoBtn').show().prop('disabled', false).html('<i class="bi bi-trash"></i> Remove Photo');
+        } else {
+            $('#editImagePreview').hide();
+            $('#editPhotoPlaceholder').show();
+            $('#removePhotoBtn').hide();
+        }
+        
         $('#clearEditImage').hide();
+        $('#removePhotoFlag').val('false');
         
         modal.data('originalPhotoUrl', photoUrl);
+        modal.data('isDefaultPhoto', isDefaultOrNoPhoto);
     });
 });
 
@@ -345,14 +364,18 @@ $(document).ready(function () {
         $("#editStudentForm input").removeClass("is-invalid");
         $("#editStudentForm .invalid-feedback").hide().text("");
         
-        $('#editImagePreview').attr('src', 'https://via.placeholder.com/200x200?text=No+Image');
+        $('#editImagePreview').hide();
+        $('#editPhotoPlaceholder').show();
         $('#clearEditImage').hide();
+        $('#removePhotoBtn').hide();
         $('#editStudentPhoto').val('');
+        $('#removePhotoFlag').val('false');
     });
 });
 
-// IMAGE PREVIEW FOR EDIT STUDENT MODAL
 $(document).ready(function() {
+    const DEFAULT_PROFILE_IMAGE = "{{ DEFAULT_PROFILE_URL }}";
+    
     $('#editStudentPhoto').on('change', function(e) {
         const file = e.target.files[0];
         
@@ -370,20 +393,27 @@ $(document).ready(function() {
                 $(this).val('');
                 return;
             }
+
+            $('#removePhotoFlag').val('false');
             
             const reader = new FileReader();
             reader.onload = function(e) {
-                $('#editImagePreview').attr('src', e.target.result);
-                $('#clearEditImage').show();
+                $('#editImagePreview').attr('src', e.target.result).show();
+                $('#editPhotoPlaceholder').hide();
+                $('#removePhotoBtn').show().prop('disabled', false).html('<i class="bi bi-trash"></i> Remove Photo');
+                $('#clearEditImage').hide();
             }
             reader.readAsDataURL(file);
         }
     });
     
-    $('#clearEditImage').on('click', function() {
+    $('#removePhotoBtn').on('click', function() {
+        const isDefaultPhoto = $('#editStudentModal').data('isDefaultPhoto');
+
+        $('#removePhotoFlag').val('true');
         $('#editStudentPhoto').val('');
-        const originalPhotoUrl = $('#editStudentModal').data('originalPhotoUrl');
-        $('#editImagePreview').attr('src', originalPhotoUrl || 'https://via.placeholder.com/200x200?text=No+Image');
+        $('#editImagePreview').hide();
+        $('#editPhotoPlaceholder').show();
         $(this).hide();
     });
 });

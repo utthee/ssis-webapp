@@ -86,7 +86,7 @@ class Student:
 
             if (id_number == current_id_number and first_name == current_first_name and 
                 last_name == current_last_name and gender == current_gender and
-                year_level == current_year_level and program_code == current_program_code and
+                str(year_level) == str(current_year_level) and program_code == current_program_code and
                 photo_url == current_photo_url):
                 return False, "No changes detected.", None
             

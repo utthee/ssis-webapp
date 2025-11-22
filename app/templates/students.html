@@ -46,9 +46,8 @@
             {% for student in students %}
             <tr data-id-number="{{ student.id_number }}">
                 <td>
-                    <img src="{{ student.photo_url }}" 
-                         alt="{{ student.first_name }} {{ student.last_name }}" 
-                         class="rounded-circle">
+                    <img src="{{ student.photo_url }}" alt="{{ student.first_name }} {{ student.last_name }}"
+                        class="rounded-circle">
                 </td>
                 <th scope="row">{{ student.id_number }}</th>
                 <td>{{ student.first_name }}</td>
@@ -97,24 +96,16 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="studentPhoto" class="form-label d-block text-center">Student Photo:</label>
-                        
+
                         <div class="d-flex justify-content-center mb-3">
-                            <img id="registerImagePreview"
-                                 alt="Photo Preview" 
-                                 class="img-thumbnail"
-                                 style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                            <img id="registerImagePreview" alt="Photo Preview" class="img-thumbnail"
+                                style="max-width: 200px; max-height: 200px; object-fit: cover;">
                         </div>
-                        
-                        <input type="file" 
-                               class="form-control" 
-                               id="studentPhoto" 
-                               name="student_photo" 
-                               accept="image/*">
-                        
-                        <button type="button" 
-                                id="clearRegisterImage" 
-                                class="btn btn-sm btn-outline-danger mt-2" 
-                                style="display: none;">
+
+                        <input type="file" class="form-control" id="studentPhoto" name="student_photo" accept="image/*">
+
+                        <button type="button" id="clearRegisterImage" class="btn btn-sm btn-outline-danger mt-2"
+                            style="display: none;">
                             <i class="bi bi-x-circle"></i> Clear Image
                         </button>
                     </div>
@@ -191,26 +182,34 @@
                 <div class="modal-body">
                     <input type="hidden" id="originalIdNumber" name="original_id_number">
                     <input type="hidden" id="currentPhotoUrl" name="current_photo_url">
-                    
+
                     <div class="mb-3">
                         <label for="editStudentPhoto" class="form-label d-block text-center">Student Photo:</label>
-                        <div class="d-flex justify-content-center mb-3">
-                            <img id="editImagePreview" 
-                                 alt="Photo Preview" 
-                                 class="img-thumbnail"
-                                 style="max-width: 200px; max-height: 200px; object-fit: cover;">
+                        <div class="d-flex justify-content-center mb-3 position-relative">
+                            <div id="editPhotoPlaceholder"
+                                class="d-flex align-items-center justify-content-center bg-light border rounded-circle"
+                                style="width: 200px; height: 200px;">
+                                <i class="bi bi-person-circle" style="font-size: 100px; color: #ccc;"></i>
+                            </div>
+
+                            <img id="editImagePreview" alt="Photo Preview"
+                                class="img-thumbnail rounded-circle position-absolute"
+                                style="width: 200px; height: 200px; object-fit: cover; display: none;">
                         </div>
-                        <input type="file" 
-                               class="form-control" 
-                               id="editStudentPhoto" 
-                               name="student_photo" 
-                               accept="image/*">
-                        <button type="button" 
-                                id="clearEditImage" 
-                                class="btn btn-sm btn-outline-danger mt-2" 
+
+                        <input type="file" class="d-none" id="editStudentPhoto" name="student_photo" accept="image/*">
+
+                        <label for="editStudentPhoto" class="btn btn-primary w-100" style="cursor: pointer;">
+                            <i class="bi bi-upload"></i> Upload Photo
+                        </label>
+
+                        <input type="hidden" id="removePhotoFlag" name="remove_photo" value="false">
+                        <div class="d-grid mt-2">
+                            <button type="button" id="removePhotoBtn" class="btn btn-outline-danger"
                                 style="display: none;">
-                            <i class="bi bi-x-circle"></i> Clear New Image
-                        </button>
+                                <i class="bi bi-trash"></i> Remove Photo
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="editIdNumber" class="form-label">ID Number:</label>

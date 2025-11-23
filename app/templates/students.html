@@ -49,7 +49,10 @@
         </thead>
         <tbody>
             {% for student in students %}
-            <tr data-id-number="{{ student.id_number }}">
+            <tr data-id-number="{{ student.id_number }}" data-first-name="{{ student.first_name }}"
+                data-last-name="{{ student.last_name }}" data-gender="{{ student.gender }}"
+                data-year-level="{{ student.year_level }}" data-program-code="{{ student.program_code }}"
+                data-photo-url="{{ student.photo_url or '' }}">
                 <td>
                     <img src="{{ student.photo_url }}" alt="{{ student.first_name }} {{ student.last_name }}"
                         class="rounded-circle">
@@ -83,6 +86,57 @@
         <i class="bi bi-plus-lg"></i> Register
     </a>
 
+</div>
+
+<!-- STUDENT DETAILS MODAL -->
+<div class="modal fade" id="studentDetailsModal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Student Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex justify-content-center mb-3 position-relative" style="width: 200px; height: 200px; margin: 0 auto;">
+                    <div id="detailsPhotoPlaceholder"
+                        class="d-flex align-items-center justify-content-center bg-light border rounded-circle"
+                        style="width: 200px; height: 200px;">
+                        <i class="bi bi-person-circle" style="font-size: 100px; color: #ccc;"></i>
+                    </div>
+                    
+                    <img id="detailsStudentPhoto" src="" alt="Student Photo" 
+                        class="img-thumbnail rounded-circle position-absolute top-0 start-0" 
+                        style="width: 200px; height: 200px; object-fit: cover; display: none;">
+                </div>
+                <div class="mb-3">
+                    <label for="details-id-number" class="col-form-label">ID Number:</label>
+                    <input type="text" class="form-control" id="details-id-number" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="details-full-name" class="col-form-label">Full Name:</label>
+                    <input type="text" class="form-control" id="details-full-name" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="details-gender" class="col-form-label">Gender:</label>
+                    <input type="text" class="form-control" id="details-gender" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="details-year-level" class="col-form-label">Year Level:</label>
+                    <input type="text" class="form-control" id="details-year-level" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="details-program" class="col-form-label">Program:</label>
+                    <input type="text" class="form-control" id="details-program" readonly>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- REGISTER STUDENT MODAL -->

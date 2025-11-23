@@ -259,6 +259,55 @@ $(document).ready(function() {
 });
 
 
+// POPULATE STUDENT DETAILS MODAL
+$(document).ready(function() {
+    const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
+    
+    $('#student-table tbody').on('click', 'tr', function(e) {
+        if ($(e.target).closest('.btn-edit, .btn-delete, a, button').length) {
+            return;
+        }
+        
+        const row = $(this);
+        const idNumber = row.data('id-number');
+        const firstName = row.data('first-name');
+        const lastName = row.data('last-name');
+        const fullName = `${firstName} ${lastName}`;
+        const gender = row.data('gender');
+        const yearLevel = row.data('year-level');
+        const program = row.data('program-code');
+        const photoUrl = row.data('photo-url');
+        
+        const isDefaultOrNoPhoto = !photoUrl || 
+                                   photoUrl === '' || 
+                                   photoUrl === 'None' || 
+                                   photoUrl === 'null' || 
+                                   photoUrl === DEFAULT_PROFILE_IMAGE;
+        
+        $('#details-id-number').val(idNumber);
+        $('#details-full-name').val(fullName);
+        $('#details-gender').val(gender);
+        $('#details-year-level').val(yearLevel);
+        $('#details-program').val(program);
+        
+        if (isDefaultOrNoPhoto) {
+            $('#detailsStudentPhoto').hide();
+            $('#detailsPhotoPlaceholder').show();
+        } else {
+            $('#detailsStudentPhoto').attr('src', photoUrl).show();
+            $('#detailsPhotoPlaceholder').hide();
+        }
+        
+        $('#studentDetailsModal').modal('show');
+    });
+    
+    $('#studentDetailsModal').on('hidden.bs.modal', function () {
+        $('#detailsStudentPhoto').hide();
+        $('#detailsPhotoPlaceholder').show();
+    });
+});
+
+
 //POPULATE STUDENT EDIT FORM
 $(document).ready(function () {
     const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;

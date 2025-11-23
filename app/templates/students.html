@@ -98,15 +98,16 @@
             </div>
 
             <div class="modal-body">
-                <div class="d-flex justify-content-center mb-3 position-relative" style="width: 200px; height: 200px; margin: 0 auto;">
+                <div class="d-flex justify-content-center mb-3 position-relative"
+                    style="width: 200px; height: 200px; margin: 0 auto;">
                     <div id="detailsPhotoPlaceholder"
                         class="d-flex align-items-center justify-content-center bg-light border rounded-circle"
                         style="width: 200px; height: 200px;">
                         <i class="bi bi-person-circle" style="font-size: 100px; color: #ccc;"></i>
                     </div>
-                    
-                    <img id="detailsStudentPhoto" src="" alt="Student Photo" 
-                        class="img-thumbnail rounded-circle position-absolute top-0 start-0" 
+
+                    <img id="detailsStudentPhoto" src="" alt="Student Photo"
+                        class="img-thumbnail rounded-circle position-absolute top-0 start-0"
                         style="width: 200px; height: 200px; object-fit: cover; display: none;">
                 </div>
                 <div class="mb-3">
@@ -174,10 +175,12 @@
                             <i class="bi bi-upload"></i> Upload Photo
                         </label>
 
-                        <button type="button" id="clearRegisterImage" class="btn btn-outline-danger"
-                            style="display: none;">
-                            <i class="bi bi-trash"></i> Remove Photo
-                        </button>
+                        <div class="d-grid mt-0">
+                            <button type="button" id="clearRegisterImage" class="btn btn-outline-danger"
+                                style="display: none;">
+                                <i class="bi bi-trash"></i> Remove Photo
+                            </button>
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label for="registerIdNumber" class="form-label">ID Number:</label>

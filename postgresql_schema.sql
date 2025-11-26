@@ -8,24 +8,24 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE IF NOT EXISTS users
 (
     id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(254) NOT NULL UNIQUE,
+    password TEXT NOT NULL
 );
 
 -- Create colleges table
 CREATE TABLE IF NOT EXISTS colleges
 (
-    college_code VARCHAR(20) PRIMARY KEY,
-    college_name VARCHAR(255) NOT NULL
+    college_code CHAR(10) PRIMARY KEY,
+    college_name VARCHAR(100) NOT NULL
 );
 
 -- Create programs table with foreign key constraint
 CREATE TABLE IF NOT EXISTS programs
 (
-    program_code VARCHAR(20) PRIMARY KEY,
-    program_name VARCHAR(255) NOT NULL,
-    college_code VARCHAR(20),
+    program_code CHAR(20) PRIMARY KEY,
+    program_name VARCHAR(100) NOT NULL,
+    college_code CHAR(10),
     CONSTRAINT program_college_code_fkey FOREIGN KEY (college_code)
         REFERENCES colleges (college_code)
         ON UPDATE CASCADE
@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS programs
 -- Create students table with foreign key constraint
 CREATE TABLE IF NOT EXISTS students
 (
-    id_number VARCHAR(9) PRIMARY KEY,
+    id_number CHAR(9) PRIMARY KEY,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
     gender VARCHAR(6) NOT NULL,
     year_level SMALLINT NOT NULL,
-    program_code VARCHAR(20),
+    program_code CHAR(20),
     CONSTRAINT student_program_code_fkey FOREIGN KEY (program_code)
         REFERENCES programs (program_code)
         ON UPDATE CASCADE

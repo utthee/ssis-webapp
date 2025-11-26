@@ -94,6 +94,7 @@ def edit_student():
         student_photo = request.files.get("student_photo")
         
         photo_url = "KEEP_EXISTING"
+        photo_was_updated = False
 
         if not id_number:
             return jsonify(success=False, field="id_number", message="ID number is required."), 400
@@ -112,12 +113,14 @@ def edit_student():
             try:
                 supabase_storage.delete_student_photo(original_id_number)
                 photo_url = DEFAULT_PROFILE_URL
+                photo_was_updated = True
             except Exception as e:
                 return jsonify(success=False, field="student_photo", message=f"Failed to remove photo: {str(e)}"), 500
         
         elif student_photo and student_photo.filename:
             try:
                 photo_url = supabase_storage.update_student_photo(student_photo, id_number, original_id_number)
+                photo_was_updated = True
             except ValueError as e:
                 return jsonify(success=False, field="student_photo", message=str(e)), 400
             except Exception as e:
@@ -126,6 +129,9 @@ def edit_student():
         success, message, field = Student.edit_student(
             id_number, first_name, last_name, gender, year_level, program_code, original_id_number, photo_url
         )
+
+        if not success and message == "No changes detected." and photo_was_updated:
+            return jsonify(success=True, message="Student photo updated successfully."), 200
 
         if not success:
             if "already exists" in message.lower():

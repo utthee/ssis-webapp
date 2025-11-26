@@ -81,13 +81,12 @@ class Student:
 
             current_id_number, current_first_name, current_last_name, current_gender, current_year_level, current_program_code, current_photo_url = current_data
 
-            if photo_url == "KEEP_EXISTING" or photo_url is None:
-                photo_url = current_photo_url
+            photo_is_changing = photo_url not in ("KEEP_EXISTING", None, current_photo_url)
 
             if (id_number == current_id_number and first_name == current_first_name and 
                 last_name == current_last_name and gender == current_gender and
                 str(year_level) == str(current_year_level) and program_code == current_program_code and
-                photo_url == current_photo_url):
+                not photo_is_changing):
                 return False, "No changes detected.", None
             
             return True, None, None
@@ -112,7 +111,7 @@ class Student:
         db = get_db()
         cursor = db.cursor()
         try:
-            if photo_url == "KEEP_EXISTING":
+            if photo_url == "KEEP_EXISTING" or photo_url is None:
                 cursor.execute(
                     "UPDATE students SET id_number=%s, first_name=%s, last_name=%s, gender=%s, year_level=%s, program_code=%s WHERE id_number=%s",
                     (id_number, first_name, last_name, gender, year_level, program_code, original_id_number)

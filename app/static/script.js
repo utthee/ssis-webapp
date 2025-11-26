@@ -215,17 +215,22 @@ $(document).ready(function() {
     $('#studentPhoto').on('change', function(e) {
         const file = e.target.files[0];
         
+        $('#photoError').hide().text('');
+        $(this).removeClass('is-invalid');
+        
         if (file) {
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
             if (!validTypes.includes(file.type)) {
-                alert('Please select a valid image file (JPG, PNG, or GIF)');
+                $('#photoError').text('Please select a valid image file (JPG, PNG, or GIF)').show();
+                $(this).addClass('is-invalid');
                 $(this).val('');
                 return;
             }
             
             const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
-                alert('File size must be less than 5MB');
+                $('#photoError').text('File size must be less than 5MB').show();
+                $(this).addClass('is-invalid');
                 $(this).val('');
                 return;
             }
@@ -245,6 +250,8 @@ $(document).ready(function() {
         $('#registerImagePreview').hide();
         $('#registerPhotoPlaceholder').show();
         $(this).hide();
+        $('#photoError').hide().text('');
+        $('#studentPhoto').removeClass('is-invalid');
     });
     
     $('#registerStudentModal').on('hidden.bs.modal', function () {
@@ -255,6 +262,7 @@ $(document).ready(function() {
         $('#studentPhoto').val('');
         $('#registerStudentForm input').removeClass('is-invalid');
         $('#registerStudentForm .invalid-feedback').hide().text('');
+        $('#photoError').hide().text('');
     });
 });
 
@@ -429,17 +437,22 @@ $(document).ready(function() {
     $('#editStudentPhoto').on('change', function(e) {
         const file = e.target.files[0];
         
+        $('#editPhotoError').hide().text('');
+        $(this).removeClass('is-invalid');
+        
         if (file) {
             const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/jpg'];
             if (!validTypes.includes(file.type)) {
-                alert('Please select a valid image file (JPG, PNG, or GIF)');
+                $('#editPhotoError').text('Please select a valid image file (JPG, PNG, or GIF)').show();
+                $(this).addClass('is-invalid');
                 $(this).val('');
                 return;
             }
             
             const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
-                alert('File size must be less than 5MB');
+                $('#editPhotoError').text('File size must be less than 5MB').show();
+                $(this).addClass('is-invalid');
                 $(this).val('');
                 return;
             }
@@ -465,6 +478,13 @@ $(document).ready(function() {
         $('#editImagePreview').hide();
         $('#editPhotoPlaceholder').show();
         $(this).hide();
+        $('#editPhotoError').hide().text('');
+        $('#editStudentPhoto').removeClass('is-invalid');
+    });
+    
+    $('#editStudentModal').on('hidden.bs.modal', function () {
+        $('#editPhotoError').hide().text('');
+        $('#editStudentPhoto').removeClass('is-invalid');
     });
 });
 

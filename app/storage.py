@@ -48,6 +48,8 @@ class SupabaseStorage:
         try:
             if old_id_number and old_id_number != id_number:
                 self.delete_student_photo(old_id_number)
+            else:
+                self.delete_student_photo(id_number)
             
             storage_filename = f"{id_number}.{file_ext}"
             file_path = f"students/{storage_filename}"
@@ -56,21 +58,29 @@ class SupabaseStorage:
             self.supabase.storage.from_(self.bucket_name).upload(
                 file_path,
                 file_content,
-                file_options={"content-type": photo.content_type, "upsert": "true"}
+                file_options={"content-type": photo.content_type}
             )
             
             return self.supabase.storage.from_(self.bucket_name).get_public_url(file_path)
         
         except Exception as e:
-            print(f"Upload error: {str(e)}")
-            raise Exception(f"Failed to upload photo: {str(e)}")
+            print(f"Update error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            raise Exception(f"Failed to update photo: {str(e)}")
     
     def delete_student_photo(self, id_number):
         try:
             old_files = self.supabase.storage.from_(self.bucket_name).list("students")
+            files_to_delete = []
+            
             for file in old_files:
                 if file['name'].startswith(id_number + "."):
-                    self.supabase.storage.from_(self.bucket_name).remove([f"students/{file['name']}"])
+                    files_to_delete.append(f"students/{file['name']}")
+            
+            if files_to_delete:
+                self.supabase.storage.from_(self.bucket_name).remove(files_to_delete)
+                
         except Exception as e:
             print(f"Delete error: {str(e)}")
 

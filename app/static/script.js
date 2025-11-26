@@ -157,6 +157,8 @@ $("#registerProgramName, #editProgramName, #registerCollegeName, #editCollegeNam
 
 // SHOW REGISTER CONFIRMATION MESSAGE
 $(document).ready(function () {
+    const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
+    
     $("#registerStudentForm").submit(function (e) {
         e.preventDefault();
         $("#registerStudentForm input").removeClass("is-invalid");
@@ -205,7 +207,7 @@ $(document).ready(function () {
         $("#registerStudentForm input").removeClass("is-invalid");
         $("#registerStudentForm .invalid-feedback").hide().text("");
         
-        $('#registerImagePreview').attr('src', 'https://kqcerjyubrhcakxebzwy.supabase.co/storage/v1/object/public/student-photos/default-profile.png');
+        $('#registerImagePreview').attr('src', DEFAULT_PROFILE_IMAGE);
         $('#clearRegisterImage').hide();
     });
 });

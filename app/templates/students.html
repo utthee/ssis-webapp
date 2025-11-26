@@ -52,10 +52,11 @@
             <tr data-id-number="{{ student.id_number }}" data-first-name="{{ student.first_name }}"
                 data-last-name="{{ student.last_name }}" data-gender="{{ student.gender }}"
                 data-year-level="{{ student.year_level }}" data-program-code="{{ student.program_code }}"
-                data-photo-url="{{ student.photo_url or '' }}">
+                data-photo-url="{{ student.photo_url or default_profile_url }}">
                 <td>
-                    <img src="{{ student.photo_url }}" alt="{{ student.first_name }} {{ student.last_name }}"
-                        class="rounded-circle">
+                    <img src="{{ student.photo_url if student.photo_url else default_profile_url }}"
+                        alt="{{ student.first_name }} {{ student.last_name }}" class="rounded-circle"
+                        style="width: 50px; height: 50px; object-fit: cover;">
                 </td>
                 <th scope="row">{{ student.id_number }}</th>
                 <td>{{ student.first_name }}</td>
@@ -68,7 +69,7 @@
                         data-bs-target="#editStudentModal" data-id-number="{{ student.id_number }}"
                         data-first-name="{{ student.first_name }}" data-last-name="{{ student.last_name }}"
                         data-gender="{{ student.gender }}" data-year-level="{{ student.year_level }}"
-                        data-program-code="{{ student.program_code }}" data-photo-url="{{ student.photo_url or '' }}">
+                        data-program-code="{{ student.program_code }}" data-photo-url="{{ student.photo_url if student.photo_url else default_profile_url }}">
                         <i class="bi bi-pencil-square me-1"></i> Edit
                     </a>
                     <a href="#" class="btn btn-danger btn-delete" data-bs-toggle="modal"
@@ -274,7 +275,8 @@
                         </div>
 
                         <input type="file" class="d-none" id="editStudentPhoto" name="student_photo" accept="image/*">
-                        <div class="invalid-feedback d-block" id="editPhotoError" style="display: none !important;"></div>
+                        <div class="invalid-feedback d-block" id="editPhotoError" style="display: none !important;">
+                        </div>
                         <label for="editStudentPhoto" class="btn btn-primary w-100" style="cursor: pointer;">
                             <i class="bi bi-upload"></i> Upload Photo
                         </label>

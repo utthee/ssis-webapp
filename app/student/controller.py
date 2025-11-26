@@ -46,6 +46,9 @@ def register_student():
         if not program_code:
             return jsonify(success=False, field="program_code", message="Program code is required."), 400
         
+        if Student.check_existing_id_number(id_number):
+            return jsonify(success=False, field="id_number", message="The ID Number you just entered already exists. Please enter a different ID Number."), 409
+        
         photo_url = DEFAULT_PROFILE_URL
         photo_uploaded = False
         
@@ -56,7 +59,7 @@ def register_student():
             except ValueError as e:
                 return jsonify(success=False, field="student_photo", message=str(e)), 400
             except Exception as e:
-                return jsonify(success=False, field="student_photo", message=str(e)), 500
+                return jsonify(success=False, field="student_photo", message=f"Failed to upload photo: {str(e)}"), 500
         
         success, message, field = Student.register_student(
             id_number, first_name, last_name, gender, year_level, program_code, photo_url
@@ -108,6 +111,10 @@ def edit_student():
             return jsonify(success=False, field="year_level", message="Year level is required."), 400
         if not program_code:
             return jsonify(success=False, field="program_code", message="Program code is required."), 400
+        
+        if id_number != original_id_number:
+            if Student.check_existing_id_number(id_number, original_id_number):
+                return jsonify(success=False, field="id_number", message="The ID Number you just entered already exists. Please enter a different ID Number."), 409
         
         if remove_photo:
             try:

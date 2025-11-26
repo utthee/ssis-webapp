@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.models.students import Student
 from app.auth import login_required
-from werkzeug.utils import secure_filename
-from config import SUPABASE_URL, SUPABASE_KEY, DEFAULT_PROFILE_URL
-from supabase import create_client
-
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+from app.storage import supabase_storage
+from config import DEFAULT_PROFILE_URL
 
 student_bp = Blueprint("student", __name__, template_folder="templates")
 
@@ -34,10 +31,7 @@ def register_student():
         gender = request.form.get("gender", "").strip().title()
         year_level = request.form.get("year_level", "").strip()
         program_code = request.form.get("program_code", "").strip().upper()
-
-        photo = request.files.get("student_photo")
-        
-        photo_url = DEFAULT_PROFILE_URL
+        student_photo = request.files.get("student_photo")
 
         if not id_number:
             return jsonify(success=False, field="id_number", message="ID number is required."), 400
@@ -52,46 +46,25 @@ def register_student():
         if not program_code:
             return jsonify(success=False, field="program_code", message="Program code is required."), 400
         
-        file_path = None
+        photo_url = DEFAULT_PROFILE_URL
+        photo_uploaded = False
         
-        if photo and photo.filename:
-            allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-            filename = secure_filename(photo.filename)
-            file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
-            
-            if file_ext not in allowed_extensions:
-                return jsonify(success=False, field="student_photo", message="Invalid file type. Only PNG, JPG, JPEG, and GIF are allowed."), 400
-            
+        if student_photo and student_photo.filename:
             try:
-                storage_filename = f"{id_number}.{file_ext}"
-                file_path = f"students/{storage_filename}"
-                
-                file_content = photo.read()
-                
-                response = supabase.storage.from_("ssis-student-photos").upload(
-                    file_path,
-                    file_content,
-                    file_options={"content-type": photo.content_type}
-                )
-                
-                photo_url = supabase.storage.from_("ssis-student-photos").get_public_url(file_path)
-                
+                photo_url = supabase_storage.upload_student_photo(student_photo, id_number)
+                photo_uploaded = True
+            except ValueError as e:
+                return jsonify(success=False, field="student_photo", message=str(e)), 400
             except Exception as e:
-                print(f"Upload error: {str(e)}")
-                import traceback
-                traceback.print_exc()
-                return jsonify(success=False, field="student_photo", message=f"Failed to upload photo: {str(e)}"), 500
+                return jsonify(success=False, field="student_photo", message=str(e)), 500
         
         success, message, field = Student.register_student(
             id_number, first_name, last_name, gender, year_level, program_code, photo_url
         )
 
         if not success:
-            if photo and photo.filename and file_path:
-                try:
-                    supabase.storage.from_("ssis-student-photos").remove([file_path])
-                except:
-                    pass
+            if photo_uploaded:
+                supabase_storage.delete_student_photo(id_number)
             
             if "already exists" in message.lower():
                 return jsonify(success=False, field=field, message=message), 409
@@ -109,86 +82,63 @@ def register_student():
 @student_bp.route("/students/edit", methods=["POST"])
 @login_required
 def edit_student():
-    id_number = request.form.get("id_number", "").strip()
-    first_name = request.form.get("first_name", "").strip().title()
-    last_name = request.form.get("last_name", "").strip().title()
-    gender = request.form.get("gender", "").strip().title()
-    year_level = request.form.get("year_level", "").strip()
-    program_code = request.form.get("program_code", "").strip().upper()
-    original_id_number = request.form.get("original_id_number", "")
-    remove_photo = request.form.get("remove_photo", "false") == "true"
-    
-    photo = request.files.get("student_photo")
-    photo_url = "KEEP_EXISTING"
-
-    if not id_number:
-        return jsonify(success=False, field="id_number", message="ID number is required."), 400
-    if not first_name:
-        return jsonify(success=False, field="first_name", message="First name is required."), 400
-    if not last_name:
-        return jsonify(success=False, field="last_name", message="Last name is required."), 400
-    if not gender:
-        return jsonify(success=False, field="gender", message="Gender is required."), 400
-    if not year_level:
-        return jsonify(success=False, field="year_level", message="Year level is required."), 400
-    if not program_code:
-        return jsonify(success=False, field="program_code", message="Program code is required."), 400
-    
-    if remove_photo:
-        try:
-            old_files = supabase.storage.from_("ssis-student-photos").list("students")
-            for file in old_files:
-                if file['name'].startswith(original_id_number + "."):
-                    supabase.storage.from_("ssis-student-photos").remove([f"students/{file['name']}"])
-            
-            photo_url = DEFAULT_PROFILE_URL
-            
-        except Exception as e:
-            return jsonify(success=False, field="student_photo", message=f"Failed to remove photo: {str(e)}"), 500
-    
-    elif photo and photo.filename:
-        allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-        filename = secure_filename(photo.filename)
-        file_ext = filename.rsplit('.', 1)[1].lower() if '.' in filename else ''
+    try:
+        id_number = request.form.get("id_number", "").strip()
+        first_name = request.form.get("first_name", "").strip().title()
+        last_name = request.form.get("last_name", "").strip().title()
+        gender = request.form.get("gender", "").strip().title()
+        year_level = request.form.get("year_level", "").strip()
+        program_code = request.form.get("program_code", "").strip().upper()
+        original_id_number = request.form.get("original_id_number", "")
+        remove_photo = request.form.get("remove_photo", "false") == "true"
+        student_photo = request.files.get("student_photo")
         
-        if file_ext not in allowed_extensions:
-            return jsonify(success=False, field="student_photo", message="Invalid file type. Only PNG, JPG, JPEG, and GIF are allowed."), 400
+        photo_url = "KEEP_EXISTING"
+
+        if not id_number:
+            return jsonify(success=False, field="id_number", message="ID number is required."), 400
+        if not first_name:
+            return jsonify(success=False, field="first_name", message="First name is required."), 400
+        if not last_name:
+            return jsonify(success=False, field="last_name", message="Last name is required."), 400
+        if not gender:
+            return jsonify(success=False, field="gender", message="Gender is required."), 400
+        if not year_level:
+            return jsonify(success=False, field="year_level", message="Year level is required."), 400
+        if not program_code:
+            return jsonify(success=False, field="program_code", message="Program code is required."), 400
         
-        try:
-            storage_filename = f"{id_number}.{file_ext}"
-            file_path = f"students/{storage_filename}"
-            file_content = photo.read()
-            
-            if original_id_number != id_number:
-                try:
-                    old_files = supabase.storage.from_("ssis-student-photos").list("students")
-                    for file in old_files:
-                        if file['name'].startswith(original_id_number + "."):
-                            supabase.storage.from_("ssis-student-photos").remove([f"students/{file['name']}"])
-                except:
-                    pass
-            
-            response = supabase.storage.from_("ssis-student-photos").upload(
-                file_path,
-                file_content,
-                file_options={"content-type": photo.content_type, "upsert": "true"}
-            )
-            
-            photo_url = supabase.storage.from_("ssis-student-photos").get_public_url(file_path)
-            
-        except Exception as e:
-            return jsonify(success=False, field="student_photo", message=f"Failed to upload photo: {str(e)}"), 500
+        if remove_photo:
+            try:
+                supabase_storage.delete_student_photo(original_id_number)
+                photo_url = DEFAULT_PROFILE_URL
+            except Exception as e:
+                return jsonify(success=False, field="student_photo", message=f"Failed to remove photo: {str(e)}"), 500
+        
+        elif student_photo and student_photo.filename:
+            try:
+                photo_url = supabase_storage.update_student_photo(student_photo, id_number, original_id_number)
+            except ValueError as e:
+                return jsonify(success=False, field="student_photo", message=str(e)), 400
+            except Exception as e:
+                return jsonify(success=False, field="student_photo", message=str(e)), 500
+        
+        success, message, field = Student.edit_student(
+            id_number, first_name, last_name, gender, year_level, program_code, original_id_number, photo_url
+        )
+
+        if not success:
+            if "already exists" in message.lower():
+                return jsonify(success=False, field=field, message=message), 409
+            return jsonify(success=False, field=field, message=message), 400
+
+        return jsonify(success=True, message=message), 200
     
-    success, message, field = Student.edit_student(
-        id_number, first_name, last_name, gender, year_level, program_code, original_id_number, photo_url
-    )
-
-    if not success:
-        if "already exists" in message.lower():
-            return jsonify(success=False, field=field, message=message), 409
-        return jsonify(success=False, field=field, message=message), 400
-
-    return jsonify(success=True, message=message), 200
+    except Exception as e:
+        print(f"ERROR: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify(success=False, message=f"Server error: {str(e)}"), 500
 
 
 @student_bp.route("/students/delete", methods=["POST"])
@@ -199,7 +149,9 @@ def delete_student():
     if not id_number:
         return jsonify(success=False, field="id_number", message="ID number is required."), 400
 
-    success,message = Student.delete_student(id_number)
+    supabase_storage.delete_student_photo(id_number)
+    
+    success, message = Student.delete_student(id_number)
 
     if not success:
         return jsonify(success=False, message=message), 400

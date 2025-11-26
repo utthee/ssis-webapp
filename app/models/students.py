@@ -81,7 +81,7 @@ class Student:
 
             current_id_number, current_first_name, current_last_name, current_gender, current_year_level, current_program_code, current_photo_url = current_data
 
-            if photo_url is None:
+            if photo_url == "KEEP_EXISTING" or photo_url is None:
                 photo_url = current_photo_url
 
             if (id_number == current_id_number and first_name == current_first_name and 
@@ -109,15 +109,15 @@ class Student:
         db = get_db()
         cursor = db.cursor()
         try:
-            if photo_url is not None:
-                cursor.execute(
-                    "UPDATE students SET id_number=%s, first_name=%s, last_name=%s, gender=%s, year_level=%s, program_code=%s, photo_url=%s WHERE id_number=%s",
-                    (id_number, first_name, last_name, gender, year_level, program_code, photo_url, original_id_number)
-                )
-            else:
+            if photo_url == "KEEP_EXISTING":
                 cursor.execute(
                     "UPDATE students SET id_number=%s, first_name=%s, last_name=%s, gender=%s, year_level=%s, program_code=%s WHERE id_number=%s",
                     (id_number, first_name, last_name, gender, year_level, program_code, original_id_number)
+                )
+            else:
+                cursor.execute(
+                    "UPDATE students SET id_number=%s, first_name=%s, last_name=%s, gender=%s, year_level=%s, program_code=%s, photo_url=%s WHERE id_number=%s",
+                    (id_number, first_name, last_name, gender, year_level, program_code, photo_url, original_id_number)
                 )
             db.commit()
             return True, "Student updated successfully.", None

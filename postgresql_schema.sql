@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS students
     gender VARCHAR(6) NOT NULL,
     year_level SMALLINT NOT NULL,
     program_code CHAR(20),
+    photo_url TEXT,
     CONSTRAINT student_program_code_fkey FOREIGN KEY (program_code)
         REFERENCES programs (program_code)
         ON UPDATE CASCADE

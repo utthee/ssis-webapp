@@ -91,6 +91,9 @@ class Student:
                 return False, "No changes detected.", None
             
             return True, None, None
+        except Exception as e:
+            db.rollback()
+            return False, str(e), None
         finally:
             cursor.close()
 

@@ -38,6 +38,10 @@ $(document).ready(function () {
 
 // REMOVE BLUR BACKGROUND OF MODALS WHEN HIDDEN
 $(document).ready(function () {
+    $('.modal').on('hide.bs.modal', function () {
+        $(this).find(':focus').blur();
+    });
+    
     $('.modal').on('hidden.bs.modal', function () {
         document.activeElement.blur();
     });
@@ -158,6 +162,10 @@ $("#registerProgramName, #editProgramName, #registerCollegeName, #editCollegeNam
 
 // SHOW REGISTER CONFIRMATION MESSAGE
 $(document).ready(function () {
+    if (!window.APP_CONFIG || !window.APP_CONFIG.DEFAULT_PROFILE_IMAGE) {
+        return;
+    }
+
     const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $("#registerStudentForm").submit(function (e) {
@@ -272,6 +280,10 @@ $(document).ready(function() {
 
 // POPULATE STUDENT DETAILS MODAL
 $(document).ready(function() {
+    if (!window.APP_CONFIG || !window.APP_CONFIG.DEFAULT_PROFILE_IMAGE) {
+        return;
+    }
+
     const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $('#student-table tbody').on('click', 'tr', function(e) {
@@ -321,6 +333,10 @@ $(document).ready(function() {
 
 //POPULATE STUDENT EDIT FORM
 $(document).ready(function () {
+    if (!window.APP_CONFIG || !window.APP_CONFIG.DEFAULT_PROFILE_IMAGE) {
+        return;
+    }
+    
     const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $('#editStudentModal').on('show.bs.modal', function (event) {
@@ -435,6 +451,10 @@ $(document).ready(function () {
 
 // IMAGE PREVIEW FOR EDIT STUDENT MODAL
 $(document).ready(function() {
+    if (!window.APP_CONFIG || !window.APP_CONFIG.DEFAULT_PROFILE_IMAGE) {
+        return;
+    }
+
     const DEFAULT_PROFILE_IMAGE = window.APP_CONFIG.DEFAULT_PROFILE_IMAGE;
     
     $('#editStudentPhoto').on('change', function(e) {

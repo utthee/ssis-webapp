@@ -74,6 +74,15 @@
                 <!-- SECONDARY LIST BOTTOM CONTENT -->
                 <ul class="nav-list logout-list">
                     <li class="sidebar-item">
+                        <div class="sidebar-link user-info-link">
+                            <i class="bi bi-person-circle fs-2"></i>
+                            <span class="sidebar-label">
+                                <span class="username">{{ session.get('username', 'User') }}</span>
+                                <span class="user-role">Logged-in User</span>
+                            </span>
+                        </div>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="#" class="sidebar-link" data-bs-toggle="modal"
                             data-bs-target="#logoutConfirmationModal">
                             <i class="bi bi-box-arrow-right fs-2"></i>

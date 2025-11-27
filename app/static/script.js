@@ -59,9 +59,10 @@ $(document).ready(function () {
 
         const dataTable = $(tableId).DataTable({
             pageLength: pageLength,
-            lengthChange: false,
+            lengthChange: true,
             searching: true,
-            dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7 d-flex justify-content-end"p>>',
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-2"i><"col-sm-12 col-md-5 d-flex justify-content-end"p>>',
             columnDefs: [
                 {
                     targets: 0,

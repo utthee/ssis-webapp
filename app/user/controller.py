@@ -18,6 +18,7 @@ def login():
         if user and user.check_password(password):
             session["user_id"] = user.id
             session["username"] = user.username
+            session["email"] = user.email
             flash(f"Welcome, {user.username}!", "login")
             return redirect(url_for("dashboard.dashboard"))
 

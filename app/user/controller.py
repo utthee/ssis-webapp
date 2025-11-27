@@ -19,6 +19,12 @@ def login():
             session["user_id"] = user.id
             session["username"] = user.username
             session["email"] = user.email
+
+            if form.remember_me.data:
+                session.permanent = True
+            else:
+                session.permanent = False
+                
             flash(f"Welcome, {user.username}!", "login")
             return redirect(url_for("dashboard.dashboard"))
 

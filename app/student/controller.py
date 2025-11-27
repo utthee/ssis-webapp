@@ -133,6 +133,14 @@ def edit_student():
             except Exception as e:
                 return jsonify(success=False, field="student_photo", message=str(e)), 500
         
+        elif id_number != original_id_number:
+            try:
+                photo_url = supabase_storage.rename_student_photo(original_id_number, id_number)
+                if photo_url != "KEEP_EXISTING":
+                    photo_was_updated = True
+            except Exception as e:
+                return jsonify(success=False, field="student_photo", message=f"Failed to rename photo: {str(e)}"), 500
+        
         success, message, field = Student.edit_student(
             id_number, first_name, last_name, gender, year_level, program_code, original_id_number, photo_url
         )

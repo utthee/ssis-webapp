@@ -1,4 +1,3 @@
-
 // TOGGLE BUTTON FOR SIDEBAR COLLAPSE/EXPAND
 $(document).ready(function () {
     $(".toggler-btn").click(function () {
@@ -295,7 +294,6 @@ $(document).ready(function() {
         const idNumber = row.data('id-number');
         const firstName = row.data('first-name');
         const lastName = row.data('last-name');
-        const fullName = `${firstName} ${lastName}`;
         const gender = row.data('gender');
         const yearLevel = row.data('year-level');
         const program = row.data('program-code');
@@ -308,7 +306,8 @@ $(document).ready(function() {
                                    photoUrl === DEFAULT_PROFILE_IMAGE;
         
         $('#details-id-number').val(idNumber);
-        $('#details-full-name').val(fullName);
+        $('#details-first-name').val(firstName);
+        $('#details-last-name').val(lastName);
         $('#details-gender').val(gender);
         $('#details-year-level').val(yearLevel);
         $('#details-program').val(program);

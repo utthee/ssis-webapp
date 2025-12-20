@@ -11,10 +11,27 @@ class Student:
         return [{"program_code": column[0], "program_name": column[1], "college_code": column[2]} for column in programs]
 
     @staticmethod
-    def get_all_students():
+    def get_all_students(year_level = None, gender = None, program_code = None):
         db = get_db()
         cursor = db.cursor()
-        cursor.execute("SELECT * FROM students ORDER BY last_name")
+
+        query = "SELECT * FROM students WHERE 1=1"
+        params = []
+
+        if year_level:
+            query += " AND year_level = %s"
+            params.append(year_level)
+
+        if gender:
+            query += " AND gender = %s"
+            params.append(gender)
+
+        if program_code:
+            query += " AND program_code = %s"
+            params.append(program_code)
+
+
+        cursor.execute(query, tuple(params))
         students_data = cursor.fetchall()
         cursor.close()
 
@@ -26,6 +43,24 @@ class Student:
                 "program_code": column[5],
                 "photo_url": column[6]} 
                 for column in students_data]
+    
+    @staticmethod
+    def get_all_genders():
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT DISTINCT gender FROM students")
+        genders = cursor.fetchall()
+        cursor.close()
+        return [column[0] for column in genders]
+    
+    @staticmethod
+    def get_all_year_levels():
+        db = get_db()
+        cursor = db.cursor()
+        cursor.execute("SELECT DISTINCT year_level FROM students ORDER BY year_level ASC")
+        year_levels = cursor.fetchall()
+        cursor.close()
+        return [column[0] for column in year_levels]
     
     @staticmethod
     def check_existing_id_number(id_number, exclude_original_id_number=None):

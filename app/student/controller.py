@@ -9,15 +9,28 @@ student_bp = Blueprint("student", __name__, template_folder="templates")
 @student_bp.route("/students")
 @login_required
 def students():
+    filter_year_level = request.args.get("year_level")
+    filter_gender = request.args.get("gender")
+    filter_program_code = request.args.get("program_code")
+
     programs_list = Student.get_all_programs()
-    students_list = Student.get_all_students()
+    students_list = Student.get_all_students(filter_year_level, filter_gender, filter_program_code)
+    genders_list = Student.get_all_genders()
+    year_levels_list = Student.get_all_year_levels()
 
     return render_template(
         "students.html",
         page_title="Students",
         students=students_list,
         programs=programs_list,
-        default_profile_url=DEFAULT_PROFILE_URL
+        genders=genders_list,
+        year_levels=year_levels_list,
+        default_profile_url=DEFAULT_PROFILE_URL,
+        current_filters={
+            "year_level": filter_year_level,
+            "gender": filter_gender,
+            "program_code": filter_program_code
+        }
     )
 
 

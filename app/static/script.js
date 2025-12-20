@@ -64,6 +64,8 @@ $(document).ready(function () {
             pageLength: pageLength,
             lengthChange: true,
             searching: true,
+            ordering: true,
+            destroy: true,
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-2"i><"col-sm-12 col-md-5 d-flex justify-content-end"p>>',
             columnDefs: [
@@ -81,6 +83,7 @@ $(document).ready(function () {
         const filterSelect = $(filterId);
         const searchInput = $(searchId);
 
+        dataTable.search("")
         if (filterSelect.length && searchInput.length) {
             searchInput.on("keyup", function () {
                 const searchValue = $(this).val();

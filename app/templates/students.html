@@ -32,6 +32,9 @@
                     style="width: 200px;">
             </div>
 
+            <button type="button" class="btn btn-success mt-4" data-bs-toggle="modal"
+                data-bs-target="#filterStudentModal">Filter</button>
+
             <a href="#" class="btn btn-success ms-auto mt-4" data-bs-toggle="modal"
                 data-bs-target="#registerStudentModal">
                 <i class="bi bi-plus-lg"></i> Register
@@ -87,6 +90,70 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+
+<!-- FILTER STUDENT MODAL -->
+<div class="modal fade" id="filterStudentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filter Students</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form action="{{ url_for('student.students') }}" method="GET" id="filterForm">
+                <div class="modal-body">
+
+                    <div class="mb-3">
+                        <label class="form-label">Year Level</label>
+                        <select name="year_level" class="form-select">
+                            <option value="">All</option>
+                            {% for y in year_levels %}
+                            <option value="{{ y }}" {% if current_filters.year_level==y|string %}selected{% endif %}>
+                                {{ y }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Gender</label>
+                        <select name="gender" class="form-select">
+                            <option value="">All</option>
+                            {% for g in genders %}
+                            <option value="{{ g }}" {% if current_filters.gender==g %}selected{% endif %}>
+                                {{ g }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Program</label>
+                        <select name="program_code" class="form-select">
+                            <option value="">All</option>
+                            {% for p in programs %}
+                            <option value="{{ p.program_code }}" {% if current_filters.program_code==p.program_code
+                                %}selected{% endif %}>
+                                {{ p.program_code }} - {{ p.program_name }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="{{ url_for('student.students') }}" class="btn btn-secondary">
+                        <i class="bi bi-x-lg"></i> Clear All
+                    </a>
+
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-lg"></i> Apply Filters
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <!-- STUDENT DETAILS MODAL -->
